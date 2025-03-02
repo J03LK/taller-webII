@@ -1,0 +1,39 @@
+
+<!-- carousel.component.html -->
+<div class="academic-carousel-container">
+    <!-- Header Section -->
+    <div class="header-section">
+      <div class="header-content">
+        <h2 class="sub-title">CONOCE NUESTRA</h2>
+        <h1 class="main-title">OFERTA <span class="highlight">ACADÉMICA</span></h1>
+        <div class="divider"></div>
+      </div>
+      <div class="header-description">
+        <p>Gradúate como profesional de élite y obtén tu título de tercer nivel en tan solo 2 años. Ofrecemos las carreras más demandadas en el mercado laboral actual.</p>
+      </div>
+    </div>
+  
+    <!-- Carousel Section -->
+    <div id="carreras">
+      <div class="swiper-container" #swiperContainer>
+        <div class="swiper-wrapper">
+          @for (career of careers(); track career.id) {
+          <div class="swiper-slide">
+            <div class="career-card">
+              <div class="image-container">
+                <img [src]="career.imageUrl" [alt]="career.title" loading="lazy">
+              </div>
+              <div class="career-title">
+                <h3>{{career.title}}</h3>
+              </div>
+              <a class="conoce" [routerLink]="career.link">Conoce más</a>
+            </div>
+          </div>
+          }
+        </div>
+        
+        <!-- Pagination -->
+       
+      </div>
+    </div>
+  </div>

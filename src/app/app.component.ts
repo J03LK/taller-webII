@@ -5,11 +5,12 @@ import { ProgramasComponent } from './components/programas/programas.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SeccionAcademicaComponent } from './components/seccion-academica/seccion-academica.component';
+import { CarouselComponent } from "./components/carousel/carousel.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [HomeComponent, ProgramasComponent, SeccionAcademicaComponent, RouterModule, NavbarComponent, FooterComponent],
+  imports: [HomeComponent, ProgramasComponent, SeccionAcademicaComponent, RouterModule, NavbarComponent, FooterComponent, CarouselComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
