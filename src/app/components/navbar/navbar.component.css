@@ -1,49 +1,174 @@
-/* Menú de navegación */
-.main-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: white;
-    padding: 15px 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    z-index: 10; /* Asegura que la navbar quede por encima del contenido */
-}
-
-.main-nav .container {
+/* Estilos base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Barra superior */
+  .top-bar {
+    background-color: #1F2732;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 50px;
+    font-size: 14px;
+    align-items: center;
+  }
+  
+  .top-bar .info span {
+    margin-right: 20px;
+  }
+  
+  .top-bar i {
+    margin-right: 5px;
+    color: #FDC600;
+  }
+  
+  .social-icons i {
+    margin-left: 15px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .social-icons i:hover {
+    color: #FDC600;
+  }
+  
+  /* Navbar principal */
+  nav {
+    background-color: #1F2732;
+    padding: 20px 0;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
+    padding: 15px 30px;
+    background-color: white;
+    border-radius: 10px;
     margin: 0 auto;
-    padding: 0 15px;
-}
-
-.logo img {
-    height: 50px;
-}
-
-.menu ul {
-    display: flex;
-    list-style: none;
-    gap: 25px;
-}
-
-.menu li a {
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
+    max-width: 1200px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    top: -30px;
+  }
+  
+  .logo {
     display: flex;
     align-items: center;
-    gap: 5px;
-    transition: color 0.3s;
-}
-
-.menu li a:hover {
-    color: #fbb034;
-}
-
-/* Espacio adicional para el contenido debajo de la navbar */
-body {
-    margin-top: 80px; /* Ajusta este valor según la altura de la navbar */
-}
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    color: #1F2732;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 10px;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+  }
+  
+  .nav-links a:hover {
+    color: #FDC600;
+  }
+  
+  /* Botón de contacto */
+  .contact {
+    background-color: #FDC600;
+    padding: 10px 20px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .contact:hover {
+    background-color: #F4B400;
+  }
+  
+  .contact a {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+  }
+  
+  .contact i {
+    font-size: 24px;
+    color: white;
+  }
+  
+  .contact div {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Media queries para responsividad */
+  @media (max-width: 1100px) {
+    .navbar {
+      flex-direction: column;
+      gap: 15px;
+      padding: 20px;
+    }
+    
+    .nav-links {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .top-bar {
+      padding: 10px 20px;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .navbar {
+      top: 0;
+      border-radius: 0;
+    }
+    
+    .nav-links {
+      gap: 10px;
+    }
+    
+    .contact {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .top-bar .info span {
+      display: block;
+      margin-bottom: 5px;
+    }
+    
+    .nav-links {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .contact a {
+      justify-content: center;
+      width: 100%;
+    }
+  }
