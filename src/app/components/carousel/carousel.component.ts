@@ -26,12 +26,7 @@ export class CarouselComponent implements OnInit, AfterViewInit {
       imageUrl: 'https://itsqmet.edu.ec/wp-content/uploads/2024/02/estetica_Mesa-de-trabajo-1.webp',
       link: '/estetica-integral'
     },
-    {
-      id: 2,
-      title: 'PROCESAMIENTO DE ALIMENTOS',
-      imageUrl: 'https://itsqmet.edu.ec/wp-content/uploads/2024/09/Recurso-1.webp',
-      link: '/procesamiento-de-alimentos'
-    },
+    
     {
       id: 3,
       title: 'MECÁNICA AUTOMOTRIZ',
@@ -50,12 +45,7 @@ export class CarouselComponent implements OnInit, AfterViewInit {
       imageUrl: 'https://itsqmet.edu.ec/wp-content/uploads/2024/09/Recurso-4.webp',
       link: '/riesgos-laborales'
     },
-    {
-      id: 6,
-      title: 'DESARROLLO DE SOFTWARE',
-      imageUrl: 'https://itsqmet.edu.ec/wp-content/uploads/2023/10/desarrollo-soft-jpg.webp',
-      link: '/tecnologia-desarrollo-de-software'
-    },
+   
     {
       id: 7,
       title: 'ENFERMERÍA',
@@ -80,12 +70,7 @@ export class CarouselComponent implements OnInit, AfterViewInit {
       imageUrl: 'https://itsqmet.edu.ec/wp-content/uploads/2023/10/ventas-jpg.webp',
       link: '/tecnologia-superior-en-ventas'
     },
-    {
-      id: 11,
-      title: 'SEGURIDAD CIUDADANA Y ORDEN PÚBLICO',
-      imageUrl: 'https://itsqmet.edu.ec/wp-content/uploads/2023/10/seguridad-jpg.webp',
-      link: '/seguridad-ciudadana-y-orden-publico'
-    },
+   
     {
       id: 12,
       title: 'ADMINISTRACIÓN',
@@ -100,7 +85,7 @@ export class CarouselComponent implements OnInit, AfterViewInit {
     },
     {
       id: 14,
-      title: 'MARKETING DIGITAL Y COMERCIO ELECTRÓNICO',
+      title: 'MARKETING DIGITAL',
       imageUrl: 'https://itsqmet.edu.ec/wp-content/uploads/2023/10/marketing-digital-jpg.webp',
       link: '/marketing-digital-y-comercio-electronico'
     },

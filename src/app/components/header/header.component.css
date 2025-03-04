@@ -1,0 +1,77 @@
+/* Estilos del Main */
+main {
+    background-color: #1f2937; /* Fondo oscuro */
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+ 
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    width: 90%;
+}
+ 
+/* Contenido de la izquierda */
+.container .logo {
+    width: 200px;
+    margin-bottom: 20px;
+}
+ 
+.container h1 {
+    font-size: 4rem;
+    font-weight: bold;
+    color: white;
+}
+ 
+.container .highlight {
+    color: #facc15; /* Amarillo */
+}
+ 
+.container .line {
+    width: 80px;
+    height: 4px;
+    background-color: #ccc;
+    margin: 10px 0 20px;
+}
+ 
+.container p {
+    color: #d1d5db; /* Gris claro */
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+ 
+/* Botón */
+.container .btn {
+    display: inline-block;
+    background-color: #facc15;
+    color: #1f2937;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+ 
+.container .btn:hover {
+    background-color: #eab308;
+}
+ 
+/* Imagen de la derecha */
+.image-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+ 
+.image-container img {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 10px;
+}
+ 
