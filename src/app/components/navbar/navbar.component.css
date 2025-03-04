@@ -60,7 +60,7 @@ nav {
   background-color: white;
   border-radius: 10px;
   margin: 0 auto;
-  max-width: 1200px;
+  max-width: 1500px; /* Aumenté el ancho máximo */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   position: relative;
   top: -20px;

@@ -1,0 +1,271 @@
+/* Estilos base retro */
+:root {
+    --retro-primary: #FF6B6B;
+    --retro-secondary: #4ECDC4;
+    --retro-accent: #FFE66D;
+    --retro-dark: #292F36;
+    --retro-light: #F7FFF7;
+    --retro-border-radius: 0;
+    --retro-box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.75);
+    --retro-border: 2px solid var(--retro-dark);
+    --retro-font: 'Press Start 2P', 'Courier New', monospace;
+}
+.paper-corner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 20px 20px 0;
+      border-color: transparent var(--retro-primary) transparent transparent;
+    }
+
+body {
+    background-color: var(--retro-light);
+    font-family: 'Courier New', monospace;
+}
+
+/* Sidebar retro */
+.sidebar {
+    height: 100vh;
+    background-color: var(--retro-dark);
+    color: var(--retro-light);
+    border-right: var(--retro-border);
+    box-shadow: var(--retro-box-shadow);
+}
+
+.sidebar h3 {
+    font-family: var(--retro-font);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.sidebar .nav-link {
+    border: 2px solid transparent;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+    border-radius: var(--retro-border-radius);
+    font-weight: bold;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background-color: var(--retro-primary);
+    border: 2px solid var(--retro-dark);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--retro-box-shadow);
+}
+
+/* Cards con estilo retro */
+.card {
+    background-color: var(--retro-light);
+    border: var(--retro-border);
+    border-radius: var(--retro-border-radius);
+    box-shadow: var(--retro-box-shadow);
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.75);
+}
+
+.card .card-header {
+    background-color: var(--retro-dark);
+    color: var(--retro-light);
+    border-bottom: var(--retro-border);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Stats cards */
+.card.bg-primary {
+    background-color: var(--retro-primary);
+    color: var(--retro-dark);
+    border: var(--retro-border);
+}
+
+.card.bg-success {
+    background-color: var(--retro-secondary);
+    color: var(--retro-dark);
+    border: var(--retro-border);
+}
+
+.card.bg-warning {
+    background-color: var(--retro-accent);
+    color: var(--retro-dark);
+    border: var(--retro-border);
+}
+
+.card.bg-danger {
+    background-color: #FF9F1C;
+    color: var(--retro-dark);
+    border: var(--retro-border);
+}
+
+/* Suggestion cards */
+.suggestion-card {
+    border: var(--retro-border);
+    margin-bottom: 15px;
+    padding: 15px;
+    transition: all 0.2s ease;
+}
+
+.suggestion-card.high {
+    border-left: 8px solid var(--retro-primary);
+}
+
+.suggestion-card.medium {
+    border-left: 8px solid var(--retro-accent);
+}
+
+.suggestion-card.low {
+    border-left: 8px solid var(--retro-secondary);
+}
+
+.suggestion-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--retro-box-shadow);
+}
+
+/* Chart container */
+.chart-container {
+    height: 250px;
+    background-color: #FFFFFF;
+    border: var(--retro-border);
+    padding: 10px;
+}
+
+/* Botones retro */
+.btn {
+    border-radius: var(--retro-border-radius);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
+    border: var(--retro-border);
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.75);
+}
+
+.btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--retro-box-shadow);
+}
+
+.btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.75);
+}
+
+.btn-outline-primary {
+    color: var(--retro-dark);
+    border-color: var(--retro-primary);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--retro-primary);
+    color: var(--retro-dark);
+}
+
+.btn-outline-secondary {
+    color: var(--retro-dark);
+    border-color: var(--retro-secondary);
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--retro-secondary);
+    color: var(--retro-dark);
+}
+
+/* Badges con estilo retro */
+.badge {
+    border-radius: var(--retro-border-radius);
+    padding: 5px 8px;
+    font-weight: bold;
+    border: 1px solid var(--retro-dark);
+}
+
+/* Dropdowns con estilo retro */
+.dropdown-menu {
+    border-radius: var(--retro-border-radius);
+    border: var(--retro-border);
+    box-shadow: var(--retro-box-shadow);
+}
+
+.dropdown-item {
+    font-weight: bold;
+}
+
+.dropdown-item:hover {
+    background-color: var(--retro-accent);
+    color: var(--retro-dark);
+}
+
+/* Paginación retro */
+.pagination .page-link {
+    border-radius: var(--retro-border-radius);
+    border: 1px solid var(--retro-dark);
+    margin: 0 3px;
+    color: var(--retro-dark);
+    font-weight: bold;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--retro-primary);
+    border-color: var(--retro-dark);
+    color: var(--retro-dark);
+}
+
+/* Dropdown y select con estilo retro */
+.form-select {
+    border-radius: var(--retro-border-radius);
+    border: var(--retro-border);
+    font-weight: bold;
+}
+
+/* Encabezados retro */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+h1 {
+    text-transform: uppercase;
+    border-bottom: 4px solid var(--retro-primary);
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+/* Iconos retro */
+.card i.fa-3x {
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
+}
+
+/* Pixel art border */
+.pixelated-border {
+    position: relative;
+}
+
+.pixelated-border::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(45deg,
+            transparent,
+            transparent 5px,
+            rgba(0, 0, 0, 0.1) 5px,
+            rgba(0, 0, 0, 0.1) 10px);
+    pointer-events: none;
+}
