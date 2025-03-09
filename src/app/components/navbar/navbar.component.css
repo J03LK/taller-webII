@@ -94,19 +94,81 @@ nav {
   color: #FDC600;
 }
 
-/* Botón de contacto */
+/* Estilos para los botones mejorados */
+.auth-buttons {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.btn-auth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-auth i {
+  font-size: 16px;
+}
+
+.btn-login {
+  background: linear-gradient(135deg, #4CAF50, #2E7D32);
+  color: white;
+  border: 2px solid transparent;
+}
+
+.btn-login:hover {
+  background: white;
+  color: #2E7D32;
+  border: 2px solid #2E7D32;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(46, 125, 50, 0.2);
+}
+
+.btn-register {
+  background: linear-gradient(135deg, #1976D2, #0D47A1);
+  color: white;
+  border: 2px solid transparent;
+}
+
+.btn-register:hover {
+  background: white;
+  color: #0D47A1;
+  border: 2px solid #0D47A1;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(13, 71, 161, 0.2);
+}
+
+/* Efecto de pulsación al hacer clic */
+.btn-auth:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Estilos para el área de contacto */
 .contact {
   background-color: #FDC600;
   padding: 10px 20px;
   border-radius: 30px;
   display: flex;
   align-items: center;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .contact:hover {
   background-color: #F4B400;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(253, 198, 0, 0.2);
 }
 
 .contact a {
@@ -115,7 +177,6 @@ nav {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-weight: bold;
 }
 
 .contact i {
@@ -128,66 +189,144 @@ nav {
   flex-direction: column;
 }
 
+.contact span:first-child {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.contact span:last-child {
+  font-weight: bold;
+}
+
 /* Media queries para responsividad */
 @media (max-width: 1100px) {
   .navbar {
-      flex-direction: column;
-      gap: 15px;
-      padding: 20px;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
   }
 
   .nav-links {
-      flex-wrap: wrap;
-      justify-content: center;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }
 
 @media (max-width: 768px) {
   .top-bar {
-      padding: 10px 20px;
-      flex-direction: column;
-      gap: 10px;
-      text-align: center;
+    padding: 10px 20px;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
   }
 
   nav {
-      padding: 50px 0 20px;
+    padding: 50px 0 20px;
   }
 
   .navbar {
-      top: 0;
-      border-radius: 0;
+    top: 0;
+    border-radius: 0;
   }
 
   .nav-links {
-      gap: 10px;
+    gap: 10px;
   }
 
   .contact {
-      width: 100%;
-      justify-content: center;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .btn-auth {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+  
+  .btn-auth i {
+    font-size: 14px;
   }
 }
 
-@media (max-width: 576px) {
-  .top-bar .info {
-      text-align: center;
-      width: 100%;
+  .contact {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
   }
-
-  .top-bar .info span {
-      display: block;
-      margin-bottom: 5px;
+  
+  .contact:hover {
+    transform: translateY(-2px);
   }
-
-  .nav-links {
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-  }
-
+  
   .contact a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    gap: 12px;
+  }
+  
+  .contact i {
+    font-size: 28px;
+    color: #25D366;
+    background-color: rgba(37, 211, 102, 0.1);
+    height: 45px;
+    width: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 0;
+    transition: all 0.3s ease;
+  }
+  
+  .contact:hover i {
+    transform: scale(1.1);
+    background-color: rgba(37, 211, 102, 0.15);
+  }
+  
+  .contact div {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .contact span:first-child {
+    font-size: 12px;
+    font-weight: bold;
+    color: #666;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  
+  .contact span:last-child {
+    font-weight: bold;
+    color: #333;
+    font-size: 16px;
+  }
+  
+  /* Para dispositivos móviles */
+  @media (max-width: 768px) {
+    .contact {
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .contact a {
+      justify-content: center;
+    }
+    
+    .contact i {
+      font-size: 24px;
+      height: 40px;
+      width: 40px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .contact a {
       justify-content: center;
       width: 100%;
+    }
   }
-}

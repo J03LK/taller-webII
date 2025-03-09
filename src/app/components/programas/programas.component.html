@@ -1,23 +1,18 @@
 <div class="container">
     <div class="stats-container">
-        <div class="stat">
-            <span class="number">16</span>
-            <span class="text">CARRERAS TECNOLÓGICAS</span>
+      <h2 class="stats-title">NUESTRAS ESTADÍSTICAS</h2>
+      
+      <div class="stats-grid">
+        <div *ngFor="let stat of stats" class="stat-card">
+          <div class="icon-container">
+            <i class="fas {{stat.icon}}"></i>
+          </div>
+          <span class="number">{{ stat.number.toLocaleString() }}</span>
+          <span class="text">{{ stat.text }}</span>
         </div>
-        <div class="stat">
-            <span class="number">219</span>
-            <span class="text">DOCENTES ESPECIALIZADOS</span>
-        </div>
-        <div class="stat">
-            <span class="number">2717</span>
-            <span class="text">ESTUDIANTES GRADUADOS</span>
-        </div>
-        <div class="stat">
-            <span class="number">2073</span>
-            <span class="text">ESTUDIANTES MATRICULADOS</span>
-        </div>
+      </div>
     </div>
-</div>
+  </div>
  <br>
  <br>
  <section class="hero">
