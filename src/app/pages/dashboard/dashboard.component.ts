@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Chart, registerables } from 'chart.js';
 
@@ -21,7 +21,8 @@ interface Suggestion {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  styleUrl: './dashboard.component.css',
+  
 })
 export class DashboardComponent implements OnInit {
   // Estadísticas
@@ -81,12 +82,16 @@ export class DashboardComponent implements OnInit {
     }
   ];
 
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
   ngOnInit(): void {
-    // Inicializar gráficos después de que Angular haya renderizado la vista
-    setTimeout(() => {
-      this.initDepartmentChart();
-      this.initStatusChart();
-    }, 100);
+    // Inicializar gráficos solo si estamos en el navegador
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        this.initDepartmentChart();
+        this.initStatusChart();
+      }, 100);
+    }
   }
 
   getPriorityClass(priority: string): string {
@@ -116,6 +121,9 @@ export class DashboardComponent implements OnInit {
   }
 
   private initDepartmentChart(): void {
+    // Verificar que estamos en el navegador
+    if (!isPlatformBrowser(this.platformId)) return;
+
     const deptCtx = document.getElementById('departmentChart') as HTMLCanvasElement;
     if (!deptCtx) return;
 
@@ -144,6 +152,9 @@ export class DashboardComponent implements OnInit {
   }
 
   private initStatusChart(): void {
+    // Verificar que estamos en el navegador
+    if (!isPlatformBrowser(this.platformId)) return;
+
     const statusCtx = document.getElementById('statusChart') as HTMLCanvasElement;
     if (!statusCtx) return;
 

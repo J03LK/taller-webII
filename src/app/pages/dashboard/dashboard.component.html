@@ -1,180 +1,70 @@
-<div class="container">
-    <!-- Encabezado -->
-    <div class="header">
-        <h1>Dashboard de Reportes - Instituto Tecnológico</h1>
-        <p>Sistema de gestión y seguimiento de denuncias sobre infraestructura</p>
-    </div>
-    
-    <!-- Estadísticas -->
-    <div class="stats-container">
-        <div class="stat-card">
-            <div class="stat-icon denuncias-totales"></div>
-            <div class="stat-info">
-                <h3>Reportes Totales</h3>
-                <p class="count">1,248</p>
+    <div class="container">
+        <header class="panel-header">
+            <h1>Sistema de Denuncias Institucional</h1>
+            <div class="user-info">
+                <span id="username">Usuario: Carlos Ramírez</span>
+                <button id="logout-btn" class="logout-btn">Cerrar Sesión</button>
             </div>
-        </div>
+        </header>
         
-        <div class="stat-card">
-            <div class="stat-icon pendientes"></div>
-            <div class="stat-info">
-                <h3>Pendientes</h3>
-                <p class="count">328</p>
-            </div>
-        </div>
-        
-        <div class="stat-card">
-            <div class="stat-icon en-proceso"></div>
-            <div class="stat-info">
-                <h3>En Proceso</h3>
-                <p class="count">452</p>
-            </div>
-        </div>
-        
-        <div class="stat-card">
-            <div class="stat-icon resueltas"></div>
-            <div class="stat-info">
-                <h3>Resueltos</h3>
-                <p class="count">468</p>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Gráficos -->
-    <div class="charts-container">
-        <div class="chart-card">
-            <h2>Reportes por Categoría</h2>
-            <div class="chart-area">
-                <div class="bar-chart">
-                    <div class="bar-item" style="height: 80%;" data-label="Sanitarios"></div>
-                    <div class="bar-item" style="height: 60%;" data-label="Aulas"></div>
-                    <div class="bar-item" style="height: 40%;" data-label="Laboratorios"></div>
-                    <div class="bar-item" style="height: 70%;" data-label="Electricidad"></div>
-                    <div class="bar-item" style="height: 30%;" data-label="Otros"></div>
+        <div class="dashboard">
+            <aside class="sidebar">
+                <nav>
+                    <ul>
+                        <li class="active"><a href="#">Nueva Denuncia</a></li>
+                        <li><a routerLink="tabla-denuncias">Mis Denuncias</a></li>
+                        <li><a href="#">Estado de Denuncias</a></li>
+                        <li><a href="#">Perfil</a></li>
+                    </ul>
+                </nav>
+            </aside>
+            
+            <main class="content">
+                <!-- Formulario de nueva denuncia -->
+                <div class="new-complaint fade-in">
+                    <h2>Registrar Nueva Denuncia</h2>
+                    <form id="complaint-form">
+                        <div class="form-group slide-in-left">
+                            <label for="tipo">Tipo de Denuncia</label>
+                            <select id="tipo" name="tipo" required>
+                                <option value="">Seleccione un tipo</option>
+                                <option value="acoso">Acoso</option>
+                                <option value="discriminacion">Discriminación</option>
+                                <option value="corrupcion">Corrupción</option>
+                                <option value="abuso">Abuso de autoridad</option>
+                                <option value="fraude">Fraude</option>
+                                <option value="violencia">Violencia</option>
+                                <option value="negligencia">Negligencia</option>
+                                <option value="negligencia">Fallo del Sistema</option>
+                                <option value="otros">Otros</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group slide-in-right">
+                            <label for="ubicacion">Ubicación del incidente</label>
+                            <input type="text" id="ubicacion" name="ubicacion" placeholder="Departamento, oficina, área, etc." required>
+                        </div>
+                        
+                        <div class="form-group slide-in-left">
+                            <label for="descripcion">Descripción de la denuncia</label>
+                            <textarea id="descripcion" name="descripcion" placeholder="Describa detalladamente la situación" required></textarea>
+                        </div>
+                        
+                        <div class="form-group slide-in-right">
+                            <label for="contacto">Información de contacto</label>
+                            <input type="text" id="contacto" name="contacto" placeholder="Nombre, matrícula y teléfono">
+                        </div>
+                        
+                        <div class="form-group slide-in-left">
+                            <label for="evidencia">Adjuntar evidencia (foto/documento)</label>
+                            <input type="file" id="evidencia" name="evidencia">
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Enviar Denuncia</button>
+                    </form>
                 </div>
-            </div>
-        </div>
-        
-        <div class="chart-card">
-            <h2>Evolución Mensual</h2>
-            <div class="chart-area">
-                <div class="line-chart">
-                    <div class="chart-grid"></div>
-                    <div class="chart-line"></div>
-                    <div class="chart-points">
-                        <div class="point" style="left: 10%; bottom: 30%"></div>
-                        <div class="point" style="left: 25%; bottom: 50%"></div>
-                        <div class="point" style="left: 40%; bottom: 40%"></div>
-                        <div class="point" style="left: 55%; bottom: 60%"></div>
-                        <div class="point" style="left: 70%; bottom: 75%"></div>
-                        <div class="point" style="left: 85%; bottom: 65%"></div>
-                    </div>
-                </div>
-            </div>
+            </main>
         </div>
     </div>
-    
-    <!-- Tabla de denuncias recientes -->
-    <div class="recent-complaints">
-        <h2>Reportes Recientes</h2>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Fecha</th>
-                        <th>Tipo</th>
-                        <th>Ubicación</th>
-                        <th>Estado</th>
-                        <th>Acción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>#2453</td>
-                        <td>08/03/2025</td>
-                        <td>Falta de agua</td>
-                        <td>Baños Edificio A</td>
-                        <td><span class="status pending">Pendiente</span></td>
-                        <td><button class="action-btn">Revisar</button></td>
-                    </tr>
-                    <tr>
-                        <td>#2452</td>
-                        <td>07/03/2025</td>
-                        <td>Aire acondicionado</td>
-                        <td>Aula 203</td>
-                        <td><span class="status in-progress">En Proceso</span></td>
-                        <td><button class="action-btn">Revisar</button></td>
-                    </tr>
-                    <tr>
-                        <td>#2451</td>
-                        <td>07/03/2025</td>
-                        <td>Equipos dañados</td>
-                        <td>Lab. Informática</td>
-                        <td><span class="status resolved">Resuelto</span></td>
-                        <td><button class="action-btn">Revisar</button></td>
-                    </tr>
-                    <tr>
-                        <td>#2450</td>
-                        <td>06/03/2025</td>
-                        <td>Iluminación</td>
-                        <td>Pasillo Edificio C</td>
-                        <td><span class="status in-progress">En Proceso</span></td>
-                        <td><button class="action-btn">Revisar</button></td>
-                    </tr>
-                    <tr>
-                        <td>#2449</td>
-                        <td>05/03/2025</td>
-                        <td>Goteras</td>
-                        <td>Biblioteca</td>
-                        <td><span class="status resolved">Resuelto</span></td>
-                        <td><button class="action-btn">Revisar</button></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    
-    <!-- Formulario de nueva denuncia -->
-    <div class="new-complaint">
-        <h2>Registrar Nuevo Reporte</h2>
-        <form>
-            <div class="form-group">
-                <label for="tipo">Tipo de Reporte</label>
-                <select id="tipo" name="tipo" required>
-                    <option value="">Seleccione un tipo</option>
-                    <option value="sanitarios">Sanitarios</option>
-                    <option value="aulas">Aulas</option>
-                    <option value="laboratorios">Laboratorios</option>
-                    <option value="electricidad">Electricidad</option>
-                    <option value="agua">Suministro de agua</option>
-                    <option value="mobiliario">Mobiliario dañado</option>
-                    <option value="equipos">Equipos informáticos</option>
-                    <option value="otros">Otros</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="ubicacion">Ubicación en campus</label>
-                <input type="text" id="ubicacion" name="ubicacion" placeholder="Edificio, aula, laboratorio, etc." required>
-            </div>
-            
-            <div class="form-group">
-                <label for="descripcion">Descripción del problema</label>
-                <textarea id="descripcion" name="descripcion" placeholder="Describa detalladamente el problema" required></textarea>
-            </div>
-            
-            <div class="form-group">
-                <label for="contacto">Información de contacto</label>
-                <input type="text" id="contacto" name="contacto" placeholder="Nombre, matrícula y teléfono">
-            </div>
-            
-            <div class="form-group">
-                <label for="evidencia">Adjuntar evidencia (foto)</label>
-                <input type="file" id="evidencia" name="evidencia">
-            </div>
-            
-            <button type="submit" class="submit-btn">Enviar Reporte</button>
-        </form>
-    </div>
-</div>
+
+    <script src="/taller-webII/src/assets/dashboard.js"></script>

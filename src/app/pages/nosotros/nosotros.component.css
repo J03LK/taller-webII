@@ -1,0 +1,521 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    overflow-x: hidden;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+    from { transform: translateX(-100px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Hero Section */
+.hero {
+    background-image: url('https://itsqmet.edu.ec/wp-content/uploads/2024/07/IMG_1587-scaled.webp');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.4) 100%);
+    animation: fadeIn 1.5s ease-out;
+}
+
+.hero-content {
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+    animation: slideInUp 1s ease-out;
+}
+
+.hero h1 {
+    font-size: 54px;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    position: relative;
+    display: inline-block;
+}
+
+.hero h1::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background-color: #FFD700;
+    animation: slideInRight 1.5s ease-out forwards;
+    animation-delay: 0.5s;
+}
+
+.breadcrumb {
+    font-size: 18px;
+    color: #FFD700;
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 1s;
+}
+
+.breadcrumb a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb a:hover {
+    color: #FFD700;
+    text-decoration: underline;
+}
+
+/* Section Styles */
+.section-label {
+    color: #333;
+    font-size: 16px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 10px;
+    position: relative;
+    padding-left: 15px;
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+}
+
+.section-label::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 8px;
+    height: 8px;
+    background-color: #FFD700;
+    transform: translateY(-50%);
+    border-radius: 50%;
+}
+
+.section-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 60px 0;
+}
+
+.section-content:not(.reversed) .text-content {
+    animation: slideInLeft 1s ease-out forwards;
+    opacity: 0;
+}
+
+.section-content:not(.reversed) .image-content {
+    animation: slideInRight 1s ease-out forwards;
+    opacity: 0;
+}
+
+.reversed .text-content {
+    animation: slideInRight 1s ease-out forwards;
+    opacity: 0;
+}
+
+.reversed .image-content {
+    animation: slideInLeft 1s ease-out forwards;
+    opacity: 0;
+}
+
+.reversed {
+    flex-direction: row-reverse;
+}
+
+.text-content {
+    flex: 1;
+    min-width: 300px;
+    padding: 20px;
+}
+
+.image-content {
+    flex: 1;
+    min-width: 300px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.image-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.image-content img:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.collaboration-image {
+    animation: pulse 4s infinite ease-in-out;
+}
+
+.compass-image {
+    animation: float 6s infinite ease-in-out;
+}
+
+h2 {
+    font-size: 42px;
+    margin-bottom: 10px;
+    color: #333;
+    position: relative;
+    display: inline-block;
+}
+
+h2::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background-color: #FFD700;
+    animation: slideInRight 1.5s ease-out forwards;
+    animation-delay: 0.5s;
+}
+
+h3 {
+    font-size: 36px;
+    margin-bottom: 15px;
+    color: #FFD700;
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 0.8s;
+}
+
+.highlight {
+    color: #FFD700;
+    position: relative;
+}
+
+.highlight::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #FFD700;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease-out;
+}
+
+.highlight:hover::after {
+    transform: scaleX(1);
+}
+
+.divider {
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(to right, #FFD700, transparent);
+    margin: 20px 0;
+    border: none;
+    position: relative;
+    opacity: 0;
+    animation: slideInLeft 1s ease-out forwards;
+    animation-delay: 0.3s;
+}
+
+.divider.centered {
+    margin: 20px auto;
+    background: linear-gradient(to right, transparent, #FFD700, transparent);
+}
+
+p {
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #555;
+    line-height: 1.8;
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 1s;
+}
+
+/* Valores Section */
+.section-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-top: 40px;
+    opacity: 0;
+    animation: slideInUp 1s ease-out forwards;
+}
+
+.valores-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+.valor-item {
+    text-align: center;
+    flex: 0 0 calc(20% - 40px);
+    min-width: 160px;
+    opacity: 0;
+    animation: slideInUp 0.8s ease-out forwards;
+}
+
+.valor-item:nth-child(1) { animation-delay: 0.1s; }
+.valor-item:nth-child(2) { animation-delay: 0.3s; }
+.valor-item:nth-child(3) { animation-delay: 0.5s; }
+.valor-item:nth-child(4) { animation-delay: 0.7s; }
+.valor-item:nth-child(5) { animation-delay: 0.9s; }
+
+.valor-icon {
+    background-color: #FFD700;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 15px rgba(255, 215, 0, 0.2);
+}
+
+.valor-icon::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(45deg);
+    transition: all 0.6s ease;
+    opacity: 0;
+}
+
+.valor-icon:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 25px rgba(255, 215, 0, 0.3);
+}
+
+.valor-icon:hover::before {
+    animation: rotate 0.8s forwards;
+    opacity: 1;
+}
+
+.valor-icon img {
+    width: 60px;
+    height: 60px;
+    transition: transform 0.3s ease;
+}
+
+.valor-icon:hover img {
+    transform: scale(1.15);
+}
+
+.valor-item h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 10px;
+    position: relative;
+    display: inline-block;
+    padding: 0 5px;
+}
+
+.valor-item h4::after {
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #FFD700;
+    transition: width 0.3s ease;
+}
+
+.valor-item:hover h4::after {
+    width: 100%;
+}
+
+/* Chat and Back to top buttons */
+.chat-button, .back-to-top {
+    position: fixed;
+    right: 25px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    z-index: 100;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 2s;
+}
+
+.chat-button {
+    bottom: 80px;
+    background-color: #FFD700;
+}
+
+.back-to-top {
+    bottom: 20px;
+    background-color: #FFD700;
+}
+
+.chat-button:hover, .back-to-top:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Scroll Animation Classes */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Animated Background for Valores Section */
+.valores-section {
+    position: relative;
+    background-color: #f9f9f9;
+    overflow: hidden;
+}
+
+.valores-section::before {
+    content: "";
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, rgba(255, 215, 0, 0) 70%);
+    top: -150px;
+    left: -150px;
+    animation: float 10s infinite ease-in-out;
+}
+
+.valores-section::after {
+    content: "";
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, rgba(255, 215, 0, 0) 70%);
+    bottom: -100px;
+    right: -100px;
+    animation: float 8s infinite ease-in-out reverse;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .section-content {
+        flex-direction: column;
+    }
+    
+    .reversed {
+        flex-direction: column;
+    }
+    
+    .hero h1 {
+        font-size: 42px;
+    }
+    
+    h2 {
+        font-size: 36px;
+    }
+    
+    h3 {
+        font-size: 30px;
+    }
+    
+    .valores-grid {
+        gap: 20px;
+    }
+    
+    .valor-item {
+        flex: 0 0 calc(50% - 20px);
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 32px;
+    }
+    
+    .valor-item {
+        flex: 0 0 100%;
+    }
+}
