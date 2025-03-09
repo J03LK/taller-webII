@@ -1,72 +1,71 @@
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 <div class="container" [ngClass]="{ 'sign-up-mode': signUpMode }">
     
-    <div class="container-fluid">
-      <div class="signin-signup">
-        <!-- Formulario de Inicio de Sesión -->
-        <form action="#" class="sign-in-form">
-          <h2 class="title">Iniciar Sesión</h2>
-          <div class="input-field">
-            <i class="fas fa-user"></i>
-            <input type="text" placeholder="Usuario" />
-          </div>
-          <div class="input-field">
-            <i class="fas fa-lock"></i>
-            <input type="password" placeholder="Contraseña" />
-          </div>
-          <input type="submit" value="Ingresar" class="btn solid" />
-       
-         
-        </form>
-  
-        <!-- Formulario de Registro -->
-        <form action="#" class="sign-up-form">
-          <h2 class="title">Registrarse</h2>
-          <div class="input-field">
-            <i class="fas fa-user"></i>
-            <input type="text" placeholder="Usuario" />
-          </div>
-          <div class="input-field">
-            <i class="fas fa-envelope"></i>
-            <input type="email" placeholder="Correo Electrónico" />
-          </div>
-          <div class="input-field">
-            <i class="fas fa-lock"></i>
-            <input type="password" placeholder="Contraseña" />
-          </div>
-          <input type="submit" class="btn" value="Registrarse" />
-         
-        push jaja
-        </form>
-      </div>
-    </div>
-  
-    <!-- Paneles para información -->
-    <div class="panels-container">
-      <div class="panel left-panel">
-        <div class="content">
-          <h3>¿Eres nuevo?</h3>
-          <p>
-            Si presenciaste una situación irregular y deseas reportarla,
-            regístrate para realizar una denuncia de manera segura y confiable.
-          </p>
-          <button class="btn transparent" (click)="toggleSignUpMode()">
-            Registrarse
-          </button>
+  <div class="container-fluid">
+    <div class="signin-signup">
+      <!-- Formulario de Inicio de Sesión -->
+      <form action="#" class="sign-in-form" (ngSubmit)="login(formulario)" #formulario="ngForm">
+        <h2 class="title">Iniciar Sesión</h2>
+        <div class="input-field">
+          <i class="fas fa-user"></i>
+          <input type="text" placeholder="Usuario" id="email" name="email" [(ngModel)]="email"/>
         </div>
-        <img src="../../../assets/imagenes/register.svg" class="image" alt="Imagen de registro" />
-      </div>
-      <div class="panel right-panel">
-        <div class="content">
-          <h3>¿Ya tienes cuenta?</h3>
-          <p>
-            Si ya tienes una cuenta, inicia sesión para continuar con tu denuncia 
-            o revisar el estado de tus reportes.
-          </p>
-          <button class="btn transparent" (click)="toggleSignUpMode()">
-            Iniciar Sesión
-          </button>
+        <div class="input-field">
+          <i class="fas fa-lock"></i>
+          <input type="password" placeholder="Contraseña" id="password" name="password" [(ngModel)]="password"/>
         </div>
-        <img src="../../../assets/imagenes/log.svg" class="image" alt="Imagen de inicio de sesión" />
-      </div>
+        <input type="submit" class="btn solid" />
+      </form>
+
+      <!-- Formulario de Registro -->
+      <form action="#" class="sign-up-form" (ngSubmit)="register(registroForm)" #registroForm="ngForm">
+        <h2 class="title">Registrarse</h2>
+        <div class="input-field">
+          <i class="fas fa-user"></i>
+          <input type="text" placeholder="Usuario" id="username" name="username" [(ngModel)]="username" required />
+        </div>
+        <div class="input-field">
+          <i class="fas fa-envelope"></i>
+          <input type="email" placeholder="Correo Electrónico" id="email" name="email" [(ngModel)]="email" required />
+        </div>
+        <div class="input-field">
+          <i class="fas fa-lock"></i>
+          <input type="password" placeholder="Contraseña" id="password" name="password" [(ngModel)]="password" required />
+        </div>
+        <input type="submit" class="btn" />
+      </form>
     </div>
   </div>
+
+  <!-- Paneles para información -->
+  <div class="panels-container">
+    <div class="panel left-panel">
+      <div class="content">
+        <h3>¿Eres nuevo?</h3>
+        <p>
+          Si presenciaste una situación irregular y deseas reportarla,
+          regístrate para realizar una denuncia de manera segura y confiable.
+        </p>
+        <button class="btn transparent" (click)="toggleSignUpMode()">
+          Registrarse
+        </button>
+      </div>
+      <img src="../../../assets/imagenes/register.svg" class="image" alt="Imagen de registro" />
+    </div>
+    <div class="panel right-panel">
+      <div class="content">
+        <h3>¿Ya tienes cuenta?</h3>
+        <p>
+          Si ya tienes una cuenta, inicia sesión para continuar con tu denuncia 
+          o revisar el estado de tus reportes.
+        </p>
+        <button class="btn transparent" (click)="toggleSignUpMode()">
+          Iniciar Sesión
+        </button>
+      </div>
+      <img src="../../../assets/imagenes/log.svg" class="image" alt="Imagen de inicio de sesión" />
+    </div>
+  </div>
+</div>
