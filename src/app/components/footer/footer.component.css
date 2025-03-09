@@ -4,6 +4,7 @@
     color: white;
     padding: 40px 20px;
     font-family: Arial, sans-serif;
+    text-align: center;
 }
 
 /* Contenido dentro del footer */
@@ -11,12 +12,14 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 /* Estilo para cada sección del footer */
 .footer-section {
     flex: 1;
-    min-width: 200px;
+    min-width: 220px;
     margin: 10px;
 }
 
@@ -41,6 +44,7 @@
     color: white;
     text-decoration: none;
     font-size: 14px;
+    transition: color 0.3s ease;
 }
 
 .footer-links a:hover {
@@ -52,6 +56,7 @@
 .info-item {
     font-size: 14px;
     margin-bottom: 8px;
+    transition: color 0.3s ease;
 }
 
 .location {
@@ -70,19 +75,22 @@
     margin-top: 20px;
     border-top: 1px solid #34495e;
     padding-top: 20px;
-    gap: 20px; /* Añadir espacio entre los elementos */
+    flex-wrap: wrap;
 }
 
+/* Logo */
 .footer-logo img {
     height: auto;
-    max-width: 100%;
-    width: auto;
+    max-width: 120px;
 }
 
+/* Derechos de autor */
 .copyright {
     font-size: 14px;
+    margin: 10px 0;
 }
 
+/* Íconos de redes sociales */
 .social-icons {
     display: flex;
     gap: 15px;
@@ -100,6 +108,23 @@
     transform: scale(1.1);
 }
 
+/* Ajustes para pantallas medianas */
+@media (max-width: 1024px) {
+    .footer-content {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .footer-section {
+        max-width: 300px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
 /* Ajustes para pantallas pequeñas */
 @media (max-width: 768px) {
     .footer-content {
@@ -114,6 +139,7 @@
     .footer-bottom {
         flex-direction: column;
         align-items: center;
+        text-align: center;
     }
 
     .footer-section h3 {
@@ -130,5 +156,32 @@
 
     .social-icons {
         gap: 10px;
+    }
+}
+
+/* Ajustes para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .footer-container {
+        padding: 30px 10px;
+    }
+
+    .footer-section {
+        min-width: 100%;
+    }
+
+    .footer-section h3 {
+        font-size: 14px;
+    }
+
+    .footer-links a, .info-item, .copyright {
+        font-size: 11px;
+    }
+
+    .social-icons {
+        gap: 8px;
+    }
+
+    .social-icon {
+        font-size: 18px;
     }
 }

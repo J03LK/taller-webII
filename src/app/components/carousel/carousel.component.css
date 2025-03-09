@@ -1,8 +1,7 @@
-/* carousel.component.css */
 /* Import Google Fonts - Roboto */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
-/* Apply font to all elements */
+/* Estilos generales */
 .academic-carousel-container {
   width: 100%;
   margin: 0 auto;
@@ -11,6 +10,7 @@
   font-family: 'Roboto', Arial, sans-serif;
 }
 
+/* Sección del encabezado */
 .header-section {
   display: flex;
   flex-wrap: wrap;
@@ -62,18 +62,19 @@
   color: #555;
 }
 
+/* Carrusel */
 #carreras {
   width: 100%;
-  max-width: 1400px; /* Limita el contenedor sin cambiar el tamaño de las tarjetas */
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 20px;
-  overflow: hidden; /* Evita que se desborde el contenedor */
+  overflow: hidden;
 }
 
 #carreras .swiper-wrapper {
-  display: flex; /* Flexbox para alinear las tarjetas de manera horizontal */
-  flex-wrap: nowrap; /* Evitar que las tarjetas se apilen en líneas nuevas */
-  align-items: stretch; /* Asegura que todos los elementos dentro de la fila tengan la misma altura */
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
 }
 
 #carreras .swiper-container {
@@ -83,22 +84,21 @@
 }
 
 #carreras .swiper-slide {
-  text-align: center;
-  font-size: 18px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   height: auto;
 }
 
+/* Tarjetas */
 .career-card {
-  width: 360px; /* Asegura que las tarjetas mantengan un tamaño fijo */
-  height: auto; /* Mantiene la altura proporcional */
+  width: 360px;
+  height: auto;
   display: flex;
-  flex-direction: column; /* Asegura que los elementos dentro de la tarjeta se alineen en columna */
-  justify-content: space-between; /* Distribuye el espacio entre los elementos */
-  margin: 0 10px; /* Espaciado entre las tarjetas */
-  box-sizing: border-box; /* Asegura que el padding no afecte el tamaño */
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0 10px;
+  box-sizing: border-box;
 }
 
 .career-card img {
@@ -106,13 +106,11 @@
   margin-bottom: 20px;
   display: block;
   width: 100%;
-  height: 250px; /* Altura fija para la imagen */
+  height: 250px;
   object-fit: cover;
 }
 
 .career-card h3 {
-  margin: 0;
-  padding: 0;
   font-size: 1.2rem;
   font-weight: 600;
   color: #2b333c;
@@ -124,68 +122,20 @@
 .career-card .conoce {
   background: #f7bb17;
   border-radius: 50px;
-  color: #ffffff;
-  display: inline-block;
+  color: white;
   font-weight: 600;
   padding: 15px 30px;
   text-decoration: none;
   transition: background-color 0.3s ease;
-  align-self: center; /* Centra el botón en la tarjeta */
-  margin-top: 20px; /* Empuja el botón hacia la parte inferior, pero sin colapsar la tarjeta */
+  align-self: center;
+  margin-top: 20px;
 }
 
 .career-card .conoce:hover {
   background: #2b333c;
-  color: #ffffff;
 }
 
-#carreras .swiper-pagination {
-  bottom: 0;
-}
-
-#carreras .swiper-pagination-bullet {
-  width: 12px;
-  height: 12px;
-  background: #ccc;
-  opacity: 1;
-}
-
-#carreras .swiper-pagination-bullet-active {
-  background: #f7bb17;
-}
-
-#carreras .swiper-button-next,
-#carreras .swiper-button-prev {
-  color: #f7bb17;
-}
-
-#carreras .swiper-button-next:hover,
-#carreras .swiper-button-prev:hover {
-  color: #2b333c;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .academic-carousel-container .header-section {
-    flex-direction: column;
-  }
-  
-  .academic-carousel-container .header-section .header-content,
-  .academic-carousel-container .header-section .header-description {
-    width: 100%;
-  }
-
-  #carreras .swiper-wrapper {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .career-card {
-    width: 90%; /* Las tarjetas ocupan el 90% del ancho disponible en pantallas pequeñas */
-    margin-bottom: 20px;
-  }
-}
-
+/* Paginación */
 #carreras .swiper-pagination {
   bottom: 0;
   display: flex;
@@ -207,4 +157,48 @@
 #carreras .swiper-pagination-bullet-active {
   background: #000 !important;
   transform: scale(1.1);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .career-card {
+    width: 320px;
+  }
+
+  .header-section {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .career-card {
+    width: 90%;
+    margin-bottom: 20px;
+  }
+
+  .header-section {
+    padding: 0 10px;
+  }
+
+  .main-title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-title {
+    font-size: 1.8rem;
+  }
+
+  .career-card {
+    width: 100%;
+    padding: 0 10px;
+  }
+
+  .conoce {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
 }
