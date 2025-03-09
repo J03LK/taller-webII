@@ -27,6 +27,10 @@
       <li><a routerLink="/denuncias">Denuncias</a></li>
       <li><a routerLink="alo">Campus Virtual</a></li>
     </ul>
+    <div class="auth-buttons">
+      <a routerLink="login" class="btn btn-login">Login</a>
+      <a routerLink="login" class="btn btn-register">Registro</a>
+    </div>
     <div class="contact">
       <a href="tel:+593999885332">
         <i class="fab fa-whatsapp"></i>
@@ -38,3 +42,65 @@
     </div>
   </div>
 </nav>
+
+<!-- CSS para los botones -->
+<style>
+
+  .auth-buttons {
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  .btn-login {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  .btn-login:hover {
+    background-color: #45a049;
+  }
+
+  .btn-register {
+    background-color: #007BFF;
+    color: white;
+  }
+
+  .btn-register:hover {
+    background-color: #0056b3;
+  }
+
+  .contact {
+    display: flex;
+    align-items: center;
+  }
+
+  .contact a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+  }
+
+  .contact i {
+    font-size: 20px;
+    margin-right: 10px;
+  }
+
+  .social-icons i {
+    font-size: 20px;
+    margin: 0 10px;
+    cursor: pointer;
+  }
+
+  .social-icons i:hover {
+    color: #007BFF;
+  }
+</style>
