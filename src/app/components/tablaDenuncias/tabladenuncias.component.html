@@ -1,0 +1,31 @@
+<table class="min-w-full table-auto border-collapse">
+    <thead>
+      <tr class="bg-gray-100">
+        <th class="px-4 py-2 border text-left">ID</th>
+        <th class="px-4 py-2 border text-left">Tipo</th>
+        <th class="px-4 py-2 border text-left">Ubicación</th>
+        <th class="px-4 py-2 border text-left">Descripción</th>
+        <th class="px-4 py-2 border text-left">Contacto</th>
+        <th class="px-4 py-2 border text-left">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (denuncia of denuncias; track $index) {
+        <tr>
+          <td class="px-4 py-2 border">{{ denuncia.id }}</td>
+          <td class="px-4 py-2 border">{{ denuncia.tipo }}</td>
+          <td class="px-4 py-2 border">{{ denuncia.ubicacion }}</td>
+          <td class="px-4 py-2 border">{{ denuncia.descripcion }}</td>
+          <td class="px-4 py-2 border">{{ denuncia.contacto }}</td>
+          <td class="px-4 py-2 border text-center actions-cell">
+            <div class="actions-container">
+              
+              <button (click)="eliminar(denuncia.id)" class="action-btn delete-btn">
+                Eliminar
+              </button>
+            </div>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>

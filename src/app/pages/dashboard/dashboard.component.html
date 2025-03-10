@@ -1,70 +1,356 @@
-    <div class="container">
-        <header class="panel-header">
-            <h1>Sistema de Denuncias Institucional</h1>
-            <div class="user-info">
-                <span id="username">Usuario: Carlos Ramírez</span>
-                <button id="logout-btn" class="logout-btn">Cerrar Sesión</button>
-            </div>
-        </header>
-        
-        <div class="dashboard">
-            <aside class="sidebar">
-                <nav>
-                    <ul>
-                        <li class="active"><a href="#">Nueva Denuncia</a></li>
-                        <li><a routerLink="tabla-denuncias">Mis Denuncias</a></li>
-                        <li><a href="#">Estado de Denuncias</a></li>
-                        <li><a href="#">Perfil</a></li>
-                    </ul>
-                </nav>
-            </aside>
-            
-            <main class="content">
-                <!-- Formulario de nueva denuncia -->
-                <div class="new-complaint fade-in">
-                    <h2>Registrar Nueva Denuncia</h2>
-                    <form id="complaint-form">
-                        <div class="form-group slide-in-left">
-                            <label for="tipo">Tipo de Denuncia</label>
-                            <select id="tipo" name="tipo" required>
-                                <option value="">Seleccione un tipo</option>
-                                <option value="acoso">Acoso</option>
-                                <option value="discriminacion">Discriminación</option>
-                                <option value="corrupcion">Corrupción</option>
-                                <option value="abuso">Abuso de autoridad</option>
-                                <option value="fraude">Fraude</option>
-                                <option value="violencia">Violencia</option>
-                                <option value="negligencia">Negligencia</option>
-                                <option value="negligencia">Fallo del Sistema</option>
-                                <option value="otros">Otros</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group slide-in-right">
-                            <label for="ubicacion">Ubicación del incidente</label>
-                            <input type="text" id="ubicacion" name="ubicacion" placeholder="Departamento, oficina, área, etc." required>
-                        </div>
-                        
-                        <div class="form-group slide-in-left">
-                            <label for="descripcion">Descripción de la denuncia</label>
-                            <textarea id="descripcion" name="descripcion" placeholder="Describa detalladamente la situación" required></textarea>
-                        </div>
-                        
-                        <div class="form-group slide-in-right">
-                            <label for="contacto">Información de contacto</label>
-                            <input type="text" id="contacto" name="contacto" placeholder="Nombre, matrícula y teléfono">
-                        </div>
-                        
-                        <div class="form-group slide-in-left">
-                            <label for="evidencia">Adjuntar evidencia (foto/documento)</label>
-                            <input type="file" id="evidencia" name="evidencia">
-                        </div>
-                        
-                        <button type="submit" class="submit-btn">Enviar Denuncia</button>
-                    </form>
-                </div>
-            </main>
+<div class="container">
+    <header class="panel-header">
+        <h1>Sistema de Denuncias Institucional</h1>
+        <div class="user-info">
+            <span id="username">Usuario: Carlos Ramírez</span>
+            <button id="logout-btn" (click)="logout()" class="logout-btn">Cerrar Sesión</button>
         </div>
-    </div>
+    </header>
+    
+    <div class="dashboard">
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li [class.active]="activeTab === 'new-complaint'" (click)="changeTab('new-complaint')">
+                        <a href="javascript:void(0)">Nueva Denuncia</a>
+                    </li>
+                    <li [class.active]="activeTab === 'mis-denuncias'" (click)="changeTab('mis-denuncias')">
+                        <a href="javascript:void(0)">Mis Denuncias</a>
+                    </li>
+                    <li [class.active]="activeTab === 'estado-denuncias'" (click)="changeTab('estado-denuncias')">
+                        <a href="javascript:void(0)">Estado de Denuncias</a>
+                    </li>
+                    <li [class.active]="activeTab === 'perfil'" (click)="changeTab('perfil')">
+                        <a href="javascript:void(0)">Perfil</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <main class="content">
+            <!-- Nueva denuncia -->
+            <div *ngIf="activeTab === 'new-complaint'" class="tab-content">
+                <h2>Registrar Nueva Denuncia</h2>
+                <form #denunciaForm="ngForm" (ngSubmit)="guardarDenuncia(denunciaForm)">
+                    <div class="form-group slide-in-left">
+                        <label for="tipo">Tipo de Denuncia</label>
+                        <select id="tipo" name="tipo" [(ngModel)]="tipo" required>
+                            <option value="">Seleccione un tipo</option>
+                            <option value="acoso">Acoso</option>
+                            <option value="discriminacion">Discriminación</option>
+                            <option value="corrupcion">Corrupción</option>
+                            <option value="abuso">Abuso de autoridad</option>
+                            <option value="fraude">Fraude</option>
+                            <option value="violencia">Violencia</option>
+                            <option value="negligencia">Negligencia</option>
+                            <option value="fallo-sistema">Fallo del Sistema</option>
+                            <option value="otros">Otros</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group slide-in-right">
+                        <label for="ubicacion">Ubicación del incidente</label>
+                        <input type="text" id="ubicacion" name="ubicacion" [(ngModel)]="ubicacion" placeholder="Departamento, oficina, área, etc." required>
+                    </div>
+                    
+                    <div class="form-group slide-in-left">
+                        <label for="descripcion">Descripción de la denuncia</label>
+                        <textarea id="descripcion" name="descripcion" [(ngModel)]="descripcion" placeholder="Describa detalladamente la situación" required></textarea>
+                    </div>
+                    
+                    <div class="form-group slide-in-right">
+                        <label for="contacto">Información de contacto</label>
+                        <input type="text" id="contacto" name="contacto" [(ngModel)]="contacto" placeholder="Nombre, matrícula y teléfono">
+                    </div>
+                    
+                    <div class="form-group slide-in-left">
+                        <label for="evidencia">Adjuntar evidencia (foto/documento)</label>
+                        <input type="file" id="evidencia" name="evidencia" >
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Enviar Denuncia</button>
+                </form>
+            </div>
 
-    <script src="/taller-webII/src/assets/dashboard.js"></script>
+            <!-- Mis Denuncias -->
+            <div *ngIf="activeTab === 'mis-denuncias'" class="tab-content">
+                <h2>Mis Denuncias</h2>
+                
+                <div class="filter-controls">
+                    <div class="search-filter">
+                        <input type="text" placeholder="Buscar denuncia...">
+                    </div>
+                    <div class="status-filter">
+                        <select>
+                            <option value="">Todos los estados</option>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="en-proceso">En Proceso</option>
+                            <option value="resuelta">Resuelta</option>
+                            <option value="rechazada">Rechazada</option>
+                        </select>
+                    </div>
+                </div>
+                
+               <div class="table-container">
+                <app-tabladenuncias></app-tabladenuncias>
+   
+</div>
+                <div class="pagination-controls">
+                    <button disabled>
+                        <i class="fas fa-chevron-left"></i> Anterior
+                    </button>
+                    <span class="page-info">Página 1 de 1</span>
+                    <button disabled>
+                        Siguiente <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Estado de Denuncias -->
+            <div *ngIf="activeTab === 'estado-denuncias'" class="tab-content">
+                <h2>Estado de Denuncias</h2>
+                
+                <div class="dashboard-summary">
+                    <div class="stats-container">
+                        <div class="stat-card total">
+                            <div class="stat-icon">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-value">15</div>
+                                <div class="stat-label">Total Denuncias</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card pending">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-value">5</div>
+                                <div class="stat-label">Pendientes</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card in-progress">
+                            <div class="stat-icon">
+                                <i class="fas fa-spinner"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-value">3</div>
+                                <div class="stat-label">En Proceso</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card resolved">
+                            <div class="stat-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-value">7</div>
+                                <div class="stat-label">Resueltas</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="charts-container">
+                    <div class="chart-card">
+                      <h3>Distribución por Estado</h3>
+                      <div class="chart-area">
+                        <canvas #estadoChart></canvas>
+                      </div>
+                    </div>
+                    
+                    <div class="chart-card">
+                      <h3>Denuncias por Tipo</h3>
+                      <div class="chart-area">
+                        <canvas #tipoChart></canvas>
+                      </div>
+                    </div>
+                  </div>
+                
+                <div class="updates-container">
+                    <h3>Últimas Actualizaciones</h3>
+                    
+                    <div class="time-filter">
+                        <label for="periodo">Mostrar período:</label>
+                        <select id="periodo">
+                            <option value="7">Últimos 7 días</option>
+                            <option value="30" selected>Últimos 30 días</option>
+                            <option value="90">Últimos 3 meses</option>
+                            <option value="180">Últimos 6 meses</option>
+                        </select>
+                    </div>
+                    
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-point actualización"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <span class="timeline-title">Denuncia #003</span>
+                                    <span class="timeline-date">11/04/2023</span>
+                                </div>
+                                <div class="timeline-body">
+                                    Se ha iniciado la investigación del caso
+                                </div>
+                                <div class="timeline-footer">
+                                    <span class="timeline-status en-proceso">
+                                        En Proceso
+                                    </span>
+                                    <button class="view-btn">
+                                        Ver detalles
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-point resolución"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <span class="timeline-title">Denuncia #001</span>
+                                    <span class="timeline-date">20/03/2023</span>
+                                </div>
+                                <div class="timeline-body">
+                                    Caso resuelto con medidas disciplinarias
+                                </div>
+                                <div class="timeline-footer">
+                                    <span class="timeline-status resuelta">
+                                        Resuelta
+                                    </span>
+                                    <button class="view-btn">
+                                        Ver detalles
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="resolution-times">
+                    <h3>Tiempo Promedio de Resolución por Tipo</h3>
+                    
+                    <div class="table-container">
+                        <table class="resolution-table">
+                            <thead>
+                                <tr>
+                                    <th>Tipo de Denuncia</th>
+                                    <th>Tiempo Promedio (días)</th>
+                                    <th>Cantidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Acoso</td>
+                                    <td>5.2</td>
+                                    <td>3</td>
+                                </tr>
+                                <tr>
+                                    <td>Discriminación</td>
+                                    <td>7.5</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td>Fallo del Sistema</td>
+                                    <td>2.1</td>
+                                    <td>5</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Perfil -->
+            <div *ngIf="activeTab === 'perfil'" class="tab-content">
+                <h2>Mi Perfil</h2>
+                
+                <div class="profile-container">
+                    <div class="profile-header">
+                        <div class="profile-image">
+                            <img src="assets/images/default-profile.png" alt="Foto de perfil">
+                            <button class="change-photo-btn">
+                                <i class="fas fa-camera"></i> Cambiar
+                            </button>
+                        </div>
+                        
+                        <div class="profile-summary">
+                            <h3>Carlos Ramírez</h3>
+                            <p class="user-id">ID: CR12345</p>
+                            <p class="user-department">Sistemas</p>
+                            <p class="user-position">Desarrollador</p>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-tabs">
+                        <div class="tab-buttons">
+                            <button class="active">
+                                Información
+                            </button>
+                            <button>
+                                Seguridad
+                            </button>
+                            <button>
+                                Notificaciones
+                            </button>
+                        </div>
+                        
+                        <!-- Solo se muestra la primera pestaña, las otras están implementadas pero ocultas por simplicidad -->
+                        <div class="tab-content">
+                            <!-- Información personal -->
+                            <div class="profile-form">
+                                <form>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="nombre">Nombre completo</label>
+                                            <input type="text" id="nombre" value="Carlos Ramírez">
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="matricula">Matrícula / ID</label>
+                                            <input type="text" id="matricula" value="CR12345" readonly>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="email">Correo electrónico</label>
+                                            <input type="email" id="email" value="carlos.ramirez@ejemplo.com">
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="telefono">Teléfono</label>
+                                            <input type="tel" id="telefono" value="555-123-4567">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="departamento">Departamento</label>
+                                            <input type="text" id="departamento" value="Sistemas">
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="cargo">Cargo</label>
+                                            <input type="text" id="cargo" value="Desarrollador">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn-primary">
+                                            Guardar cambios
+                                        </button>
+                                        <button type="button" class="btn-secondary">
+                                            Cancelar
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>

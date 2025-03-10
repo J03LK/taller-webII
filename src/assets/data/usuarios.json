@@ -1,15 +1,22 @@
 {
   "users": [
     {
-      "email": "dany-joelito345@hotmail.com",
-      "password": "$2a$10$ev2H4z2nX0sAlk9yh81tieIcxt8tr.lnw1X.Wra846yAw0a9IU42O",
+      "email": "dany-joelito345@outlook.com",
+      "password": "$2a$10$jpDEI5mgkMk1/SI7oUimqunGVT1WUSSdfbHtFq7aA7MkeD6zt6Av2",
+      "username": "dany",
       "id": 1
     },
     {
-      "email": "arxavin900@gmail.com",
-      "password": "$2a$10$3yagG0eSgCAojwf4w8roEeEMmDAZ59VaZV9xpNpVYYN1TR6/xs0o6",
+      "email": "veronica@docentes.com",
+      "password": "$2a$10$ewR95x.T.XZYIUGMFTlv/es8Bm77o/aAwinFo3BAAGKDFwJ6E6jEq",
       "username": "dafexd",
       "id": 2
+    },
+    {
+      "email": "veronica@admin.com",
+      "password": "$2a$10$PnLz5mXk1gEr/fd9PguVeOKspluF0E28CGPKXxoqymdZdGpQJAwIe",
+      "username": "dann",
+      "id": 3
     }
   ]
 }

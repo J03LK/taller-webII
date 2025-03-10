@@ -36,10 +36,10 @@ export class LoginComponent {
         if (token) {
           localStorage.setItem("login", "true");
 
-          if (email.includes('@docentes.com')) {
+          if (email.includes('@admin.com')) {
             localStorage.setItem("acceso", "docentes");
             console.log("Usuario docente, redirigiendo...");
-            this.route.navigate(['docentes']);
+            this.route.navigate(['admin']);
           } else {
             localStorage.setItem("acceso", "estudiantes");
             console.log("Usuario estudiante, redirigiendo...");

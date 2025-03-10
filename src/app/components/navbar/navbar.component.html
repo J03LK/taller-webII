@@ -21,17 +21,12 @@
     </div>
     <ul class="nav-links">
       <li><a routerLink="nosotros">Nosotros</a></li>
-      <li><a href="#">Alumnos</a></li>
-      <li><a href="#">Docentes</a></li>
-<<<<<<< HEAD
       <li><a routerLink="infraestructura">Infraestructura</a></li>
-      <li><a routerLink="denuncias">Denuncias</a></li>
-=======
-      <li><a href="#">Infraestructura</a></li>
->>>>>>> f8f28bd33026cc9cdf868ca3385751ec0f6a6dc9
       <li><a routerLink="alo">Campus Virtual</a></li>
     </ul>
-    <div class="auth-buttons">
+    
+    <!-- ÚNICAMENTE ocultar botones de login/registro si está autenticado -->
+    <div class="auth-buttons" *ngIf="!isLoggedIn()">
       <a routerLink="login" class="btn-auth btn-login">
         <i class="fas fa-user"></i>
         <span>Iniciar Sesión</span>
@@ -41,6 +36,7 @@
         <span>Registrarse</span>
       </a>
     </div>
+    
     <div class="contact">
       <a href="tel:+593999885332">
         <i class="fab fa-whatsapp"></i>
@@ -52,6 +48,3 @@
     </div>
   </div>
 </nav>
-
-
-

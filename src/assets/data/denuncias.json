@@ -1,0 +1,18 @@
+{
+  "denuncias": [
+    {
+      "tipo": "acoso",
+      "ubicacion": "jnjjnasdjkda",
+      "descripcion": "hdsanjsda",
+      "contacto": "hsdanjdasjn",
+      "id": 3
+    },
+    {
+      "tipo": "corrupcion",
+      "ubicacion": "sads",
+      "descripcion": "nose",
+      "contacto": "sadjkdas",
+      "id": 4
+    }
+  ]
+}

@@ -1,187 +1,248 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Chart, registerables } from 'chart.js';
+import { DenunciasService } from '../../service/denuncias.service';
+import { Router } from '@angular/router'; // Corregido: importar desde @angular/router
+import { RouterLink } from '@angular/router';
+import { TabladenunciasComponent } from "../../components/tablaDenuncias/tabladenuncias.component";
 
+// Registrar todos los componentes necesarios de Chart.js
 Chart.register(...registerables);
-
-interface Suggestion {
-  id: number;
-  title: string;
-  description: string;
-  author: string;
-  department: string;
-  date: Date;
-  status: string;
-  priority: string;
-}
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink, TabladenunciasComponent], // Añadido RouterLink a los imports
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css',
-  
+  styleUrls: ['./dashboard.component.css'],
 })
-export class DashboardComponent implements OnInit {
-  // Estadísticas
-  totalSuggestions: number = 124;
-  percentageIncrease: number = 12.5;
-  implementedSuggestions: number = 48;
-  implementationRate: number = 38.7;
-  inReviewSuggestions: number = 35;
-  averageReviewTime: number = 4.2;
-  rejectedSuggestions: number = 41;
-  rejectionRate: number = 33.1;
+export class DashboardComponent implements OnInit, AfterViewInit {
+  // Variables para los campos del formulario
+  tipo: any;
+  ubicacion: any;
+  descripcion: any;
+  contacto: any;
+  denuncias: any[] = [];
+  evidencia: any;
+  
+  activeTab: string = 'new-complaint'; // Pestaña predeterminada
+  
+  @ViewChild('estadoChart') estadoChartRef!: ElementRef;
+  @ViewChild('tipoChart') tipoChartRef!: ElementRef;
 
-  // Filtro
-  filterStatus: string = '';
+  private estadoChart!: Chart;
+  private tipoChart!: Chart;
+  
+  // Datos de muestra para los gráficos
+  estadisticas = {
+    total: 15,
+    pendientes: 5,
+    enProceso: 3,
+    resueltas: 7
+  };
 
-  // Datos de sugerencias
-  recentSuggestions: Suggestion[] = [
-    {
-      id: 1,
-      title: 'Mejorar el sistema de gestión de archivos',
-      description: 'Actualmente el sistema de archivos es muy lento y no permite una categorización eficiente. Sugiero implementar etiquetas y una búsqueda mejorada.',
-      author: 'Juan Pérez',
-      department: 'IT',
-      date: new Date('2023-06-10'),
-      status: 'Pendiente',
-      priority: 'high'
-    },
-    {
-      id: 2,
-      title: 'Actualizar equipos de la sala de reuniones',
-      description: 'Los proyectores y sistemas de audio en la sala de reuniones principal necesitan ser actualizados, ya que fallan constantemente durante presentaciones importantes.',
-      author: 'María Gómez',
-      department: 'Administración',
-      date: new Date('2023-06-08'),
-      status: 'En revisión',
-      priority: 'medium'
-    },
-    {
-      id: 3,
-      title: 'Programa de bienestar para empleados',
-      description: 'Sugiero implementar un programa de bienestar que incluya membresías de gimnasio y sesiones de manejo del estrés para mejorar la salud mental y física.',
-      author: 'Carlos Rodríguez',
-      department: 'RRHH',
-      date: new Date('2023-06-05'),
-      status: 'Implementada',
-      priority: 'low'
-    },
-    {
-      id: 4,
-      title: 'Optimizar proceso de facturación',
-      description: 'El proceso actual de facturación tiene muchos pasos manuales que podrían ser automatizados para reducir errores y mejorar la eficiencia.',
-      author: 'Ana Martínez',
-      department: 'Finanzas',
-      date: new Date('2023-06-01'),
-      status: 'Rechazada',
-      priority: 'high'
-    }
-  ];
-
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(private servicio: DenunciasService, private router: Router) {}
+  
+  logout() { 
+    localStorage.setItem("login", "false");
+    this.router.navigate(['login']);
+  }
 
   ngOnInit(): void {
-    // Inicializar gráficos solo si estamos en el navegador
-    if (isPlatformBrowser(this.platformId)) {
+    // Cargar denuncias al inicializar
+    this.servicio.getDenuncias().subscribe(
+      (data) => {
+        this.denuncias = data;
+      },
+      (error) => {
+        console.error('Error al cargar denuncias:', error);
+      }
+    );
+  }
+
+  ngAfterViewInit(): void {
+    if (this.activeTab === 'estado-denuncias') {
       setTimeout(() => {
-        this.initDepartmentChart();
-        this.initStatusChart();
+        this.inicializarGraficos();
       }, 100);
     }
   }
 
-  getPriorityClass(priority: string): string {
-    return priority;
+  // Método para guardar denuncia
+  guardarDenuncia(formulario: any) {
+    this.servicio.postDenuncia(formulario.value).subscribe(() => {
+      window.location.reload();
+    });
   }
-
-  getStatusClass(status: string): string {
-    switch (status) {
-      case 'Pendiente': return 'bg-secondary';
-      case 'En revisión': return 'bg-warning text-dark';
-      case 'Implementada': return 'bg-success';
-      case 'Rechazada': return 'bg-danger';
-      default: return 'bg-secondary';
+  
+  // Método para eliminar denuncia
+  eliminar(id: any) {
+    if (confirm('¿Estás seguro de eliminar esta denuncia?')) {
+      this.servicio.deleteDenuncia(id).subscribe(() => {
+        window.location.reload();
+      });
     }
   }
 
-  filterSuggestions(suggestion: Suggestion): boolean {
-    if (!this.filterStatus) return true;
-
-    switch (this.filterStatus) {
-      case 'pending': return suggestion.status === 'Pendiente';
-      case 'in-review': return suggestion.status === 'En revisión';
-      case 'implemented': return suggestion.status === 'Implementada';
-      case 'rejected': return suggestion.status === 'Rechazada';
-      default: return true;
+  // Método para manejar el cambio de archivo
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.evidencia = file;
+      // Si necesitas convertir el archivo a base64 o procesarlo de alguna manera
+      // puedes hacerlo aquí
     }
   }
 
-  private initDepartmentChart(): void {
-    // Verificar que estamos en el navegador
-    if (!isPlatformBrowser(this.platformId)) return;
-
-    const deptCtx = document.getElementById('departmentChart') as HTMLCanvasElement;
-    if (!deptCtx) return;
-
-    const deptChart = new Chart(deptCtx.getContext('2d')!, {
-      type: 'bar',
+  changeTab(tab: string) {
+    console.log("Cambiando pestaña a:", tab);
+    this.activeTab = tab;
+    
+    // Si cambiamos a la pestaña de estado, inicializamos los gráficos
+    if (tab === 'estado-denuncias') {
+      setTimeout(() => {
+        this.inicializarGraficos();
+      }, 100);
+    }
+  }
+  
+  // Método para inicializar los gráficos
+  inicializarGraficos(): void {
+    console.log('Inicializando gráficos...');
+    console.log('Referencias:', this.estadoChartRef, this.tipoChartRef);
+    
+    // Asegurarnos de que los elementos existen
+    if (this.estadoChartRef && this.tipoChartRef) {
+      this.crearGraficoEstados();
+      this.crearGraficoTipos();
+    } else {
+      console.error('No se encontraron las referencias a los canvas de los gráficos');
+    }
+  }
+  
+  // Crear gráfico de distribución por estado
+  crearGraficoEstados(): void {
+    const ctx = this.estadoChartRef.nativeElement.getContext('2d');
+    
+    // Destruir el gráfico existente si hay uno
+    if (this.estadoChart) {
+      this.estadoChart.destroy();
+    }
+    
+    this.estadoChart = new Chart(ctx, {
+      type: 'doughnut',
       data: {
-        labels: ['IT', 'RRHH', 'Ventas', 'Marketing', 'Finanzas', 'Producción', 'Administración'],
+        labels: ['Pendientes', 'En Proceso', 'Resueltas'],
         datasets: [{
-          label: 'Número de sugerencias',
-          data: [42, 28, 15, 19, 12, 8, 18],
-          backgroundColor: 'rgba(54, 162, 235, 0.6)',
-          borderColor: 'rgba(54, 162, 235, 1)',
+          data: [
+            this.estadisticas.pendientes,
+            this.estadisticas.enProceso,
+            this.estadisticas.resueltas
+          ],
+          backgroundColor: [
+            '#fff8e1',  // Amarillo claro para pendientes
+            '#e1f5fe',  // Azul claro para en proceso
+            '#e8f5e9'   // Verde claro para resueltas
+          ],
+          borderColor: [
+            '#ff8f00',  // Naranja para pendientes
+            '#0288d1',  // Azul para en proceso
+            '#2e7d32'   // Verde para resueltas
+          ],
           borderWidth: 1
         }]
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true
+        plugins: {
+          legend: {
+            position: 'bottom'
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const label = context.label || '';
+                // Asegurarse de que value sea un número
+                const value = typeof context.raw === 'number' ? context.raw : 0;
+                
+                // Calcular el total usando valores numéricos
+                const dataValues = context.chart.data.datasets[0].data;
+                let total = 0;
+                for (let i = 0; i < dataValues.length; i++) {
+                  total += Number(dataValues[i] || 0);
+                }
+                
+                // Calcular el porcentaje con valores numéricos explícitos
+                const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                
+                return `${label}: ${value} (${percentage}%)`;
+              }
+            }
           }
         }
       }
     });
   }
-
-  private initStatusChart(): void {
-    // Verificar que estamos en el navegador
-    if (!isPlatformBrowser(this.platformId)) return;
-
-    const statusCtx = document.getElementById('statusChart') as HTMLCanvasElement;
-    if (!statusCtx) return;
-
-    const statusChart = new Chart(statusCtx.getContext('2d')!, {
-      type: 'doughnut',
+  
+  // Crear gráfico de denuncias por tipo
+  crearGraficoTipos(): void {
+    const ctx = this.tipoChartRef.nativeElement.getContext('2d');
+    
+    // Destruir el gráfico existente si hay uno
+    if (this.tipoChart) {
+      this.tipoChart.destroy();
+    }
+    
+    // Datos de ejemplo para tipos de denuncias
+    const datos = {
+      labels: ['Acoso', 'Discriminación', 'Corrupción', 'Abuso', 'Fraude', 'Violencia', 'Fallo del Sistema'],
+      valores: [3, 2, 1, 4, 2, 1, 2]
+    };
+    
+    this.tipoChart = new Chart(ctx, {
+      type: 'bar',
       data: {
-        labels: ['Pendientes', 'En revisión', 'Implementadas', 'Rechazadas'],
+        labels: datos.labels,
         datasets: [{
-          data: [24, 35, 48, 41],
+          label: 'Cantidad de denuncias',
+          data: datos.valores,
           backgroundColor: [
-            'rgba(108, 117, 125, 0.8)',
-            'rgba(255, 193, 7, 0.8)',
-            'rgba(40, 167, 69, 0.8)',
-            'rgba(220, 53, 69, 0.8)'
+            'rgba(25, 118, 210, 0.7)',  // Azul principal
+            'rgba(76, 175, 80, 0.7)',   // Verde
+            'rgba(255, 152, 0, 0.7)',   // Naranja
+            'rgba(156, 39, 176, 0.7)',  // Morado
+            'rgba(244, 67, 54, 0.7)',   // Rojo
+            'rgba(0, 150, 136, 0.7)',   // Verde azulado
+            'rgba(121, 85, 72, 0.7)'    // Marrón
           ],
           borderColor: [
-            'rgba(108, 117, 125, 1)',
-            'rgba(255, 193, 7, 1)',
-            'rgba(40, 167, 69, 1)',
-            'rgba(220, 53, 69, 1)'
+            'rgba(25, 118, 210, 1)',
+            'rgba(76, 175, 80, 1)',
+            'rgba(255, 152, 0, 1)',
+            'rgba(156, 39, 176, 1)',
+            'rgba(244, 67, 54, 1)',
+            'rgba(0, 150, 136, 1)',
+            'rgba(121, 85, 72, 1)'
           ],
           borderWidth: 1
         }]
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              precision: 0
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
       }
     });
   }
