@@ -6,7 +6,7 @@
             <button id="logout-btn" (click)="logout()" class="logout-btn">Cerrar Sesión</button>
         </div>
     </header>
-    
+
     <div class="dashboard">
         <aside class="sidebar">
             <nav>
@@ -26,7 +26,7 @@
                 </ul>
             </nav>
         </aside>
-        
+
         <main class="content">
             <!-- Nueva denuncia -->
             <div *ngIf="activeTab === 'new-complaint'" class="tab-content">
@@ -47,27 +47,30 @@
                             <option value="otros">Otros</option>
                         </select>
                     </div>
-                    
+
                     <div class="form-group slide-in-right">
                         <label for="ubicacion">Ubicación del incidente</label>
-                        <input type="text" id="ubicacion" name="ubicacion" [(ngModel)]="ubicacion" placeholder="Departamento, oficina, área, etc." required>
+                        <input type="text" id="ubicacion" name="ubicacion" [(ngModel)]="ubicacion"
+                            placeholder="Departamento, oficina, área, etc." required>
                     </div>
-                    
+
                     <div class="form-group slide-in-left">
                         <label for="descripcion">Descripción de la denuncia</label>
-                        <textarea id="descripcion" name="descripcion" [(ngModel)]="descripcion" placeholder="Describa detalladamente la situación" required></textarea>
+                        <textarea id="descripcion" name="descripcion" [(ngModel)]="descripcion"
+                            placeholder="Describa detalladamente la situación" required></textarea>
                     </div>
-                    
+
                     <div class="form-group slide-in-right">
                         <label for="contacto">Información de contacto</label>
-                        <input type="text" id="contacto" name="contacto" [(ngModel)]="contacto" placeholder="Nombre, matrícula y teléfono">
+                        <input type="text" id="contacto" name="contacto" [(ngModel)]="contacto"
+                            placeholder="Nombre, matrícula y teléfono">
                     </div>
-                    
+
                     <div class="form-group slide-in-left">
                         <label for="evidencia">Adjuntar evidencia (foto/documento)</label>
-                        <input type="file" id="evidencia" name="evidencia" >
+                        <input type="file" id="evidencia" name="evidencia">
                     </div>
-                    
+
                     <button type="submit" class="submit-btn">Enviar Denuncia</button>
                 </form>
             </div>
@@ -75,7 +78,7 @@
             <!-- Mis Denuncias -->
             <div *ngIf="activeTab === 'mis-denuncias'" class="tab-content">
                 <h2>Mis Denuncias</h2>
-                
+
                 <div class="filter-controls">
                     <div class="search-filter">
                         <input type="text" placeholder="Buscar denuncia...">
@@ -90,11 +93,11 @@
                         </select>
                     </div>
                 </div>
-                
-               <div class="table-container">
-                <app-tabladenuncias></app-tabladenuncias>
-   
-</div>
+
+                <div class="table-container">
+                    <app-tabladenuncias></app-tabladenuncias>
+
+                </div>
                 <div class="pagination-controls">
                     <button disabled>
                         <i class="fas fa-chevron-left"></i> Anterior
@@ -109,7 +112,7 @@
             <!-- Estado de Denuncias -->
             <div *ngIf="activeTab === 'estado-denuncias'" class="tab-content">
                 <h2>Estado de Denuncias</h2>
-                
+
                 <div class="dashboard-summary">
                     <div class="stats-container">
                         <div class="stat-card total">
@@ -121,7 +124,7 @@
                                 <div class="stat-label">Total Denuncias</div>
                             </div>
                         </div>
-                        
+
                         <div class="stat-card pending">
                             <div class="stat-icon">
                                 <i class="fas fa-clock"></i>
@@ -131,7 +134,7 @@
                                 <div class="stat-label">Pendientes</div>
                             </div>
                         </div>
-                        
+
                         <div class="stat-card in-progress">
                             <div class="stat-icon">
                                 <i class="fas fa-spinner"></i>
@@ -141,7 +144,7 @@
                                 <div class="stat-label">En Proceso</div>
                             </div>
                         </div>
-                        
+
                         <div class="stat-card resolved">
                             <div class="stat-icon">
                                 <i class="fas fa-check-circle"></i>
@@ -153,26 +156,26 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="charts-container">
                     <div class="chart-card">
-                      <h3>Distribución por Estado</h3>
-                      <div class="chart-area">
-                        <canvas #estadoChart></canvas>
-                      </div>
+                        <h3>Distribución por Estado</h3>
+                        <div class="chart-area">
+                            <canvas #estadoChart></canvas>
+                        </div>
                     </div>
-                    
+
                     <div class="chart-card">
-                      <h3>Denuncias por Tipo</h3>
-                      <div class="chart-area">
-                        <canvas #tipoChart></canvas>
-                      </div>
+                        <h3>Denuncias por Tipo</h3>
+                        <div class="chart-area">
+                            <canvas #tipoChart></canvas>
+                        </div>
                     </div>
-                  </div>
-                
+                </div>
+
                 <div class="updates-container">
                     <h3>Últimas Actualizaciones</h3>
-                    
+
                     <div class="time-filter">
                         <label for="periodo">Mostrar período:</label>
                         <select id="periodo">
@@ -182,7 +185,7 @@
                             <option value="180">Últimos 6 meses</option>
                         </select>
                     </div>
-                    
+
                     <div class="timeline">
                         <div class="timeline-item">
                             <div class="timeline-point actualización"></div>
@@ -204,7 +207,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="timeline-item">
                             <div class="timeline-point resolución"></div>
                             <div class="timeline-content">
@@ -227,10 +230,10 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="resolution-times">
                     <h3>Tiempo Promedio de Resolución por Tipo</h3>
-                    
+
                     <div class="table-container">
                         <table class="resolution-table">
                             <thead>
@@ -265,7 +268,7 @@
             <!-- Perfil -->
             <div *ngIf="activeTab === 'perfil'" class="tab-content">
                 <h2>Mi Perfil</h2>
-                
+
                 <div class="profile-container">
                     <div class="profile-header">
                         <div class="profile-image">
@@ -274,7 +277,7 @@
                                 <i class="fas fa-camera"></i> Cambiar
                             </button>
                         </div>
-                        
+
                         <div class="profile-summary">
                             <h3>Carlos Ramírez</h3>
                             <p class="user-id">ID: CR12345</p>
@@ -282,7 +285,7 @@
                             <p class="user-position">Desarrollador</p>
                         </div>
                     </div>
-                    
+
                     <div class="profile-tabs">
                         <div class="tab-buttons">
                             <button class="active">
@@ -295,7 +298,7 @@
                                 Notificaciones
                             </button>
                         </div>
-                        
+
                         <!-- Solo se muestra la primera pestaña, las otras están implementadas pero ocultas por simplicidad -->
                         <div class="tab-content">
                             <!-- Información personal -->
@@ -306,37 +309,37 @@
                                             <label for="nombre">Nombre completo</label>
                                             <input type="text" id="nombre" value="Carlos Ramírez">
                                         </div>
-                                        
+
                                         <div class="form-group">
                                             <label for="matricula">Matrícula / ID</label>
                                             <input type="text" id="matricula" value="CR12345" readonly>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label for="email">Correo electrónico</label>
                                             <input type="email" id="email" value="carlos.ramirez@ejemplo.com">
                                         </div>
-                                        
+
                                         <div class="form-group">
                                             <label for="telefono">Teléfono</label>
                                             <input type="tel" id="telefono" value="555-123-4567">
                                         </div>
                                     </div>
-                                    
+
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label for="departamento">Departamento</label>
                                             <input type="text" id="departamento" value="Sistemas">
                                         </div>
-                                        
+
                                         <div class="form-group">
                                             <label for="cargo">Cargo</label>
                                             <input type="text" id="cargo" value="Desarrollador">
                                         </div>
                                     </div>
-                                    
+
                                     <div class="form-actions">
                                         <button type="submit" class="btn-primary">
                                             Guardar cambios

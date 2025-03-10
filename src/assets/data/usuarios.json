@@ -17,6 +17,24 @@
       "password": "$2a$10$PnLz5mXk1gEr/fd9PguVeOKspluF0E28CGPKXxoqymdZdGpQJAwIe",
       "username": "dann",
       "id": 3
+    },
+    {
+      "email": "sofia@gmail.com",
+      "password": "$2a$10$qjgokmJ1.m/Fj8oHqmDuYuuzNON0vHKFqVYL6xGM267SJ8Fp5lBMO",
+      "username": "sofia",
+      "id": 4
+    },
+    {
+      "email": "sofia@admin.com",
+      "password": "$2a$10$L80UY3gBHKKSBAmFjO1Lu.mpxbzSTTKAnTYy/TKJhBn0CGp0CyTdC",
+      "username": "sofia2",
+      "id": 5
+    },
+    {
+      "email": "sofia@docentes.com",
+      "password": "$2a$10$LJpcQiAzhRP2R218pVYhbeJrnQb5CGCnexNnRywDNOqI81eGV2ayG",
+      "username": "sofia3",
+      "id": 6
     }
   ]
 }

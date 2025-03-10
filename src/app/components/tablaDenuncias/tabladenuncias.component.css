@@ -1,117 +1,233 @@
 /* Estilos para la tabla */
 table {
-    width: 100%;
-    border-collapse: collapse;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: white;
-    margin-bottom: 2rem;
-  }
-  
-  /* Estilos para el encabezado */
-  thead {
-    background-color: #f1f5f9;
-  }
-  
-  th {
-    padding: 12px 16px;
-    text-align: left;
-    font-weight: 600;
-    color: #334155;
-    border: 1px solid #e2e8f0;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-  }
-  
-  /* Estilos para las celdas */
-  td {
-    padding: 12px 16px;
-    border: 1px solid #e2e8f0;
-    vertical-align: middle;
-    font-size: 0.95rem;
-  }
-  
-  /* Estilos para filas alternadas */
-  tbody tr:nth-child(even) {
-    background-color: #f8fafc;
-  }
-  
-  /* Efecto hover en las filas */
-  tbody tr:hover {
-    background-color: #f0f9ff;
-  }
-  
-  /* Contenedor para los botones de acción */
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: white;
+  margin-bottom: 2rem;
+}
+
+/* Estilos para el encabezado */
+thead {
+  background-color: #f1f5f9;
+}
+
+th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+/* Estilos para las celdas */
+td {
+  padding: 12px 16px;
+  border: 1px solid #e2e8f0;
+  vertical-align: middle;
+  font-size: 0.95rem;
+}
+
+/* Estilos para filas alternadas */
+tbody tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+/* Efecto hover en las filas */
+tbody tr:hover {
+  background-color: #f0f9ff;
+}
+
+/* Contenedor para los botones de acción */
+.actions-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+/* Celda de acciones con ancho mínimo */
+.actions-cell {
+  min-width: 220px;
+  text-align: center;
+}
+
+/* Estilos para los botones */
+.action-btn {
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+}
+
+/* Botón de actualizar */
+.update-btn {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.update-btn:hover {
+  background-color: #2563eb;
+}
+
+/* Botón de eliminar */
+.delete-btn {
+  background-color: #ef4444;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #dc2626;
+}
+
+/* Estilos responsivos - Pantallas grandes y medianas */
+@media (max-width: 1024px) {
   .actions-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 8px;
+    gap: 6px;
+  }
+  
+  .action-btn {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    min-width: 80px;
+  }
+  
+  .actions-cell {
+    min-width: 180px;
+  }
+  
+  th, td {
+    padding: 10px 12px;
+  }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+  table {
+    display: block;
+    overflow-x: auto;
     white-space: nowrap;
   }
   
-  /* Celda de acciones con ancho mínimo */
   .actions-cell {
-    min-width: 220px;
-    text-align: center;
+    min-width: 170px;
   }
   
-  /* Estilos para los botones */
+  th, td {
+    padding: 8px 10px;
+    font-size: 0.85rem;
+  }
+  
   .action-btn {
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-weight: 500;
-    font-size: 0.9rem;
-    cursor: pointer;
-    border: none;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-    display: inline-flex;
+    min-width: 70px;
+  }
+}
+
+/* Móviles - Transformación completa de la tabla */
+@media (max-width: 576px) {
+  /* Ocultamos el encabezado original de la tabla */
+  thead {
+    display: none;
+  }
+  
+  /* Convertimos todas las filas a bloques */
+  tbody, tr {
+    display: block;
+    width: 100%;
+  }
+  
+  /* Ajustamos cada celda como un bloque con su propio "encabezado" */
+  tbody tr {
+    margin-bottom: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  td {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
+    text-align: right;
+    padding: 12px 15px;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  td:last-child {
+    border-bottom: none;
+  }
+  
+  /* Añadimos un pseudo-elemento para mostrar el título de la columna */
+  td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    text-align: left;
+    color: #334155;
+    padding-right: 10px;
+  }
+  
+  /* Ajustamos la celda de acciones */
+  .actions-cell {
+    display: flex;
     justify-content: center;
-    min-width: 90px;
+    min-width: auto;
+    padding: 15px;
   }
   
-  /* Botón de actualizar */
-  .update-btn {
-    background-color: #3b82f6;
-    color: white;
+  /* Quitamos el pseudo-elemento para la celda de acciones */
+  .actions-cell::before {
+    display: none;
   }
   
-  .update-btn:hover {
-    background-color: #2563eb;
+  /* Ajustamos el contenedor de acciones para móviles */
+  .actions-container {
+    width: 100%;
+    gap: 10px;
   }
   
-  /* Botón de eliminar */
-  .delete-btn {
-    background-color: #ef4444;
-    color: white;
+  .action-btn {
+    flex: 1;
+    padding: 10px;
   }
   
-  .delete-btn:hover {
-    background-color: #dc2626;
+  /* Cancelamos el efecto alternado en filas para móviles */
+  tbody tr:nth-child(even) {
+    background-color: white;
   }
   
-  /* Estilos responsivos */
-  @media (max-width: 1024px) {
-    .actions-container {
-      flex-direction: row;
-    }
-    
-    .action-btn {
-      padding: 6px 10px;
-      font-size: 0.85rem;
-    }
+  /* Mantenemos el efecto hover */
+  tbody tr:hover {
+    background-color: #f0f9ff;
+  }
+}
+
+/* Móviles muy pequeños */
+@media (max-width: 375px) {
+  .actions-container {
+    flex-direction: column;
+    width: 100%;
   }
   
-  @media (max-width: 768px) {
-    table {
-      display: block;
-      overflow-x: auto;
-    }
-    
-    .actions-cell {
-      min-width: 170px;
-    }
+  .action-btn {
+    width: 100%;
+    padding: 8px;
   }
+  
+  td {
+    padding: 10px 12px;
+  }
+}
