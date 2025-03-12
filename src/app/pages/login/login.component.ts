@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { LoginService } from '../../service/login.service';
 import { RegistroService } from '../../service/registro.service';
 import { Router } from '@angular/router';
+import { UsuarioService } from '../../service/usuario.service';
 
 @Component({
   selector: 'app-login',
@@ -13,42 +14,52 @@ import { Router } from '@angular/router';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+  // Variables para login original
   email: string = '';
   password: string = '';
   username: string = '';
-  emailRegistro: string = '';
-  passwordRegistro: string = '';
   signUpMode = false;
+  
+  // Variables para usuario
+  Nombre: string = '';
+  Apellido: string = '';
+  Email: string = '';
+  Password: string = '';
+  Rol: string = 'USUARIO'; // Establecer valor por defecto
+  Username: string = '';
 
   constructor(
     private loginService: LoginService,
     private registroService: RegistroService,
-    private route: Router
+    private route: Router,
+    private usuarioService: UsuarioService
   ) {}
 
   login(formulario: any) {
     this.loginService.postLogin(formulario.value).subscribe({
-      next: (accesso: any) => {
-        console.log(accesso);
-        let token = accesso.accessToken;
-        let email = formulario.value.email;
-
+      next: (response: any) => {
+        console.log(response);
+        let token = response.accessToken;
+        let rol = response.rol;
+        
         if (token) {
           localStorage.setItem("login", "true");
-
-          if (email.includes('@admin.com')) {
-            localStorage.setItem("acceso", "docentes");
-            console.log("Usuario docente, redirigiendo...");
+          localStorage.setItem("token", token);
+          
+          if (rol === 'ADMIN') {
+            localStorage.setItem("acceso", "admin");
+            console.log("Usuario administrador, redirigiendo...");
             this.route.navigate(['admin']);
           } else {
-            localStorage.setItem("acceso", "estudiantes");
-            console.log("Usuario estudiante, redirigiendo...");
+            localStorage.setItem("acceso", "usuario");
+            console.log("Usuario regular, redirigiendo...");
             this.route.navigate(['denuncias']);
           }
         }
       },
       error: (error: any) => {
         console.error('Error en el inicio de sesión:', error);
+        alert("Error al iniciar sesión. Verifica tus credenciales.");
       }
     });
   }
@@ -56,7 +67,14 @@ export class LoginComponent {
   register(registroForm: any) {
     console.log("Datos enviados al backend:", registroForm.value);
     
-    this.registroService.postRegistro(registroForm.value).subscribe({
+    // Asegurar que Rol siempre es USUARIO
+    const userData = {
+      ...registroForm.value,
+      rol: 'USUARIO'
+    };
+    
+    
+    this.usuarioService.postUsuarios(userData).subscribe({
       next: (respuesta: any) => {
         console.log("Usuario registrado:", respuesta);
         alert("Registro exitoso. Ahora puedes iniciar sesión.");
@@ -64,10 +82,12 @@ export class LoginComponent {
       },
       error: (error: any) => {
         console.error('Error en el registro:', error);
+        alert("Error al registrar usuario: " + error.message);
       }
     });
   }
-    toggleSignUpMode() {
+
+  toggleSignUpMode() {
     this.signUpMode = !this.signUpMode;
   }
 }

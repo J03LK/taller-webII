@@ -11,60 +11,7 @@
       "password": "$2a$10$ewR95x.T.XZYIUGMFTlv/es8Bm77o/aAwinFo3BAAGKDFwJ6E6jEq",
       "username": "dafexd",
       "id": 2
-    },
-    {
-      "email": "veronica@admin.com",
-      "password": "$2a$10$PnLz5mXk1gEr/fd9PguVeOKspluF0E28CGPKXxoqymdZdGpQJAwIe",
-      "username": "dann",
-      "id": 3
-    },
-    {
-      "email": "sofia@gmail.com",
-      "password": "$2a$10$qjgokmJ1.m/Fj8oHqmDuYuuzNON0vHKFqVYL6xGM267SJ8Fp5lBMO",
-      "username": "sofia",
-      "id": 4
-    },
-    {
-      "email": "sofia@admin.com",
-      "password": "$2a$10$L80UY3gBHKKSBAmFjO1Lu.mpxbzSTTKAnTYy/TKJhBn0CGp0CyTdC",
-      "username": "sofia2",
-      "id": 5
-    },
-    {
-      "email": "sofia@docentes.com",
-      "password": "$2a$10$LJpcQiAzhRP2R218pVYhbeJrnQb5CGCnexNnRywDNOqI81eGV2ayG",
-      "username": "sofia3",
-      "id": 6
-    },
-    {
-      "email": "kevin@gmail.com",
-      "password": "$2a$10$YNWbivA.kfVbs33fRqiOIu3c1iTFgDKy1vAadFQ/yIN9FPPjyCnRO",
-      "username": "kevin",
-      "id": 7
-    },
-    {
-      "email": "kevin@admin",
-      "password": "$2a$10$Su1FumvJxqNQFMG7plqPQ.LahHHyW03DAha0ajG5sPx2ltUeqlI3a",
-      "username": "kevin",
-      "id": 8
-    },
-    {
-      "email": "kevin@admin.com",
-      "password": "$2a$10$0jCxsb24LOzjPT5496a90eSikTGXWOZH1zCD5cqJksPPZAj7UVAsK",
-      "username": "kevin1",
-      "id": 9
-    },
-    {
-      "email": "danny@gmail.com",
-      "password": "$2a$10$tzcS3TPf0ai97QAHsrnOmelg89cwVGCeC1hUkndEfmx6Dj3nKOZBO",
-      "username": "DannyPex",
-      "id": 10
-    },
-    {
-      "email": "jose@admin.com",
-      "password": "$2a$10$BdADxnX.h17bwoRoXjFxnuPNo0W0i8p0ep0ijx99L..mImwrsg7D2",
-      "username": "admin",
-      "id": 11
     }
+   
   ]
 }
