@@ -82,6 +82,7 @@
 .footer-logo img {
     height: auto;
     max-width: 120px;
+    filter: invert(1);
 }
 
 /* Derechos de autor */
