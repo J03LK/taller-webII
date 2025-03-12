@@ -102,6 +102,7 @@
   position: relative;
   padding-bottom: 90px; /* Aumentado el espacio para el botón */
   height: 500px; /* Altura aumentada para tener más espacio */
+  text-align: center;
 }
 
 .career-card img {
@@ -230,17 +231,19 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Modificación para centrar el título en el modal */
 .modal-header {
   padding: 20px 25px;
   border-bottom: 1px solid #eee;
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* Cambiado de space-between a center */
   align-items: center;
   position: sticky;
   top: 0;
   background-color: #fff;
   border-radius: 15px 15px 0 0;
   z-index: 10;
+  text-align: center;
 }
 
 .modal-header h2 {
@@ -248,9 +251,16 @@
   font-weight: 700;
   color: #2b333c;
   margin: 0;
+  /* Aseguramos que el título está centrado */
+  text-align: center;
+  width: 100%;
 }
 
+/* Reposicionamos el botón de cierre para que no afecte al centrado */
 .close-button {
+  position: absolute;
+  right: 25px;
+  top: 20px;
   background: none;
   border: none;
   font-size: 2rem;
@@ -264,6 +274,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Ajuste responsive para el botón de cierre */
+@media (max-width: 600px) {
+  .close-button {
+    right: 15px;
+    top: 15px;
+  }
 }
 
 .close-button:hover {
