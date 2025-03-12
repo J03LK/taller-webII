@@ -13,6 +13,13 @@
       "descripcion": "nose",
       "contacto": "sadjkdas",
       "id": 4
+    },
+    {
+      "tipo": "acoso",
+      "ubicacion": "aula 407",
+      "descripcion": "acoso sobre una estudiante",
+      "contacto": "0963151998",
+      "id": 5
     }
   ]
 }

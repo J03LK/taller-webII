@@ -296,11 +296,13 @@ p {
     opacity: 0;
     animation: fadeIn 1s ease-out forwards;
     animation-delay: 1s;
+    text-align: justify; /* Esta línea justifica el texto */
 }
 
-/* Valores Section */
+
+/* Para mantener los encabezados centrados en la sección de valores */
 .section-header {
-    text-align: center;
+    text-align: center; /* Mantener centrado */
     margin-bottom: 40px;
     padding-top: 40px;
     opacity: 0;
@@ -315,8 +317,9 @@ p {
     margin-bottom: 60px;
 }
 
+/* Para los elementos de valor que quieres mantener centrados */
 .valor-item {
-    text-align: center;
+    text-align: center; /* Mantener centrado */
     flex: 0 0 calc(20% - 40px);
     min-width: 160px;
     opacity: 0;

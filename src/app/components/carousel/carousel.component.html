@@ -1,38 +1,59 @@
 <!-- carousel.component.html -->
 <div class="academic-carousel-container">
-    <!-- Header Section -->
-    <div class="header-section">
-      <div class="header-content">
-        <h2 class="sub-title">CONOCE NUESTRA</h2>
-        <h1 class="main-title">OFERTA <span class="highlight">ACADÉMICA</span></h1>
-        <div class="divider"></div>
-      </div>
-      <div class="header-description">
-        <p>Gradúate como profesional de élite y obtén tu título de tercer nivel en tan solo 2 años. Ofrecemos las carreras más demandadas en el mercado laboral actual.</p>
-      </div>
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="header-content">
+      <h2 class="sub-title">CONOCE NUESTRA</h2>
+      <h1 class="main-title">OFERTA <span class="highlight">ACADÉMICA</span></h1>
+      <div class="divider"></div>
     </div>
-  
-    <!-- Carousel Section -->
-    <div id="carreras">
-      <div class="swiper-container" #swiperContainer>
-        <div class="swiper-wrapper">
-          @for (career of careers(); track career.id) {
-          <div class="swiper-slide">
-            <div class="career-card">
-              <div class="image-container">
-                <img [src]="career.imageUrl" [alt]="career.title" loading="lazy">
-              </div>
-              <div class="career-title">
-                <h3>{{career.title}}</h3>
-              </div>
-              <a class="conoce" [routerLink]="career.link">Conoce más</a>
+    <div class="header-description">
+      <p>Gradúate como profesional de élite y obtén tu título de tercer nivel en tan solo 2 años. Ofrecemos las carreras más demandadas en el mercado laboral actual.</p>
+    </div>
+  </div>
+
+  <!-- Carousel Section -->
+  <div id="carreras">
+    <div class="swiper-container" #swiperContainer>
+      <div class="swiper-wrapper">
+        @for (career of careers(); track career.id) {
+        <div class="swiper-slide">
+          <div class="career-card">
+            <div class="image-container">
+              <img [src]="career.imageUrl" [alt]="career.title" loading="lazy">
             </div>
+            <div class="career-title">
+              <h3>{{career.title}}</h3>
+            </div>
+            <a class="conoce" (click)="openModal(career, $event)">Conoce más</a>
           </div>
-          }
         </div>
-        
-        <!-- Pagination -->
-        <div class="swiper-pagination"></div>
+        }
+      </div>
+      
+      <!-- Pagination -->
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  @if (showModal && selectedCareer) {
+  <div class="modal-backdrop" (click)="onModalBackdropClick($event)">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h2>{{selectedCareer.title}}</h2>
+        <button class="close-button" (click)="closeModal()">×</button>
+      </div>
+      <div class="modal-content">
+        <div class="modal-image">
+          <img [src]="selectedCareer.imageUrl" [alt]="selectedCareer.title" class="modal-career-image">
+        </div>
+        <div class="modal-description">
+          <p>{{selectedCareer.description}}</p>
+          <a [href]="selectedCareer.externalUrl" class="btn-more-info" target="_blank">Ver más información</a>
+        </div>
       </div>
     </div>
   </div>
+  }
+</div>
