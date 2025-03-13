@@ -302,58 +302,51 @@
                             </button>
                         </div>
 
-                        <!-- Solo se muestra la primera pestaña, las otras están implementadas pero ocultas por simplicidad -->
-                        <div class="tab-content">
-                            <!-- Información personal -->
-                            <div class="profile-form">
-                                <form>
-                                    <div class="form-row">
-                                        <div class="form-group">
-                                            <label for="nombre">Nombre completo</label>
-                                            <input type="text" id="nombre" value="Carlos Ramírez">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="matricula">Matrícula / ID</label>
-                                            <input type="text" id="matricula" value="CR12345" readonly>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-row">
-                                        <div class="form-group">
-                                            <label for="email">Correo electrónico</label>
-                                            <input type="email" id="email" value="carlos.ramirez@ejemplo.com">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="telefono">Teléfono</label>
-                                            <input type="tel" id="telefono" value="555-123-4567">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-row">
-                                        <div class="form-group">
-                                            <label for="departamento">Departamento</label>
-                                            <input type="text" id="departamento" value="Sistemas">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="cargo">Cargo</label>
-                                            <input type="text" id="cargo" value="Desarrollador">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-actions">
-                                        <button type="submit" class="btn-primary">
-                                            Guardar cambios
-                                        </button>
-                                        <button type="button" class="btn-secondary">
-                                            Cancelar
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                        <!-- Información personal -->
+<div class="profile-form">
+    <form (ngSubmit)="guardarPerfilUsuario()" #perfilForm="ngForm">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" [(ngModel)]="usuarioActual.nombre">
+            </div>
+            
+            <div class="form-group">
+                <label for="apellido">Apellido</label>
+                <input type="text" id="apellido" name="apellido" [(ngModel)]="usuarioActual.apellido">
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="username">Nombre de Usuario</label>
+                <input type="text" id="username" name="username" [(ngModel)]="usuarioActual.username" readonly>
+                <!-- readonly porque normalmente no se permite cambiar el username -->
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" name="email" [(ngModel)]="usuarioActual.email">
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="password">Nueva Contraseña (dejar en blanco para no cambiar)</label>
+                <input type="password" id="password" name="password" [(ngModel)]="usuarioActual.password">
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">
+                Guardar cambios
+            </button>
+            <button type="button" class="btn-secondary" (click)="cancelarEdicion()">
+                Cancelar
+            </button>
+        </div>
+    </form>
+</div>
                     </div>
                 </div>
             </div>

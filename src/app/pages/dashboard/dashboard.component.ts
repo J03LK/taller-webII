@@ -29,6 +29,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   evidencia: any;
   fullName: string = '';
   
+  // Propiedades para manejar la edición de usuario
+  usuarioActual: any = {
+    nombre: '',
+    apellido: '',
+    username: '',
+    email: '',
+    password: '' // Este campo se enviará vacío si no se va a cambiar la contraseña
+  };
+  
   activeTab: string = 'new-complaint'; // Pestaña predeterminada
   
   @ViewChild('estadoChart') estadoChartRef!: ElementRef;
@@ -78,6 +87,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
             this.fullName = usuarioEncontrado.nombre + (usuarioEncontrado.apellido ? ' ' + usuarioEncontrado.apellido : '');
             console.log('Usuario encontrado:', usuarioEncontrado);
             console.log('Nombre completo:', this.fullName);
+            
+            // Cargar los datos del usuario para el formulario de edición
+            this.cargarDatosUsuario(usuarioEncontrado);
           } else {
             console.log('No se encontró usuario con username:', username);
           }
@@ -99,6 +111,77 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         console.error('Error al cargar denuncias:', error);
       }
     );
+  }
+
+  // Método para cargar los datos del usuario en el formulario
+  cargarDatosUsuario(usuarioEncontrado?: any) {
+    if (usuarioEncontrado) {
+      // Si recibimos un usuario como parámetro, lo usamos
+      this.usuarioActual = {
+        id: usuarioEncontrado.id,
+        nombre: usuarioEncontrado.nombre,
+        apellido: usuarioEncontrado.apellido,
+        username: usuarioEncontrado.username,
+        email: usuarioEncontrado.email,
+        password: '' // No cargamos la contraseña actual por seguridad
+      };
+    } else {
+      // Si no, buscamos el usuario de nuevo
+      const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      const username = userData.username || userData.sub || userData.email;
+      
+      if (username) {
+        this.usuarioService.getUsuarios().subscribe(
+          usuarios => {
+            const usuarioEncontrado = usuarios.find((u: any) => u.username === username);
+            if (usuarioEncontrado) {
+              this.usuarioActual = {
+                id: usuarioEncontrado.id,
+                nombre: usuarioEncontrado.nombre,
+                apellido: usuarioEncontrado.apellido,
+                username: usuarioEncontrado.username,
+                email: usuarioEncontrado.email,
+                password: '' // No cargamos la contraseña actual por seguridad
+              };
+            }
+          }
+        );
+      }
+    }
+  }
+
+  // Método para guardar cambios del perfil
+  guardarPerfilUsuario() {
+    if (this.usuarioActual && this.usuarioActual.id) {
+      // Si la contraseña está vacía, enviamos un objeto sin el campo password
+      const datosActualizados = {...this.usuarioActual};
+      if (!datosActualizados.password) {
+        delete datosActualizados.password;
+      }
+      
+      this.usuarioService.updateUsuario(this.usuarioActual.id, datosActualizados).subscribe(
+        response => {
+          console.log('Usuario actualizado correctamente', response);
+          
+          // Actualizar el nombre mostrado
+          this.fullName = this.usuarioActual.nombre + 
+            (this.usuarioActual.apellido ? ' ' + this.usuarioActual.apellido : '');
+          
+          // Mostrar mensaje de éxito
+          alert('Perfil actualizado correctamente');
+        },
+        error => {
+          console.error('Error al actualizar usuario', error);
+          alert('Error al actualizar el perfil');
+        }
+      );
+    }
+  }
+
+  // Método para cancelar cambios
+  cancelarEdicion() {
+    // Recargar los datos originales
+    this.cargarDatosUsuario();
   }
 
   ngAfterViewInit(): void {
