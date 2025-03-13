@@ -62,18 +62,6 @@
                     </li>
                     <button id="logout-btn" (click)="logout()" class="logout-btn">Cerrar Sesión</button>
                 </ul>
-
-                <!-- Footer -->
-                <div class="sidebar-footer p-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <a href="#" class="text-decoration-none">
-                            <i class="bi bi-question-circle me-1"></i> Ayuda
-                        </a>
-                        <a href="#" class="text-decoration-none">
-                            <i class="bi bi-box-arrow-right me-1"></i> Salir
-                        </a>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -303,76 +291,6 @@
                                         </li>
                                     </ul>
                                 </nav>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card border-0 shadow-sm">
-                            <div class="card-header bg-white">
-                                <h5 class="mb-0">Categorías populares</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    @for (category of popularCategories; track category.id) {
-                                    <div class="col-md-6 mb-3">
-                                        <div class="category-card p-3 rounded"
-                                            [ngStyle]="{'background-color': category.color + '15'}">
-                                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                                <h6 class="mb-0" [ngStyle]="{'color': category.color}">
-                                                    <i class="bi" [ngClass]="'bi-' + category.icon"></i>
-                                                    {{ category.name }}
-                                                </h6>
-                                                <span class="badge rounded-pill bg-white"
-                                                    [ngStyle]="{'color': category.color}">
-                                                    {{ category.count }}
-                                                </span>
-                                            </div>
-                                            <div class="progress" style="height: 5px;">
-                                                <div class="progress-bar"
-                                                    [ngStyle]="{'background-color': category.color, 'width': category.percentage + '%'}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card border-0 shadow-sm">
-                            <div class="card-header bg-white">
-                                <h5 class="mb-0">Comentarios recientes</h5>
-                            </div>
-                            <div class="card-body p-0">
-                                @for (comment of recentComments; track comment.id) {
-                                <div class="comment-item p-3 border-bottom">
-                                    <div class="d-flex">
-                                        <div class="comment-avatar me-3">
-                                            <img src="https://via.placeholder.com/40" class="rounded-circle" alt="User">
-                                        </div>
-                                        <div>
-                                            <div class="d-flex align-items-center mb-1">
-                                                <h6 class="mb-0">{{ comment.author }}</h6>
-                                                <small class="text-muted ms-auto">{{ comment.date | date:'dd/MM/yyyy HH:mm'
-                                                    }}</small>
-                                            </div>
-                                            <p class="mb-1">{{ comment.text }}</p>
-                                            <div class="d-flex align-items-center">
-                                                <small class="text-muted">En sugerencia: </small>
-                                                <a href="#" class="ms-1 small">{{ comment.suggestionTitle }}</a>
-                                                <div class="ms-auto">
-                                                    <button class="btn btn-sm btn-link text-muted p-0">
-                                                        <i class="bi bi-reply"></i> Responder
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                }
                             </div>
                         </div>
                     </div>
