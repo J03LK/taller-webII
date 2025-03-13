@@ -257,8 +257,6 @@
                         <div class="profile-summary">
                             <h3>{{ usuarioActual.nombre }} {{ usuarioActual.apellido }}</h3>
                             <p class="user-id">ID: {{ usuarioActual.id }}</p>
-                            <p class="user-department">{{ usuarioActual.departamento || 'No especificado' }}</p>
-                            <p class="user-position">{{ usuarioActual.cargo || 'No especificado' }}</p>
                         </div>
                     </div>
 
@@ -294,19 +292,6 @@
                                     <div class="form-group">
                                         <label for="email">Correo electrónico</label>
                                         <input type="email" id="email" name="email" [(ngModel)]="usuarioActual.email" />
-                                    </div>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="departamento">Departamento</label>
-                                        <input type="text" id="departamento" name="departamento"
-                                            [(ngModel)]="usuarioActual.departamento" />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="cargo">Cargo</label>
-                                        <input type="text" id="cargo" name="cargo" [(ngModel)]="usuarioActual.cargo" />
                                     </div>
                                 </div>
 
