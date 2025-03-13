@@ -2,11 +2,10 @@
     <header class="panel-header">
         <h1>Sistema de Denuncias Institucional</h1>
         <div class="user-info">
-           
-            <div class="user-info" *ngIf="fullName">
-                Usuario: {{ fullName }}
-              </div>
-            <button id="logout-btn" (click)="logout()" class="logout-btn">Cerrar Sesión</button>
+            <div class="user-info" *ngIf="fullName">Usuario: {{ fullName }}</div>
+            <button id="logout-btn" (click)="logout()" class="logout-btn">
+                Cerrar Sesión
+            </button>
         </div>
     </header>
 
@@ -34,48 +33,48 @@
             <div *ngIf="activeTab === 'new-complaint'" class="tab-content">
                 <h2>Registrar Nueva Denuncia</h2>
                 <form #denunciaForm="ngForm" (ngSubmit)="guardarDenuncia(denunciaForm)">
-                  <div class="form-group slide-in-left">
-                    <label for="tipo">Tipo de Denuncia</label>
-                    <select id="tipo" name="tipo" [(ngModel)]="tipo" required>
-                      <option value="">Seleccione un tipo</option>
-                      <option value="acoso">Acoso</option>
-                      <option value="discriminacion">Discriminación</option>
-                      <option value="corrupcion">Corrupción</option>
-                      <option value="abuso">Abuso de autoridad</option>
-                      <option value="fraude">Fraude</option>
-                      <option value="violencia">Violencia</option>
-                      <option value="negligencia">Negligencia</option>
-                      <option value="fallo-sistema">Fallo del Sistema</option>
-                      <option value="otros">Otros</option>
-                    </select>
-                  </div>
-          
-                  <div class="form-group slide-in-right">
-                    <label for="ubicacion">Ubicación del incidente</label>
-                    <input type="text" id="ubicacion" name="ubicacion" [(ngModel)]="ubicacion"
-                      placeholder="Departamento, oficina, área, etc." required>
-                  </div>
-          
-                  <div class="form-group slide-in-left">
-                    <label for="descripcion">Descripción de la denuncia</label>
-                    <textarea id="descripcion" name="descripcion" [(ngModel)]="descripcion"
-                      placeholder="Describa detalladamente la situación" required></textarea>
-                  </div>
-          
-                  <div class="form-group slide-in-right">
-                    <label for="contacto">Información de contacto</label>
-                    <input type="text" id="contacto" name="contacto" [(ngModel)]="contacto"
-                      placeholder="Nombre, matrícula y teléfono">
-                  </div>
-          
-                  <div class="form-group slide-in-left">
-                    <label for="evidencia">Adjuntar evidencia (foto/documento)</label>
-                    <input type="file" id="evidencia" name="evidencia" (change)="onFileChange($event)">
-                  </div>
-          
-                  <button type="submit" class="submit-btn">Enviar Denuncia</button>
+                    <div class="form-group slide-in-left">
+                        <label for="tipo">Tipo de Denuncia</label>
+                        <select id="tipo" name="tipo" [(ngModel)]="tipo" required>
+                            <option value="">Seleccione un tipo</option>
+                            <option value="acoso">Acoso</option>
+                            <option value="discriminacion">Discriminación</option>
+                            <option value="corrupcion">Corrupción</option>
+                            <option value="abuso">Abuso de autoridad</option>
+                            <option value="fraude">Fraude</option>
+                            <option value="violencia">Violencia</option>
+                            <option value="negligencia">Negligencia</option>
+                            <option value="fallo-sistema">Fallo del Sistema</option>
+                            <option value="otros">Otros</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group slide-in-right">
+                        <label for="ubicacion">Ubicación del incidente</label>
+                        <input type="text" id="ubicacion" name="ubicacion" [(ngModel)]="ubicacion"
+                            placeholder="Departamento, oficina, área, etc." required />
+                    </div>
+
+                    <div class="form-group slide-in-left">
+                        <label for="descripcion">Descripción de la denuncia</label>
+                        <textarea id="descripcion" name="descripcion" [(ngModel)]="descripcion"
+                            placeholder="Describa detalladamente la situación" required></textarea>
+                    </div>
+
+                    <div class="form-group slide-in-right">
+                        <label for="contacto">Información de contacto</label>
+                        <input type="text" id="contacto" name="contacto" [(ngModel)]="contacto"
+                            placeholder="Nombre, matrícula y teléfono" />
+                    </div>
+
+                    <div class="form-group slide-in-left">
+                        <label for="evidencia">Adjuntar evidencia (foto/documento)</label>
+                        <input type="file" id="evidencia" name="evidencia" (change)="onFileChange($event)" />
+                    </div>
+
+                    <button type="submit" class="submit-btn">Enviar Denuncia</button>
                 </form>
-              </div>
+            </div>
 
             <!-- Mis Denuncias -->
             <div *ngIf="activeTab === 'mis-denuncias'" class="tab-content">
@@ -83,7 +82,7 @@
 
                 <div class="filter-controls">
                     <div class="search-filter">
-                        <input type="text" placeholder="Buscar denuncia...">
+                        <input type="text" placeholder="Buscar denuncia..." />
                     </div>
                     <div class="status-filter">
                         <select>
@@ -99,45 +98,43 @@
                 <div class="table-container">
                     <table class="min-w-full table-auto border-collapse">
                         <thead>
-                          <tr class="bg-gray-100">
-                            <th class="px-4 py-2 border text-left">ID</th>
-                            <th class="px-4 py-2 border text-left">Tipo</th>
-                            <th class="px-4 py-2 border text-left">Ubicación</th>
-                            <th class="px-4 py-2 border text-left">Descripción</th>
-                            <th class="px-4 py-2 border text-left">Contacto</th>
-                            <th class="px-4 py-2 border text-left">Acciones</th>
-                          </tr>
+                            <tr class="bg-gray-100">
+                                <th class="px-4 py-2 border text-left">ID</th>
+                                <th class="px-4 py-2 border text-left">Tipo</th>
+                                <th class="px-4 py-2 border text-left">Ubicación</th>
+                                <th class="px-4 py-2 border text-left">Descripción</th>
+                                <th class="px-4 py-2 border text-left">Contacto</th>
+                                <th class="px-4 py-2 border text-left">Acciones</th>
+                            </tr>
                         </thead>
                         <tbody>
-                          @if (denunciasUsuario.length === 0) {
+                            @if (denunciasUsuario.length === 0) {
                             <tr>
-                              <td colspan="6" class="px-4 py-2 border text-center">No tienes denuncias registradas</td>
+                                <td colspan="6" class="px-4 py-2 border text-center">
+                                    No tienes denuncias registradas
+                                </td>
                             </tr>
-                          }
-                          @for (denuncia of denunciasUsuario; track $index) {
+                            } @for (denuncia of denunciasUsuario; track $index) {
                             <tr>
-                              <td class="px-4 py-2 border">{{ denuncia.id }}</td>
-                              <td class="px-4 py-2 border">{{ denuncia.tipo }}</td>
-                              <td class="px-4 py-2 border">{{ denuncia.ubicacion }}</td>
-                              <td class="px-4 py-2 border">{{ denuncia.descripcion }}</td>
-                              <td class="px-4 py-2 border">{{ denuncia.contacto }}</td>
-                              <td class="px-4 py-2 border text-center actions-cell">
-                                <div class="actions-container">
-                                  <button (click)="eliminar(denuncia.id)" class="action-btn delete-btn">
-                                    Eliminar
-                                  </button>
-                                </div>
-                              </td>
+                                <td class="px-4 py-2 border">{{ denuncia.id }}</td>
+                                <td class="px-4 py-2 border">{{ denuncia.tipo }}</td>
+                                <td class="px-4 py-2 border">{{ denuncia.ubicacion }}</td>
+                                <td class="px-4 py-2 border">{{ denuncia.descripcion }}</td>
+                                <td class="px-4 py-2 border">{{ denuncia.contacto }}</td>
+                                <td class="px-4 py-2 border text-center actions-cell">
+                                    <div class="actions-container">
+                                        <button (click)="eliminar(denuncia.id)" class="action-btn delete-btn">
+                                            Eliminar
+                                        </button>
+                                    </div>
+                                </td>
                             </tr>
-                          }
+                            }
                         </tbody>
-                      </table>
-
+                    </table>
                 </div>
                 <div class="pagination-controls">
-                    <button disabled>
-                        <i class="fas fa-chevron-left"></i> Anterior
-                    </button>
+                    <button disabled><i class="fas fa-chevron-left"></i> Anterior</button>
                     <span class="page-info">Página 1 de 1</span>
                     <button disabled>
                         Siguiente <i class="fas fa-chevron-right"></i>
@@ -145,6 +142,7 @@
                 </div>
             </div>
 
+            <!-- Estado de Denuncias -->
             <!-- Estado de Denuncias -->
             <div *ngIf="activeTab === 'estado-denuncias'" class="tab-content">
                 <h2>Estado de Denuncias</h2>
@@ -156,7 +154,7 @@
                                 <i class="fas fa-clipboard-list"></i>
                             </div>
                             <div class="stat-info">
-                                <div class="stat-value">15</div>
+                                <div class="stat-value">{{ estadisticas.total }}</div>
                                 <div class="stat-label">Total Denuncias</div>
                             </div>
                         </div>
@@ -166,7 +164,7 @@
                                 <i class="fas fa-clock"></i>
                             </div>
                             <div class="stat-info">
-                                <div class="stat-value">5</div>
+                                <div class="stat-value">{{ estadisticas.pendientes }}</div>
                                 <div class="stat-label">Pendientes</div>
                             </div>
                         </div>
@@ -176,7 +174,7 @@
                                 <i class="fas fa-spinner"></i>
                             </div>
                             <div class="stat-info">
-                                <div class="stat-value">3</div>
+                                <div class="stat-value">{{ estadisticas.enProceso }}</div>
                                 <div class="stat-label">En Proceso</div>
                             </div>
                         </div>
@@ -186,7 +184,7 @@
                                 <i class="fas fa-check-circle"></i>
                             </div>
                             <div class="stat-info">
-                                <div class="stat-value">7</div>
+                                <div class="stat-value">{{ estadisticas.resueltas }}</div>
                                 <div class="stat-label">Resueltas</div>
                             </div>
                         </div>
@@ -214,7 +212,7 @@
 
                     <div class="time-filter">
                         <label for="periodo">Mostrar período:</label>
-                        <select id="periodo">
+                        <select id="periodo" [(ngModel)]="periodoSeleccionado" (change)="actualizarTimeline()">
                             <option value="7">Últimos 7 días</option>
                             <option value="30" selected>Últimos 30 días</option>
                             <option value="90">Últimos 3 meses</option>
@@ -223,82 +221,29 @@
                     </div>
 
                     <div class="timeline">
-                        <div class="timeline-item">
-                            <div class="timeline-point actualización"></div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <span class="timeline-title">Denuncia #003</span>
-                                    <span class="timeline-date">11/04/2023</span>
-                                </div>
-                                <div class="timeline-body">
-                                    Se ha iniciado la investigación del caso
-                                </div>
-                                <div class="timeline-footer">
-                                    <span class="timeline-status en-proceso">
-                                        En Proceso
-                                    </span>
-                                    <button class="view-btn">
-                                        Ver detalles
-                                    </button>
-                                </div>
-                            </div>
+                        <div *ngIf="actualizacionesRecientes.length === 0" class="no-data">
+                            No hay actualizaciones recientes para mostrar.
                         </div>
 
-                        <div class="timeline-item">
-                            <div class="timeline-point resolución"></div>
+                        <div *ngFor="let actualizacion of actualizacionesRecientes" class="timeline-item">
+                            <div class="timeline-point" [ngClass]="getEstadoClass(actualizacion.estado)"></div>
                             <div class="timeline-content">
                                 <div class="timeline-header">
-                                    <span class="timeline-title">Denuncia #001</span>
-                                    <span class="timeline-date">20/03/2023</span>
+                                    <span class="timeline-title">Denuncia #{{ actualizacion.id }}</span>
+                                    <span class="timeline-date">{{ actualizacion.fecha | date:'dd/MM/yyyy' }}</span>
                                 </div>
                                 <div class="timeline-body">
-                                    Caso resuelto con medidas disciplinarias
+                                    {{ actualizacion.descripcion }}
                                 </div>
                                 <div class="timeline-footer">
-                                    <span class="timeline-status resuelta">
-                                        Resuelta
+                                    <span class="timeline-status" [ngClass]="getEstadoClass(actualizacion.estado)">
+                                        {{ getEstadoTexto(actualizacion.estado) }}
                                     </span>
-                                    <button class="view-btn">
-                                        Ver detalles
-                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="resolution-times">
-                    <h3>Tiempo Promedio de Resolución por Tipo</h3>
-
-                    <div class="table-container">
-                        <table class="resolution-table">
-                            <thead>
-                                <tr>
-                                    <th>Tipo de Denuncia</th>
-                                    <th>Tiempo Promedio (días)</th>
-                                    <th>Cantidad</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Acoso</td>
-                                    <td>5.2</td>
-                                    <td>3</td>
-                                </tr>
-                                <tr>
-                                    <td>Discriminación</td>
-                                    <td>7.5</td>
-                                    <td>2</td>
-                                </tr>
-                                <tr>
-                                    <td>Fallo del Sistema</td>
-                                    <td>2.1</td>
-                                    <td>5</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                </div>                        
             </div>
 
             <!-- Perfil -->
@@ -307,79 +252,82 @@
 
                 <div class="profile-container">
                     <div class="profile-header">
-                        <div class="profile-image">
-                            <img src="assets/images/default-profile.png" alt="Foto de perfil">
-                            <button class="change-photo-btn">
-                                <i class="fas fa-camera"></i> Cambiar
-                            </button>
-                        </div>
+
 
                         <div class="profile-summary">
-                            <h3>Carlos Ramírez</h3>
-                            <p class="user-id">ID: CR12345</p>
-                            <p class="user-department">Sistemas</p>
-                            <p class="user-position">Desarrollador</p>
+                            <h3>{{ usuarioActual.nombre }} {{ usuarioActual.apellido }}</h3>
+                            <p class="user-id">ID: {{ usuarioActual.id }}</p>
+                            <p class="user-department">{{ usuarioActual.departamento || 'No especificado' }}</p>
+                            <p class="user-position">{{ usuarioActual.cargo || 'No especificado' }}</p>
                         </div>
                     </div>
 
                     <div class="profile-tabs">
                         <div class="tab-buttons">
-                            <button class="active">
-                                Información
-                            </button>
-                            <button>
-                                Seguridad
-                            </button>
-                            <button>
-                                Notificaciones
-                            </button>
+                            <button class="active">Información</button>
                         </div>
 
                         <!-- Información personal -->
-<div class="profile-form">
-    <form (ngSubmit)="guardarPerfilUsuario()" #perfilForm="ngForm">
-        <div class="form-row">
-            <div class="form-group">
-                <label for="nombre">Nombre</label>
-                <input type="text" id="nombre" name="nombre" [(ngModel)]="usuarioActual.nombre">
-            </div>
-            
-            <div class="form-group">
-                <label for="apellido">Apellido</label>
-                <input type="text" id="apellido" name="apellido" [(ngModel)]="usuarioActual.apellido">
-            </div>
-        </div>
-        
-        <div class="form-row">
-            <div class="form-group">
-                <label for="username">Nombre de Usuario</label>
-                <input type="text" id="username" name="username" [(ngModel)]="usuarioActual.username" readonly>
-                <!-- readonly porque normalmente no se permite cambiar el username -->
-            </div>
-            
-            <div class="form-group">
-                <label for="email">Correo electrónico</label>
-                <input type="email" id="email" name="email" [(ngModel)]="usuarioActual.email">
-            </div>
-        </div>
-        
-        <div class="form-row">
-            <div class="form-group">
-                <label for="password">Nueva Contraseña (dejar en blanco para no cambiar)</label>
-                <input type="password" id="password" name="password" [(ngModel)]="usuarioActual.password">
-            </div>
-        </div>
-        
-        <div class="form-actions">
-            <button type="submit" class="btn-primary">
-                Guardar cambios
-            </button>
-            <button type="button" class="btn-secondary" (click)="cancelarEdicion()">
-                Cancelar
-            </button>
-        </div>
-    </form>
-</div>
+                        <div class="profile-form">
+                            <form (ngSubmit)="guardarPerfilUsuario()" #perfilForm="ngForm">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="nombre">Nombre</label>
+                                        <input type="text" id="nombre" name="nombre"
+                                            [(ngModel)]="usuarioActual.nombre" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="apellido">Apellido</label>
+                                        <input type="text" id="apellido" name="apellido"
+                                            [(ngModel)]="usuarioActual.apellido" />
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="username">Nombre de Usuario</label>
+                                        <input type="text" id="username" name="username"
+                                            [(ngModel)]="usuarioActual.username" readonly />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="email">Correo electrónico</label>
+                                        <input type="email" id="email" name="email" [(ngModel)]="usuarioActual.email" />
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="departamento">Departamento</label>
+                                        <input type="text" id="departamento" name="departamento"
+                                            [(ngModel)]="usuarioActual.departamento" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="cargo">Cargo</label>
+                                        <input type="text" id="cargo" name="cargo" [(ngModel)]="usuarioActual.cargo" />
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="password">Nueva Contraseña (dejar en blanco para no cambiar)</label>
+                                        <input type="password" id="password" name="password"
+                                            [(ngModel)]="usuarioActual.password" />
+                                    </div>
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary">
+                                        Guardar cambios
+                                    </button>
+                                    <button type="button" class="btn-secondary" (click)="cancelarEdicion()">
+                                        Cancelar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

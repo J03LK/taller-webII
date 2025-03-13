@@ -32,24 +32,31 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   errorMessage: string = '';
   successMessage: string = '';
   
-  // Propiedades para manejar la edición de usuario
+  // Propiedades para estadísticas y timeline
+  periodoSeleccionado: number = 30; // Por defecto 30 días
+  actualizacionesRecientes: any[] = [];
+  tiemposResolucion: any[] = [];
+
+  // Propiedades para el usuario actual
   usuarioActual: any = {
     id: null,
     nombre: '',
     apellido: '',
     username: '',
     email: '',
-    password: '' // Este campo se enviará vacío si no se va a cambiar la contraseña
+    departamento: '',
+    cargo: '',
+    password: ''
   };
-  
+
   activeTab: string = 'new-complaint'; // Pestaña predeterminada
-  
+
   @ViewChild('estadoChart') estadoChartRef!: ElementRef;
   @ViewChild('tipoChart') tipoChartRef!: ElementRef;
 
   private estadoChart!: Chart;
   private tipoChart!: Chart;
-  
+
   // Datos para los gráficos
   estadisticas = {
     total: 0,
@@ -63,42 +70,36 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   tiposDenuncias: { [key: string]: number } = {};
 
   constructor(
-    private servicio: DenunciasService, 
+    private servicio: DenunciasService,
     private router: Router,
     private loginService: LoginService,
     private usuarioService: UsuarioService
-  ) {}
-  
-  logout() { 
-    localStorage.removeItem('currentUser');
-    localStorage.setItem("login", "false");
-    this.router.navigate(['login']);
-  }
+  ) { }
 
   ngOnInit(): void {
     // Obtener los datos del usuario actual del localStorage
     const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
     console.log('userData en localStorage:', userData);
-    
+
     // Usar username u otro identificador disponible
     const username = userData.username || userData.sub || userData.email;
     console.log('Username encontrado:', username);
-    
+
     if (username) {
       // Obtener todos los usuarios y filtrar por username
       this.usuarioService.getUsuarios().subscribe(
         usuarios => {
           console.log('Usuarios obtenidos:', usuarios);
           const usuarioEncontrado = usuarios.find((u: any) => u.username === username);
-          
+
           if (usuarioEncontrado) {
             this.fullName = usuarioEncontrado.nombre + (usuarioEncontrado.apellido ? ' ' + usuarioEncontrado.apellido : '');
             console.log('Usuario encontrado:', usuarioEncontrado);
             console.log('Nombre completo:', this.fullName);
-            
+
             // Cargar los datos del usuario para el formulario de edición
             this.cargarDatosUsuario(usuarioEncontrado);
-            
+
             // Cargar denuncias del usuario logueado
             this.cargarDenunciasUsuario(usuarioEncontrado.id);
           } else {
@@ -113,18 +114,36 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     } else {
       console.log('No se encontró username en localStorage');
     }
-    
-    // Cargar todas las denuncias al inicializar (usamos la versión simple)
+
+    // Cargar todas las denuncias al inicializar
     this.cargarTodasDenuncias();
+    
+    // Inicializar la línea de tiempo y los tiempos de resolución
+    this.actualizarTimeline();
+    this.calcularTiemposResolucion();
   }
 
-  // Método para cargar todas las denuncias
+  ngAfterViewInit(): void {
+    if (this.activeTab === 'estado-denuncias') {
+      setTimeout(() => {
+        this.inicializarGraficos();
+      }, 100);
+    }
+  }
+
+  logout() {
+    localStorage.removeItem('currentUser');
+    localStorage.setItem("login", "false");
+    this.router.navigate(['login']);
+  }
+
+  // Métodos para cargar datos
   cargarTodasDenuncias() {
     this.servicio.getDenunciasSimple().subscribe(
       (data) => {
         this.denuncias = data;
         console.log('Denuncias cargadas correctamente:', this.denuncias);
-        
+
         // Una vez cargadas las denuncias, actualizamos las estadísticas
         this.actualizarEstadisticas();
       },
@@ -135,9 +154,244 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     );
   }
 
-  // Método para actualizar las estadísticas para los gráficos
+  cargarDenunciasUsuario(userId: number) {
+    console.log('Intentando cargar denuncias para el usuario ID:', userId);
+
+    if (!userId) {
+      console.error('Error: No se puede cargar denuncias sin ID de usuario');
+      this.denunciasUsuario = [];
+      return;
+    }
+
+    this.servicio.getDenunciasSimple().subscribe({
+      next: (todasDenuncias) => {
+        console.log('Todas las denuncias obtenidas, filtrando para usuario:', userId);
+        // Filtrar las denuncias por el ID de usuario
+        this.denunciasUsuario = todasDenuncias.filter(
+          denuncia => denuncia.usuario && denuncia.usuario.id === userId
+        );
+
+        if (this.denunciasUsuario.length === 0) {
+          console.log('No se encontraron denuncias para este usuario ID:', userId);
+        } else {
+          console.log('Denuncias filtradas para el usuario:', this.denunciasUsuario);
+        }
+      },
+      error: (error) => {
+        console.error('Error al obtener todas las denuncias:', error);
+        this.denunciasUsuario = [];
+        this.errorMessage = 'No se pudieron cargar tus denuncias.';
+        setTimeout(() => this.errorMessage = '', 3000);
+      }
+    });
+  }
+
+  cargarDatosUsuario(usuarioEncontrado?: any) {
+    if (usuarioEncontrado) {
+      // Si recibimos un usuario como parámetro, lo usamos
+      this.usuarioActual = {
+        id: usuarioEncontrado.id,
+        nombre: usuarioEncontrado.nombre || '',
+        apellido: usuarioEncontrado.apellido || '',
+        username: usuarioEncontrado.username || '',
+        email: usuarioEncontrado.email || '',
+        departamento: usuarioEncontrado.departamento || '',
+        cargo: usuarioEncontrado.cargo || '',
+        password: '' // No cargamos la contraseña actual por seguridad
+      };
+    } else {
+      // Si no, buscamos el usuario de nuevo
+      const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      const username = userData.username || userData.sub || userData.email;
+
+      if (username) {
+        this.usuarioService.getUsuarios().subscribe(
+          usuarios => {
+            const usuarioEncontrado = usuarios.find((u: any) => u.username === username);
+            if (usuarioEncontrado) {
+              this.usuarioActual = {
+                id: usuarioEncontrado.id,
+                nombre: usuarioEncontrado.nombre || '',
+                apellido: usuarioEncontrado.apellido || '',
+                username: usuarioEncontrado.username || '',
+                email: usuarioEncontrado.email || '',
+                departamento: usuarioEncontrado.departamento || '',
+                cargo: usuarioEncontrado.cargo || '',
+                password: '' // No cargamos la contraseña actual por seguridad
+              };
+            }
+          },
+          error => {
+            console.error('Error al obtener usuario:', error);
+            this.errorMessage = 'No se pudieron cargar los datos del usuario.';
+          }
+        );
+      }
+    }
+  }
+
+  // Métodos para acciones de usuario
+  guardarPerfilUsuario() {
+    if (this.usuarioActual && this.usuarioActual.id) {
+      // Si la contraseña está vacía, enviamos un objeto sin el campo password
+      const datosActualizados = { ...this.usuarioActual };
+      if (!datosActualizados.password) {
+        delete datosActualizados.password;
+      }
+
+      this.usuarioService.updateUsuario(this.usuarioActual.id, datosActualizados).subscribe(
+        response => {
+          console.log('Usuario actualizado correctamente', response);
+
+          // Actualizar el nombre mostrado
+          this.fullName = this.usuarioActual.nombre +
+            (this.usuarioActual.apellido ? ' ' + this.usuarioActual.apellido : '');
+
+          // Mostrar mensaje de éxito
+          this.successMessage = 'Perfil actualizado correctamente';
+          setTimeout(() => this.successMessage = '', 3000);
+        },
+        error => {
+          console.error('Error al actualizar usuario', error);
+          this.errorMessage = 'Error al actualizar el perfil';
+          setTimeout(() => this.errorMessage = '', 3000);
+        }
+      );
+    }
+  }
+
+  cancelarEdicion() {
+    // Recargar los datos originales
+    this.cargarDatosUsuario();
+  }
+
+  guardarDenuncia(formulario: any) {
+    console.log("Form submitted:", formulario);
+
+    if (!this.usuarioActual.id) {
+      this.errorMessage = 'No se pudo identificar el usuario actual. Inicie sesión nuevamente.';
+      return;
+    }
+
+    if (!formulario.valid) {
+      this.errorMessage = 'Por favor, complete todos los campos requeridos.';
+      setTimeout(() => this.errorMessage = '', 3000);
+      return;
+    }
+
+    // Crear un objeto con los datos del formulario
+    const datosFormulario: Denuncia = {
+      tipo: this.tipo,
+      ubicacion: this.ubicacion,
+      descripcion: this.descripcion,
+      contacto: this.contacto || '',
+      usuario: {
+        id: this.usuarioActual.id
+      }
+    };
+
+    console.log("Datos a enviar:", datosFormulario);
+
+    // Si hay evidencia, usar el método con evidencia
+    if (this.evidencia) {
+      this.servicio.createDenunciaWithEvidence(
+        datosFormulario.tipo,
+        datosFormulario.ubicacion,
+        datosFormulario.descripcion,
+        datosFormulario.contacto,
+        this.usuarioActual.id,
+        this.evidencia
+      ).subscribe({
+        next: (response) => this.handleDenunciaSuccess(response),
+        error: (error) => this.handleDenunciaError(error)
+      });
+    } else {
+      // Sin evidencia, usar el método normal
+      this.servicio.createDenuncia(datosFormulario).subscribe({
+        next: (response) => this.handleDenunciaSuccess(response),
+        error: (error) => this.handleDenunciaError(error)
+      });
+    }
+  }
+
+  eliminar(id: any) {
+    if (confirm('¿Estás seguro de eliminar esta denuncia?')) {
+      this.servicio.deleteDenuncia(id).subscribe({
+        next: () => {
+          // Actualizar las listas de denuncias sin recargar la página
+          if (this.usuarioActual && this.usuarioActual.id) {
+            this.cargarDenunciasUsuario(this.usuarioActual.id);
+          }
+          this.cargarTodasDenuncias();
+
+          this.successMessage = 'Denuncia eliminada correctamente';
+          setTimeout(() => this.successMessage = '', 3000);
+        },
+        error: (error) => {
+          console.error('Error al eliminar la denuncia:', error);
+          this.errorMessage = 'Error al eliminar la denuncia';
+          setTimeout(() => this.errorMessage = '', 3000);
+        }
+      });
+    }
+  }
+
+  generarPDFDenuncia(id: number) {
+    this.servicio.generarPDFDenuncia(id).subscribe({
+      next: (blob) => {
+        this.servicio.downloadPDF(blob, `denuncia_${id}.pdf`);
+        this.successMessage = 'PDF generado correctamente';
+        setTimeout(() => this.successMessage = '', 3000);
+      },
+      error: (error) => {
+        console.error('Error al generar PDF:', error);
+        this.errorMessage = 'Error al generar el PDF de la denuncia';
+        setTimeout(() => this.errorMessage = '', 3000);
+      }
+    });
+  }
+
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.evidencia = file;
+      console.log('Archivo seleccionado:', file.name);
+    }
+  }
+
+  // Métodos para navegación
+  changeTab(tab: string) {
+    console.log("Cambiando pestaña a:", tab);
+    this.activeTab = tab;
+    
+    // Si cambiamos a la pestaña de mis denuncias, cargamos las denuncias del usuario
+    if (tab === 'mis-denuncias' && this.usuarioActual && this.usuarioActual.id) {
+      console.log('Cargando denuncias del usuario al cambiar a la pestaña');
+      this.cargarDenunciasUsuario(this.usuarioActual.id);
+    }
+    
+    // Si cambiamos a la pestaña de estado, actualizamos todo
+    if (tab === 'estado-denuncias') {
+      this.actualizarEstadisticas();
+      this.actualizarTimeline();
+      this.calcularTiemposResolucion();
+      
+      setTimeout(() => {
+        this.inicializarGraficos();
+      }, 100);
+    }
+  }
+
+  verDetalleDenuncia(id: number) {
+    // Aquí puedes implementar la navegación al detalle de la denuncia
+    console.log('Ver detalle de la denuncia:', id);
+    
+    // Por ejemplo, abrir un modal o navegar a otra página
+    // this.router.navigate(['/denuncia', id]);
+  }
+
+  // Métodos para actualizar estadísticas
   actualizarEstadisticas() {
-    // Reiniciar contadores
     this.estadisticas = {
       total: this.denuncias.length,
       pendientes: 0,
@@ -149,7 +403,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     
     this.tiposDenuncias = {};
     
-    // Contar denuncias por estado y tipo
     this.denuncias.forEach(denuncia => {
       // Contar por estado
       if (denuncia.estado === EstadoDenuncia.PENDIENTE) {
@@ -174,6 +427,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       }
     });
     
+    // Actualizar la línea de tiempo y los tiempos de resolución
+    this.actualizarTimeline();
+    this.calcularTiemposResolucion();
+    
     // Si estamos en la pestaña de estadísticas, actualizamos los gráficos
     if (this.activeTab === 'estado-denuncias') {
       setTimeout(() => {
@@ -182,176 +439,152 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // Método para cargar denuncias del usuario logueado
-  cargarDenunciasUsuario(userId: number) {
-    console.log('Intentando cargar denuncias para el usuario ID:', userId);
+  actualizarTimeline() {
+    // Obtener la fecha actual
+    const fechaActual = new Date();
     
-    if (!userId) {
-      console.error('Error: No se puede cargar denuncias sin ID de usuario');
-      this.denunciasUsuario = []; 
-      return;
-    }
+    // Calcular la fecha límite según el periodo seleccionado
+    const fechaLimite = new Date();
+    fechaLimite.setDate(fechaLimite.getDate() - this.periodoSeleccionado);
     
-    // Ya que sabemos que mostrarSimple funciona, usamos ese endpoint
-    this.servicio.getDenunciasSimple().subscribe({
-      next: (todasDenuncias) => {
-        console.log('Todas las denuncias obtenidas, filtrando para usuario:', userId);
-        // Filtrar las denuncias por el ID de usuario
-        this.denunciasUsuario = todasDenuncias.filter(
-          denuncia => denuncia.usuario && denuncia.usuario.id === userId
+    // Filtrar las denuncias para obtener solo las actualizaciones recientes
+    this.servicio.getDenunciasSimple().subscribe(
+      (denuncias) => {
+        // Crear un array para almacenar las actualizaciones
+        const actualizaciones: any[] = [];
+        
+        // Procesar cada denuncia para extraer sus actualizaciones
+        denuncias.forEach(denuncia => {
+          // Si la denuncia tiene historial de actualizaciones
+          if (denuncia.historial && denuncia.historial.length > 0) {
+            denuncia.historial.forEach((evento: any) => {
+              const fechaEvento = new Date(evento.fecha);
+              if (fechaEvento >= fechaLimite && fechaEvento <= fechaActual) {
+                actualizaciones.push({
+                  id: denuncia.id,
+                  fecha: fechaEvento,
+                  descripcion: evento.descripcion,
+                  estado: evento.nuevoEstado || denuncia.estado
+                });
+              }
+            });
+          } else {
+            // Si no tiene historial, usar la fecha de creación
+            const fechaCreacion = new Date(denuncia.fechaCreacion);
+            if (fechaCreacion >= fechaLimite && fechaCreacion <= fechaActual) {
+              actualizaciones.push({
+                id: denuncia.id,
+                fecha: fechaCreacion,
+                descripcion: 'Se ha registrado una nueva denuncia',
+                estado: denuncia.estado
+              });
+            }
+          }
+        });
+        
+        // Ordenar por fecha, más reciente primero
+        this.actualizacionesRecientes = actualizaciones.sort((a, b) => 
+          new Date(b.fecha).getTime() - new Date(a.fecha).getTime()
         );
         
-        if (this.denunciasUsuario.length === 0) {
-          console.log('No se encontraron denuncias para este usuario ID:', userId);
-        } else {
-          console.log('Denuncias filtradas para el usuario:', this.denunciasUsuario);
-        }
+        // Limitar a 10 actualizaciones más recientes
+        this.actualizacionesRecientes = this.actualizacionesRecientes.slice(0, 10);
       },
-      error: (error) => {
-        console.error('Error al obtener todas las denuncias:', error);
-        this.denunciasUsuario = [];
-        this.errorMessage = 'No se pudieron cargar tus denuncias.';
+      (error) => {
+        console.error('Error al obtener las denuncias para la timeline:', error);
+        this.errorMessage = 'Error al cargar las actualizaciones recientes';
         setTimeout(() => this.errorMessage = '', 3000);
       }
-    });
+    );
   }
 
-  // Método para cargar los datos del usuario en el formulario
-  cargarDatosUsuario(usuarioEncontrado?: any) {
-    if (usuarioEncontrado) {
-      // Si recibimos un usuario como parámetro, lo usamos
-      this.usuarioActual = {
-        id: usuarioEncontrado.id,
-        nombre: usuarioEncontrado.nombre,
-        apellido: usuarioEncontrado.apellido,
-        username: usuarioEncontrado.username,
-        email: usuarioEncontrado.email,
-        password: '' // No cargamos la contraseña actual por seguridad
-      };
-    } else {
-      // Si no, buscamos el usuario de nuevo
-      const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
-      const username = userData.username || userData.sub || userData.email;
-      
-      if (username) {
-        this.usuarioService.getUsuarios().subscribe(
-          usuarios => {
-            const usuarioEncontrado = usuarios.find((u: any) => u.username === username);
-            if (usuarioEncontrado) {
-              this.usuarioActual = {
-                id: usuarioEncontrado.id,
-                nombre: usuarioEncontrado.nombre,
-                apellido: usuarioEncontrado.apellido,
-                username: usuarioEncontrado.username,
-                email: usuarioEncontrado.email,
-                password: '' // No cargamos la contraseña actual por seguridad
-              };
-            }
-          },
-          error => {
-            console.error('Error al obtener usuario:', error);
-            this.errorMessage = 'No se pudieron cargar los datos del usuario.';
-          }
+  calcularTiemposResolucion() {
+    this.servicio.getDenunciasSimple().subscribe(
+      (denuncias) => {
+        // Filtrar solo denuncias resueltas
+        const denunciasResueltas = denuncias.filter(
+          d => d.estado === EstadoDenuncia.RESUELTA || d.estado === EstadoDenuncia.CERRADA
         );
-      }
-    }
-  }
-
-  // Método para guardar cambios del perfil
-  guardarPerfilUsuario() {
-    if (this.usuarioActual && this.usuarioActual.id) {
-      // Si la contraseña está vacía, enviamos un objeto sin el campo password
-      const datosActualizados = {...this.usuarioActual};
-      if (!datosActualizados.password) {
-        delete datosActualizados.password;
-      }
-      
-      this.usuarioService.updateUsuario(this.usuarioActual.id, datosActualizados).subscribe(
-        response => {
-          console.log('Usuario actualizado correctamente', response);
+        
+        // Agrupar por tipo de denuncia
+        const tiposDenuncia: { [key: string]: any[] } = {};
+        
+        denunciasResueltas.forEach(denuncia => {
+          if (!tiposDenuncia[denuncia.tipo]) {
+            tiposDenuncia[denuncia.tipo] = [];
+          }
           
-          // Actualizar el nombre mostrado
-          this.fullName = this.usuarioActual.nombre + 
-            (this.usuarioActual.apellido ? ' ' + this.usuarioActual.apellido : '');
+          // Calcular tiempo de resolución (en días)
+          const fechaCreacion = new Date(denuncia.fechaCreacion);
+          const fechaResolucion = new Date(denuncia.fechaResolucion || denuncia.fechaActualizacion);
           
-          // Mostrar mensaje de éxito
-          this.successMessage = 'Perfil actualizado correctamente';
-          setTimeout(() => this.successMessage = '', 3000);
-        },
-        error => {
-          console.error('Error al actualizar usuario', error);
-          this.errorMessage = 'Error al actualizar el perfil';
-          setTimeout(() => this.errorMessage = '', 3000);
-        }
-      );
-    }
-  }
-
-  // Método para cancelar cambios
-  cancelarEdicion() {
-    // Recargar los datos originales
-    this.cargarDatosUsuario();
-  }
-
-  ngAfterViewInit(): void {
-    if (this.activeTab === 'estado-denuncias') {
-      setTimeout(() => {
-        this.inicializarGraficos();
-      }, 100);
-    }
-  }
-
-  // Método para guardar denuncia
-  guardarDenuncia(formulario: any) {
-    console.log("Form submitted:", formulario);
-    
-    if (!this.usuarioActual.id) {
-      this.errorMessage = 'No se pudo identificar el usuario actual. Inicie sesión nuevamente.';
-      return;
-    }
-    
-    if (!formulario.valid) {
-      this.errorMessage = 'Por favor, complete todos los campos requeridos.';
-      setTimeout(() => this.errorMessage = '', 3000);
-      return;
-    }
-    
-    // Crear un objeto con los datos del formulario
-    const datosFormulario: Denuncia = {
-      tipo: this.tipo,
-      ubicacion: this.ubicacion,
-      descripcion: this.descripcion,
-      contacto: this.contacto || '',
-      usuario: {
-        id: this.usuarioActual.id
+          // Diferencia en milisegundos
+          const diferenciaTiempo = fechaResolucion.getTime() - fechaCreacion.getTime();
+          
+          // Convertir a días (1000ms * 60s * 60min * 24h)
+          const diasResolucion = diferenciaTiempo / (1000 * 60 * 60 * 24);
+          
+          tiposDenuncia[denuncia.tipo].push(diasResolucion);
+        });
+        
+        // Calcular promedios
+        this.tiemposResolucion = Object.keys(tiposDenuncia).map(tipo => {
+          const tiempos = tiposDenuncia[tipo];
+          const total = tiempos.reduce((sum, tiempo) => sum + tiempo, 0);
+          const promedio = total / tiempos.length;
+          
+          return {
+            tipo,
+            promedio,
+            cantidad: tiempos.length
+          };
+        });
+        
+        // Ordenar por cantidad (descendente)
+        this.tiemposResolucion.sort((a, b) => b.cantidad - a.cantidad);
+      },
+      (error) => {
+        console.error('Error al calcular tiempos de resolución:', error);
       }
-    };
-    
-    console.log("Datos a enviar:", datosFormulario);
-    
-    // Si hay evidencia, usar el método con evidencia
-    if (this.evidencia) {
-      this.servicio.createDenunciaWithEvidence(
-        datosFormulario.tipo,
-        datosFormulario.ubicacion,
-        datosFormulario.descripcion,
-        datosFormulario.contacto,
-        this.usuarioActual.id,
-        this.evidencia
-      ).subscribe({
-        next: (response) => this.handleDenunciaSuccess(response),
-        error: (error) => this.handleDenunciaError(error)
-      });
-    } else {
-      // Sin evidencia, usar el método normal
-      this.servicio.createDenuncia(datosFormulario).subscribe({
-        next: (response) => this.handleDenunciaSuccess(response),
-        error: (error) => this.handleDenunciaError(error)
-      });
+    );
+  }
+
+  // Métodos auxiliares
+  getEstadoClass(estado: string): string {
+    switch (estado) {
+      case EstadoDenuncia.PENDIENTE:
+        return 'pendiente';
+      case EstadoDenuncia.EN_PROCESO:
+        return 'en-proceso';
+      case EstadoDenuncia.RESUELTA:
+        return 'resuelta';
+      case EstadoDenuncia.CERRADA:
+        return 'cerrada';
+      case EstadoDenuncia.RECHAZADA:
+        return 'rechazada';
+      default:
+        return 'actualización';
     }
   }
-  
-  // Método para manejar respuesta exitosa al guardar denuncia
+
+  getEstadoTexto(estado: string): string {
+    switch (estado) {
+      case EstadoDenuncia.PENDIENTE:
+        return 'Pendiente';
+      case EstadoDenuncia.EN_PROCESO:
+        return 'En Proceso';
+      case EstadoDenuncia.RESUELTA:
+        return 'Resuelta';
+      case EstadoDenuncia.CERRADA:
+        return 'Cerrada';
+      case EstadoDenuncia.RECHAZADA:
+        return 'Rechazada';
+      default:
+        return 'Desconocido';
+    }
+  }
+
+  // Métodos para manejar respuestas
   private handleDenunciaSuccess(response: any) {
     console.log('Denuncia guardada exitosamente:', response);
     
@@ -370,19 +603,20 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     
     // Luego filtrar para el usuario actual
     if (this.usuarioActual && this.usuarioActual.id) {
-      // En lugar de usar getDenunciasByUsuario, llamamos a nuestro método que filtra localmente
       this.cargarDenunciasUsuario(this.usuarioActual.id);
     }
     
+    // Actualizar estadísticas y gráficos
+    this.actualizarEstadisticas();
+    
     // Cambiar a la pestaña de mis denuncias
     setTimeout(() => {
-      this.activeTab = 'my-complaints';
-    }, 300); // Dar un poco más de tiempo para que se carguen los datos
+      this.activeTab = 'mis-denuncias';
+    }, 300);
     
     setTimeout(() => this.successMessage = '', 3000);
   }
-  
-  // Método para manejar error al guardar denuncia
+
   private handleDenunciaError(error: any) {
     console.error('Error al guardar la denuncia:', error);
     
@@ -397,74 +631,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     
     setTimeout(() => this.errorMessage = '', 5000);
   }
-  
-  // Método para eliminar denuncia
-  eliminar(id: any) {
-    if (confirm('¿Estás seguro de eliminar esta denuncia?')) {
-      this.servicio.deleteDenuncia(id).subscribe({
-        next: () => {
-          // Actualizar las listas de denuncias sin recargar la página
-          if (this.usuarioActual && this.usuarioActual.id) {
-            this.cargarDenunciasUsuario(this.usuarioActual.id);
-          }
-          this.cargarTodasDenuncias();
-          
-          this.successMessage = 'Denuncia eliminada correctamente';
-          setTimeout(() => this.successMessage = '', 3000);
-        },
-        error: (error) => {
-          console.error('Error al eliminar la denuncia:', error);
-          this.errorMessage = 'Error al eliminar la denuncia';
-          setTimeout(() => this.errorMessage = '', 3000);
-        }
-      });
-    }
-  }
 
-  // Método para generar PDF de una denuncia específica
-  generarPDFDenuncia(id: number) {
-    this.servicio.generarPDFDenuncia(id).subscribe({
-      next: (blob) => {
-        this.servicio.downloadPDF(blob, `denuncia_${id}.pdf`);
-        this.successMessage = 'PDF generado correctamente';
-        setTimeout(() => this.successMessage = '', 3000);
-      },
-      error: (error) => {
-        console.error('Error al generar PDF:', error);
-        this.errorMessage = 'Error al generar el PDF de la denuncia';
-        setTimeout(() => this.errorMessage = '', 3000);
-      }
-    });
-  }
-
-  // Método para manejar el cambio de archivo
-  onFileChange(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.evidencia = file;
-      console.log('Archivo seleccionado:', file.name);
-    }
-  }
-
-  changeTab(tab: string) {
-    console.log("Cambiando pestaña a:", tab);
-    this.activeTab = tab;
-    
-    // Si cambiamos a la pestaña de mis denuncias, cargamos las denuncias del usuario
-    if (tab === 'my-complaints' && this.usuarioActual && this.usuarioActual.id) {
-      console.log('Cargando denuncias del usuario al cambiar a la pestaña');
-      this.cargarDenunciasUsuario(this.usuarioActual.id);
-    }
-    
-    // Si cambiamos a la pestaña de estado, inicializamos los gráficos
-    if (tab === 'estado-denuncias') {
-      setTimeout(() => {
-        this.inicializarGraficos();
-      }, 100);
-    }
-  }
-  
-  // Método para inicializar los gráficos
+  // Métodos para gráficos
   inicializarGraficos(): void {
     console.log('Inicializando gráficos...');
     console.log('Referencias:', this.estadoChartRef, this.tipoChartRef);
@@ -477,8 +645,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       console.error('No se encontraron las referencias a los canvas de los gráficos');
     }
   }
-  
-  // Crear gráfico de distribución por estado
+
   crearGraficoEstados(): void {
     const ctx = this.estadoChartRef.nativeElement.getContext('2d');
     
@@ -545,8 +712,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       }
     });
   }
-  
-  // Crear gráfico de denuncias por tipo
+
   crearGraficoTipos(): void {
     const ctx = this.tipoChartRef.nativeElement.getContext('2d');
     
@@ -560,7 +726,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     const tiposValues = tiposLabels.map(tipo => this.tiposDenuncias[tipo]);
     
     // Si no hay datos, usar datos de ejemplo
-    const labels = tiposLabels.length > 0 ? tiposLabels : 
+    const labels = tiposLabels.length > 0 ? tiposLabels :
       ['Acoso', 'Discriminación', 'Corrupción', 'Abuso', 'Fraude', 'Violencia', 'Fallo del Sistema'];
     
     const valores = tiposValues.length > 0 ? tiposValues : [0, 0, 0, 0, 0, 0, 0];
@@ -611,4 +777,5 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       }
     });
   }
+  
 }
