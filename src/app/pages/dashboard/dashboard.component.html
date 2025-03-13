@@ -2,7 +2,10 @@
     <header class="panel-header">
         <h1>Sistema de Denuncias Institucional</h1>
         <div class="user-info">
-            <span id="username">Usuario: Carlos Ramírez</span>
+           
+            <div class="user-info" *ngIf="fullName">
+                Usuario: {{ fullName }}
+              </div>
             <button id="logout-btn" (click)="logout()" class="logout-btn">Cerrar Sesión</button>
         </div>
     </header>

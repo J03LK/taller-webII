@@ -3,9 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Chart, registerables } from 'chart.js';
 import { DenunciasService } from '../../service/denuncias.service';
-import { Router } from '@angular/router'; // Corregido: importar desde @angular/router
+import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { TabladenunciasComponent } from "../../components/tablaDenuncias/tabladenuncias.component";
+import { LoginService } from '../../service/login.service';
+import { UsuarioService } from '../../service/usuario.service';
 
 // Registrar todos los componentes necesarios de Chart.js
 Chart.register(...registerables);
@@ -13,7 +15,7 @@ Chart.register(...registerables);
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, TabladenunciasComponent], // Añadido RouterLink a los imports
+  imports: [CommonModule, FormsModule, RouterLink, TabladenunciasComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
@@ -25,6 +27,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   contacto: any;
   denuncias: any[] = [];
   evidencia: any;
+  fullName: string = '';
   
   activeTab: string = 'new-complaint'; // Pestaña predeterminada
   
@@ -42,14 +45,51 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     resueltas: 7
   };
 
-  constructor(private servicio: DenunciasService, private router: Router) {}
+  constructor(
+    private servicio: DenunciasService, 
+    private router: Router,
+    private loginService: LoginService,
+    private usuarioService: UsuarioService
+  ) {}
   
   logout() { 
+    localStorage.removeItem('currentUser');
     localStorage.setItem("login", "false");
     this.router.navigate(['login']);
   }
 
   ngOnInit(): void {
+    // Obtener los datos del usuario actual del localStorage
+    const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    console.log('userData en localStorage:', userData);
+    
+    // Usar username u otro identificador disponible
+    const username = userData.username || userData.sub || userData.email;
+    console.log('Username encontrado:', username);
+    
+    if (username) {
+      // Obtener todos los usuarios y filtrar por username
+      this.usuarioService.getUsuarios().subscribe(
+        usuarios => {
+          console.log('Usuarios obtenidos:', usuarios);
+          const usuarioEncontrado = usuarios.find((u: any) => u.username === username);
+          
+          if (usuarioEncontrado) {
+            this.fullName = usuarioEncontrado.nombre + (usuarioEncontrado.apellido ? ' ' + usuarioEncontrado.apellido : '');
+            console.log('Usuario encontrado:', usuarioEncontrado);
+            console.log('Nombre completo:', this.fullName);
+          } else {
+            console.log('No se encontró usuario con username:', username);
+          }
+        },
+        error => {
+          console.error('Error al obtener usuarios:', error);
+        }
+      );
+    } else {
+      console.log('No se encontró username en localStorage');
+    }
+    
     // Cargar denuncias al inicializar
     this.servicio.getDenuncias().subscribe(
       (data) => {
