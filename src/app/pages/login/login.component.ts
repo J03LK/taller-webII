@@ -73,7 +73,7 @@ export class LoginComponent {
       rol: 'USUARIO'
     };
     
-    
+  
     this.usuarioService.postUsuarios(userData).subscribe({
       next: (respuesta: any) => {
         console.log("Usuario registrado:", respuesta);

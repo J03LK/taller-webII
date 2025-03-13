@@ -31,52 +31,51 @@
         </aside>
 
         <main class="content">
-            <!-- Nueva denuncia -->
             <div *ngIf="activeTab === 'new-complaint'" class="tab-content">
                 <h2>Registrar Nueva Denuncia</h2>
                 <form #denunciaForm="ngForm" (ngSubmit)="guardarDenuncia(denunciaForm)">
-                    <div class="form-group slide-in-left">
-                        <label for="tipo">Tipo de Denuncia</label>
-                        <select id="tipo" name="tipo" [(ngModel)]="tipo" required>
-                            <option value="">Seleccione un tipo</option>
-                            <option value="acoso">Acoso</option>
-                            <option value="discriminacion">Discriminación</option>
-                            <option value="corrupcion">Corrupción</option>
-                            <option value="abuso">Abuso de autoridad</option>
-                            <option value="fraude">Fraude</option>
-                            <option value="violencia">Violencia</option>
-                            <option value="negligencia">Negligencia</option>
-                            <option value="fallo-sistema">Fallo del Sistema</option>
-                            <option value="otros">Otros</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group slide-in-right">
-                        <label for="ubicacion">Ubicación del incidente</label>
-                        <input type="text" id="ubicacion" name="ubicacion" [(ngModel)]="ubicacion"
-                            placeholder="Departamento, oficina, área, etc." required>
-                    </div>
-
-                    <div class="form-group slide-in-left">
-                        <label for="descripcion">Descripción de la denuncia</label>
-                        <textarea id="descripcion" name="descripcion" [(ngModel)]="descripcion"
-                            placeholder="Describa detalladamente la situación" required></textarea>
-                    </div>
-
-                    <div class="form-group slide-in-right">
-                        <label for="contacto">Información de contacto</label>
-                        <input type="text" id="contacto" name="contacto" [(ngModel)]="contacto"
-                            placeholder="Nombre, matrícula y teléfono">
-                    </div>
-
-                    <div class="form-group slide-in-left">
-                        <label for="evidencia">Adjuntar evidencia (foto/documento)</label>
-                        <input type="file" id="evidencia" name="evidencia">
-                    </div>
-
-                    <button type="submit" class="submit-btn">Enviar Denuncia</button>
+                  <div class="form-group slide-in-left">
+                    <label for="tipo">Tipo de Denuncia</label>
+                    <select id="tipo" name="tipo" [(ngModel)]="tipo" required>
+                      <option value="">Seleccione un tipo</option>
+                      <option value="acoso">Acoso</option>
+                      <option value="discriminacion">Discriminación</option>
+                      <option value="corrupcion">Corrupción</option>
+                      <option value="abuso">Abuso de autoridad</option>
+                      <option value="fraude">Fraude</option>
+                      <option value="violencia">Violencia</option>
+                      <option value="negligencia">Negligencia</option>
+                      <option value="fallo-sistema">Fallo del Sistema</option>
+                      <option value="otros">Otros</option>
+                    </select>
+                  </div>
+          
+                  <div class="form-group slide-in-right">
+                    <label for="ubicacion">Ubicación del incidente</label>
+                    <input type="text" id="ubicacion" name="ubicacion" [(ngModel)]="ubicacion"
+                      placeholder="Departamento, oficina, área, etc." required>
+                  </div>
+          
+                  <div class="form-group slide-in-left">
+                    <label for="descripcion">Descripción de la denuncia</label>
+                    <textarea id="descripcion" name="descripcion" [(ngModel)]="descripcion"
+                      placeholder="Describa detalladamente la situación" required></textarea>
+                  </div>
+          
+                  <div class="form-group slide-in-right">
+                    <label for="contacto">Información de contacto</label>
+                    <input type="text" id="contacto" name="contacto" [(ngModel)]="contacto"
+                      placeholder="Nombre, matrícula y teléfono">
+                  </div>
+          
+                  <div class="form-group slide-in-left">
+                    <label for="evidencia">Adjuntar evidencia (foto/documento)</label>
+                    <input type="file" id="evidencia" name="evidencia" (change)="onFileChange($event)">
+                  </div>
+          
+                  <button type="submit" class="submit-btn">Enviar Denuncia</button>
                 </form>
-            </div>
+              </div>
 
             <!-- Mis Denuncias -->
             <div *ngIf="activeTab === 'mis-denuncias'" class="tab-content">
@@ -98,7 +97,41 @@
                 </div>
 
                 <div class="table-container">
-                    <app-tabladenuncias></app-tabladenuncias>
+                    <table class="min-w-full table-auto border-collapse">
+                        <thead>
+                          <tr class="bg-gray-100">
+                            <th class="px-4 py-2 border text-left">ID</th>
+                            <th class="px-4 py-2 border text-left">Tipo</th>
+                            <th class="px-4 py-2 border text-left">Ubicación</th>
+                            <th class="px-4 py-2 border text-left">Descripción</th>
+                            <th class="px-4 py-2 border text-left">Contacto</th>
+                            <th class="px-4 py-2 border text-left">Acciones</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @if (denunciasUsuario.length === 0) {
+                            <tr>
+                              <td colspan="6" class="px-4 py-2 border text-center">No tienes denuncias registradas</td>
+                            </tr>
+                          }
+                          @for (denuncia of denunciasUsuario; track $index) {
+                            <tr>
+                              <td class="px-4 py-2 border">{{ denuncia.id }}</td>
+                              <td class="px-4 py-2 border">{{ denuncia.tipo }}</td>
+                              <td class="px-4 py-2 border">{{ denuncia.ubicacion }}</td>
+                              <td class="px-4 py-2 border">{{ denuncia.descripcion }}</td>
+                              <td class="px-4 py-2 border">{{ denuncia.contacto }}</td>
+                              <td class="px-4 py-2 border text-center actions-cell">
+                                <div class="actions-container">
+                                  <button (click)="eliminar(denuncia.id)" class="action-btn delete-btn">
+                                    Eliminar
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          }
+                        </tbody>
+                      </table>
 
                 </div>
                 <div class="pagination-controls">
@@ -302,58 +335,51 @@
                             </button>
                         </div>
 
-                        <!-- Solo se muestra la primera pestaña, las otras están implementadas pero ocultas por simplicidad -->
-                        <div class="tab-content">
-                            <!-- Información personal -->
-                            <div class="profile-form">
-                                <form>
-                                    <div class="form-row">
-                                        <div class="form-group">
-                                            <label for="nombre">Nombre completo</label>
-                                            <input type="text" id="nombre" value="Carlos Ramírez">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="matricula">Matrícula / ID</label>
-                                            <input type="text" id="matricula" value="CR12345" readonly>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-row">
-                                        <div class="form-group">
-                                            <label for="email">Correo electrónico</label>
-                                            <input type="email" id="email" value="carlos.ramirez@ejemplo.com">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="telefono">Teléfono</label>
-                                            <input type="tel" id="telefono" value="555-123-4567">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-row">
-                                        <div class="form-group">
-                                            <label for="departamento">Departamento</label>
-                                            <input type="text" id="departamento" value="Sistemas">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="cargo">Cargo</label>
-                                            <input type="text" id="cargo" value="Desarrollador">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-actions">
-                                        <button type="submit" class="btn-primary">
-                                            Guardar cambios
-                                        </button>
-                                        <button type="button" class="btn-secondary">
-                                            Cancelar
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                        <!-- Información personal -->
+<div class="profile-form">
+    <form (ngSubmit)="guardarPerfilUsuario()" #perfilForm="ngForm">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" [(ngModel)]="usuarioActual.nombre">
+            </div>
+            
+            <div class="form-group">
+                <label for="apellido">Apellido</label>
+                <input type="text" id="apellido" name="apellido" [(ngModel)]="usuarioActual.apellido">
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="username">Nombre de Usuario</label>
+                <input type="text" id="username" name="username" [(ngModel)]="usuarioActual.username" readonly>
+                <!-- readonly porque normalmente no se permite cambiar el username -->
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" name="email" [(ngModel)]="usuarioActual.email">
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="password">Nueva Contraseña (dejar en blanco para no cambiar)</label>
+                <input type="password" id="password" name="password" [(ngModel)]="usuarioActual.password">
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">
+                Guardar cambios
+            </button>
+            <button type="button" class="btn-secondary" (click)="cancelarEdicion()">
+                Cancelar
+            </button>
+        </div>
+    </form>
+</div>
                     </div>
                 </div>
             </div>
