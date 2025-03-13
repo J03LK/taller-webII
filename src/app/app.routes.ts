@@ -7,8 +7,9 @@ import { NosotrosComponent } from './pages/nosotros/nosotros.component';
 import { InfraestructuraComponent } from './pages/infraestructura/infraestructura.component';
 import { loginGuard } from './guards/login.guard';
 import { TabladenunciasComponent } from './components/tablaDenuncias/tabladenuncias.component';
-import { SuggestionBoxComponent } from './pages/dashboard-admin/dashboard-admin.component';
+
 import { ocultarGuard } from './guards/ocultar.guard';
+import { SuggestionBoxComponent } from './pages/dashboard-admin/dashboard-admin.component';
 
 
 

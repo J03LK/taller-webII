@@ -178,4 +178,5 @@ export class DenunciasService {
     window.URL.revokeObjectURL(url);
     document.body.removeChild(a);
   }
+  
 }

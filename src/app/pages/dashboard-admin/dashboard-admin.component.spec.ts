@@ -1,18 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DashboardAdminComponent } from './dashboard-admin.component';
+import { NgForm } from '@angular/forms';
+import { SuggestionBoxComponent } from './dashboard-admin.component';
 
 describe('DashboardAdminComponent', () => {
-  let component: DashboardAdminComponent;
-  let fixture: ComponentFixture<DashboardAdminComponent>;
+  let component: SuggestionBoxComponent;
+  let fixture: ComponentFixture<SuggestionBoxComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DashboardAdminComponent]
+      imports: [SuggestionBoxComponent,NgForm]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(DashboardAdminComponent);
+    fixture = TestBed.createComponent(SuggestionBoxComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
