@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 
@@ -71,7 +71,7 @@ export class DenunciasService {
   
   // Obtener todas las denuncias en formato simplificado (evita referencias circulares)
   getDenunciasSimple(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API_DENUNCIA}/mostrarSimple`)
+    return this.http.get<any[]>(`${this.API_DENUNCIA}/mostrar`)
       .pipe(catchError(this.handleError));
   }
   
@@ -143,8 +143,20 @@ export class DenunciasService {
   
   // Cambiar estado de una denuncia
   cambiarEstadoDenuncia(id: number, estado: EstadoDenuncia): Observable<Denuncia> {
-    return this.http.put<Denuncia>(`${this.API_DENUNCIA}/cambiarEstado/${id}?estado=${estado}`, {})
-      .pipe(catchError(this.handleError));
+    // Obtener token del localStorage o donde lo almacenes
+    const token = localStorage.getItem('token');
+    
+    // Configurar cabeceras con el token
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}` // Ajusta según tu implementación
+    });
+    
+    return this.http.put<Denuncia>(
+      `${this.API_DENUNCIA}/cambiarEstado/${id}?estado=${estado}`, 
+      {},
+      { headers }
+    ).pipe(catchError(this.handleError));
   }
   
   // Eliminar denuncia

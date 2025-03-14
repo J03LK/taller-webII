@@ -251,17 +251,15 @@
                                         </div>
                                         <div class="col-md-4 d-flex align-items-center justify-content-end">
                                             <div class="btn-group">
-                                                <button class="btn btn-sm btn-outline-primary">
+                                                <button class="btn btn-sm btn-outline-primary" (click)="verDenuncia(suggestion.id)">
                                                     <i class="bi bi-eye me-1"></i> Ver
                                                 </button>
-                                                <button class="btn btn-sm btn-outline-success">
+                                              
+                                                <button class="btn btn-sm btn-outline-success" (click)="aprobarDenuncia(suggestion.id)">
                                                     <i class="bi bi-check2 me-1"></i> Aprobar
                                                 </button>
-                                                <button class="btn btn-sm btn-outline-danger">
+                                                <button class="btn btn-sm btn-outline-danger" (click)="rechazarDenuncia(suggestion.id)">
                                                     <i class="bi bi-x me-1"></i> Rechazar
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-secondary">
-                                                    <i class="bi bi-three-dots-vertical"></i>
                                                 </button>
                                             </div>
                                         </div>
@@ -297,9 +295,6 @@
                     </div>
                 </div>
     
-                
-                <!-- El resto del contenido del dashboard (sugerencias recientes, comentarios, etc.) -->
-                <!-- Puedes mantener el resto del contenido tal como está en el HTML original -->
             </div>
 
             <!-- Contenido de SUGERENCIAS -->
@@ -318,45 +313,46 @@
 
                 <div class="card border-0 shadow-sm">
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
+                        <div class="table-container">
+                            <table class="denuncias-table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Título</th>
-                                        <th scope="col">Autor</th>
-                                        <th scope="col">Departamento</th>
-                                        <th scope="col">Fecha</th>
-                                        <th scope="col">Estado</th>
-                                        <th scope="col">Acciones</th>
+                                        <th>ID</th>
+                                        <th>Tipo</th>
+                                        <th>Ubicación</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let sugerencia of recentSuggestions">
-                                        <td>{{sugerencia.id}}</td>
-                                        <td>{{sugerencia.title}}</td>
-                                        <td>{{sugerencia.author}}</td>
-                                        <td>{{sugerencia.department}}</td>
-                                        <td>{{sugerencia.date | date:'shortDate'}}</td>
-                                        <td>
-                                            <span class="badge rounded-pill" [ngClass]="getStatusClass(sugerencia.status)">
-                                                {{sugerencia.status}}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <button class="btn btn-sm btn-outline-primary">
-                                                    <i class="bi bi-eye"></i>
+                                    @for (denuncia of denuncias; track denuncia.id) {
+                                        <tr>
+                                            <td>{{ denuncia.id }}</td>
+                                            <td>{{ denuncia.tipo }}</td>
+                                            <td>{{ denuncia.ubicacion }}</td>
+                                            <td>
+                                                <span class="status-badge"
+                                                    [ngClass]="{
+                                                      'resuelta': denuncia.estado === 'Resuelta',
+                                                      'pendiente': denuncia.estado === 'Pendiente',
+                                                      'rechazada': denuncia.estado === 'Rechazada',
+                                                      'en-proceso': denuncia.estado === 'En Proceso'
+                                                    }">
+                                                    {{ denuncia.estado }}
+                                                </span>
+                                            </td>
+                                            <td class="actions-column">
+                                                <button class="action-btn delete-btn" 
+                                                        (click)="eliminarDenuncia(denuncia.id)">
+                                                    <i class="fas fa-trash-alt"></i> Eliminar
                                                 </button>
-                                                <button class="btn btn-sm btn-outline-secondary">
-                                                    <i class="bi bi-pencil"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-danger">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
+                                    } @empty {
+                                        <tr>
+                                            <td colspan="5" class="text-center py-4">No hay denuncias registradas</td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                         </div>
@@ -389,14 +385,14 @@
                         </button>
                     </div>
                 </div>
-
+            
                 <div class="alert alert-success d-flex align-items-center mb-4">
                     <i class="bi bi-check-circle-fill me-2"></i>
                     <div>
                         Mostrando todas las sugerencias que han sido implementadas con éxito.
                     </div>
                 </div>
-
+            
                 <div class="card border-0 shadow-sm">
                     <div class="card-body">
                         <div class="table-responsive">
@@ -404,34 +400,41 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Título</th>
-                                        <th scope="col">Autor</th>
-                                        <th scope="col">Departamento</th>
-                                        <th scope="col">Fecha Implementación</th>
-                                        <th scope="col">Impacto</th>
+                                        <th scope="col">Tipo</th>
+                                        <th scope="col">Ubicación</th>
+                                        <th scope="col">Estado</th>
+                                        <th scope="col">Fecha</th>
                                         <th scope="col">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Filtrar solo las implementadas -->
-                                    <tr *ngFor="let sugerencia of recentSuggestions | slice:0:1">
-                                        <td>{{sugerencia.id}}</td>
-                                        <td>{{sugerencia.title}}</td>
-                                        <td>{{sugerencia.author}}</td>
-                                        <td>{{sugerencia.department}}</td>
-                                        <td>{{sugerencia.date | date:'dd/MM/yyyy'}}</td>
-                                        <td><span class="badge bg-success">Alto</span></td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <button class="btn btn-sm btn-outline-primary">
-                                                    <i class="bi bi-eye"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-info">
-                                                    <i class="bi bi-file-earmark-text"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    @for (denuncia of getDenunciasImplementadas(); track denuncia.id) {
+                                        <tr>
+                                            <td>{{denuncia.id}}</td>
+                                            <td>{{denuncia.tipo}}</td>
+                                            <td>{{denuncia.ubicacion}}</td>
+                                            <td>
+                                                <span class="status-badge resuelta">
+                                                    {{denuncia.estado}}
+                                                </span>
+                                            </td>
+                                            <td>{{denuncia.fechaCreacion | date:'dd/MM/yyyy'}}</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button class="btn btn-sm btn-outline-primary" (click)="verDenuncia(denuncia.id)">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-info">
+                                                        <i class="bi bi-file-earmark-text"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    } @empty {
+                                        <tr>
+                                            <td colspan="6" class="text-center py-4">No hay sugerencias implementadas</td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                         </div>
@@ -449,14 +452,14 @@
                         </button>
                     </div>
                 </div>
-
+            
                 <div class="alert alert-warning d-flex align-items-center mb-4">
                     <i class="bi bi-exclamation-triangle-fill me-2"></i>
                     <div>
-                        Hay <strong>{{inReviewSuggestions}}</strong> sugerencias en proceso de revisión. Tiempo promedio de revisión: <strong>{{averageReviewTime}} días</strong>.
+                        Hay <strong>{{inReviewSuggestions}}</strong> sugerencias en proceso de revisión.
                     </div>
                 </div>
-
+            
                 <div class="card border-0 shadow-sm">
                     <div class="card-body">
                         <div class="table-responsive">
@@ -464,40 +467,44 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Título</th>
-                                        <th scope="col">Autor</th>
-                                        <th scope="col">Departamento</th>
-                                        <th scope="col">Fecha Inicio</th>
-                                        <th scope="col">Días en Revisión</th>
+                                        <th scope="col">Tipo</th>
+                                        <th scope="col">Ubicación</th>
+                                        <th scope="col">Estado</th>
+                                        <th scope="col">Fecha</th>
                                         <th scope="col">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Filtrar solo las que están en revisión -->
-                                    <tr *ngFor="let sugerencia of recentSuggestions | slice:1:2">
-                                        <td>{{sugerencia.id}}</td>
-                                        <td>{{sugerencia.title}}</td>
-                                        <td>{{sugerencia.author}}</td>
-                                        <td>{{sugerencia.department}}</td>
-                                        <td>{{sugerencia.date | date:'dd/MM/yyyy'}}</td>
-                                        <td>3</td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <button class="btn btn-sm btn-outline-primary">
-                                                    <i class="bi bi-eye"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-success">
-                                                    <i class="bi bi-check-circle"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-danger">
-                                                    <i class="bi bi-x-circle"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-warning">
-                                                    <i class="bi bi-clock-history"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    @for (denuncia of getDenunciasEnRevision(); track denuncia.id) {
+                                        <tr>
+                                            <td>{{denuncia.id}}</td>
+                                            <td>{{denuncia.tipo}}</td>
+                                            <td>{{denuncia.ubicacion}}</td>
+                                            <td>
+                                                <span class="status-badge en-proceso">
+                                                    {{denuncia.estado}}
+                                                </span>
+                                            </td>
+                                            <td>{{denuncia.fechaCreacion | date:'dd/MM/yyyy'}}</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button class="btn btn-sm btn-outline-primary" (click)="verDenuncia(denuncia.id)">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-success" (click)="aprobarDenuncia(denuncia.id)">
+                                                        <i class="bi bi-check-circle"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-danger" (click)="rechazarDenuncia(denuncia.id)">
+                                                        <i class="bi bi-x-circle"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    } @empty {
+                                        <tr>
+                                            <td colspan="6" class="text-center py-4">No hay sugerencias en revisión</td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                         </div>
@@ -515,14 +522,14 @@
                         </button>
                     </div>
                 </div>
-
+            
                 <div class="alert alert-danger d-flex align-items-center mb-4">
                     <i class="bi bi-x-circle-fill me-2"></i>
                     <div>
                         Mostrando las sugerencias que han sido rechazadas. Tasa de rechazo: <strong>{{rejectionRate}}%</strong>.
                     </div>
                 </div>
-
+            
                 <div class="card border-0 shadow-sm">
                     <div class="card-body">
                         <div class="table-responsive">
@@ -530,34 +537,39 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Título</th>
-                                        <th scope="col">Autor</th>
-                                        <th scope="col">Departamento</th>
-                                        <th scope="col">Fecha Rechazo</th>
-                                        <th scope="col">Motivo</th>
+                                        <th scope="col">Tipo</th>
+                                        <th scope="col">Ubicación</th>
+                                        <th scope="col">Estado</th>
+                                        <th scope="col">Fecha</th>
                                         <th scope="col">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Filtrar solo las rechazadas -->
-                                    <tr *ngFor="let sugerencia of recentSuggestions | slice:3:4">
-                                        <td>{{sugerencia.id}}</td>
-                                        <td>{{sugerencia.title}}</td>
-                                        <td>{{sugerencia.author}}</td>
-                                        <td>{{sugerencia.department}}</td>
-                                        <td>{{sugerencia.date | date:'dd/MM/yyyy'}}</td>
-                                        <td>No viable económicamente</td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <button class="btn btn-sm btn-outline-primary">
-                                                    <i class="bi bi-eye"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-warning">
-                                                    <i class="bi bi-arrow-counterclockwise"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    @for (denuncia of getDenunciasRechazadas(); track denuncia.id) {
+                                        <tr>
+                                            <td>{{denuncia.id}}</td>
+                                            <td>{{denuncia.tipo}}</td>
+                                            <td>{{denuncia.ubicacion}}</td>
+                                            <td>
+                                                <span class="status-badge rechazada">
+                                                    {{denuncia.estado}}
+                                                </span>
+                                            </td>
+                                            <td>{{denuncia.fechaCreacion | date:'dd/MM/yyyy'}}</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button class="btn btn-sm btn-outline-primary" (click)="verDenuncia(denuncia.id)">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                  
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    } @empty {
+                                        <tr>
+                                            <td colspan="6" class="text-center py-4">No hay sugerencias rechazadas</td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                         </div>
@@ -573,6 +585,9 @@
                         <div class="btn-group me-2">
                             <button class="btn btn-sm btn-outline-secondary">
                                 <i class="bi bi-download me-1"></i> Exportar
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" (click)="generarPDF()">
+                                <i class="bi bi-file-pdf me-1"></i> Generar PDF
                             </button>
                         </div>
                         <div class="dropdown">
@@ -639,7 +654,7 @@
                 <div class="d-flex justify-content-between align-items-center pb-2 mb-4 border-bottom">
                     <h1 class="h2">Gestión de Usuarios</h1>
                 </div>
-
+            
                 <div class="card border-0 shadow-sm">
                     <div class="card-body">
                         <div class="table-responsive">
@@ -649,80 +664,40 @@
                                         <th scope="col">#</th>
                                         <th scope="col">Nombre</th>
                                         <th scope="col">Email</th>
-                                        <th scope="col">Departamento</th>
                                         <th scope="col">Rol</th>
-                                        <th scope="col">Activo desde</th>
-                                        <th scope="col">Sugerencias</th>
                                         <th scope="col">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Juan Pérez</td>
-                                        <td>juan.pere.com</td>
-                                        <td>IT</td>
-                                        <td>Desarrollador</td>
-                                        <td>15/03/2022</td>
-                                        <td>8</td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <button class="btn btn-sm btn-outline-primary">
-                                                    <i class="bi bi-eye"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-secondary">
-                                                    <i class="bi bi-pencil"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-danger">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>María Gómez</td>
-                                        <td>maria.gomezcom</td>
-                                        <td>Administración</td>
-                                        <td>Coordinadora</td>
-                                        <td>22/08/2021</td>
-                                        <td>5</td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <button class="btn btn-sm btn-outline-primary">
-                                                    <i class="bi bi-eye"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-secondary">
-                                                    <i class="bi bi-pencil"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-danger">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Carlos Rodríguez</td>
-                                        <td>carlos.rodriguez.com</td>
-                                        <td>RRHH</td>
-                                        <td>Especialista</td>
-                                        <td>10/11/2020</td>
-                                        <td>12</td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <button class="btn btn-sm btn-outline-primary">
-                                                    <i class="bi bi-eye"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-secondary">
-                                                    <i class="bi bi-pencil"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-danger">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    @for (usuario of usuarios; track usuario.id) {
+                                        <tr>
+                                            <td>{{ usuario.id }}</td>
+                                            <td>{{ usuario.nombre || 'Sin nombre' }}</td>
+                                            <td>{{ usuario.email || 'Sin email' }}</td>
+                                            <td>
+                                                <span class="badge" [ngClass]="usuario.rol === 'ADMIN' ? 'bg-primary' : 'bg-info'">
+                                                    {{ usuario.rol || 'Usuario' }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button class="btn btn-sm btn-outline-primary" (click)="verUsuario(usuario.id)">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-secondary" (click)="editarUsuario(usuario.id)">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-danger" (click)="eliminarUsuario(usuario.id)">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    } @empty {
+                                        <tr>
+                                            <td colspan="5" class="text-center py-4">No hay usuarios registrados</td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                         </div>

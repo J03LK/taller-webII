@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Chart, registerables } from 'chart.js';
 import { DenunciasService, Denuncia, EstadoDenuncia } from '../../service/denuncias.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { UsuarioService } from '../../service/usuario.service';
 
 Chart.register(...registerables);
 
@@ -38,137 +39,49 @@ interface Comment {
 @Component({
   selector: 'app-suggestion-box',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './dashboard-admin.component.html',
   styleUrl: './dashboard-admin.component.css',
   encapsulation: ViewEncapsulation.None
 })
 export class SuggestionBoxComponent implements OnInit {
   // Estadísticas del dashboard
-  totalSuggestions: number = 124;
-  percentageIncrease: number = 12.5;
-  implementedSuggestions: number = 48;
-  implementationRate: number = 38.7;
-  inReviewSuggestions: number = 35;
-  averageReviewTime: number = 4.2;
-  rejectedSuggestions: number = 41;
-  rejectionRate: number = 33.1;
+  totalSuggestions: number = 0;
+  percentageIncrease: number = 0;
+  implementedSuggestions: number = 0;
+  implementationRate: number = 0;
+  inReviewSuggestions: number = 0;
+  averageReviewTime: number = 0;
+  rejectedSuggestions: number = 0;
+  rejectionRate: number = 0;
  
   // Filtro
   filterStatus: string = '';
 
-  // Datos de sugerencias
+  // Datos de sugerencias y denuncias
   recentSuggestions: any[] = []; // Usaremos any[] para poder manejar tanto Suggestion como Denuncia
+  denuncias: Denuncia[] = [];
   
   // Mantener los datos originales como respaldo
-  originalSuggestions: Suggestion[] = [
-    {
-      id: 1,
-      title: 'Mejorar el sistema de gestión de archivos',
-      description: 'Actualmente el sistema de archivos es muy lento y no permite una categorización eficiente. Sugiero implementar etiquetas y una búsqueda mejorada.',
-      author: 'Juan Pérez',
-      department: 'IT',
-      date: new Date('2023-06-10'),
-      status: 'Pendiente',
-      priority: 'high'
-    },
-    {
-      id: 2,
-      title: 'Actualizar equipos de la sala de reuniones',
-      description: 'Los proyectores y sistemas de audio en la sala de reuniones principal necesitan ser actualizados, ya que fallan constantemente durante presentaciones importantes.',
-      author: 'María Gómez',
-      department: 'Administración',
-      date: new Date('2023-06-08'),
-      status: 'En revisión',
-      priority: 'medium'
-    },
-    {
-      id: 3,
-      title: 'Programa de bienestar para empleados',
-      description: 'Sugiero implementar un programa de bienestar que incluya membresías de gimnasio y sesiones de manejo del estrés para mejorar la salud mental y física.',
-      author: 'Carlos Rodríguez',
-      department: 'RRHH',
-      date: new Date('2023-06-05'),
-      status: 'Implementada',
-      priority: 'low'
-    },
-    {
-      id: 4,
-      title: 'Optimizar proceso de facturación',
-      description: 'El proceso actual de facturación tiene muchos pasos manuales que podrían ser automatizados para reducir errores y mejorar la eficiencia.',
-      author: 'Ana Martínez',
-      department: 'Finanzas',
-      date: new Date('2023-06-01'),
-      status: 'Rechazada',
-      priority: 'high'
-    }
-  ];
+  originalSuggestions: Suggestion[] = [];
 
   // Flag para identificar si estamos mostrando denuncias o sugerencias
   mostrandoDenuncias: boolean = false;
 
-  // Categorías populares
-  popularCategories: Category[] = [
-    {
-      id: 1,
-      name: 'Mejoras tecnológicas',
-      count: 42,
-      percentage: 76,
-      icon: 'laptop',
-      color: '#4361EE'
-    },
-    {
-      id: 2,
-      name: 'Recursos Humanos',
-      count: 28,
-      percentage: 65,
-      icon: 'people',
-      color: '#F72585'
-    },
-    {
-      id: 3,
-      name: 'Procesos internos',
-      count: 19,
-      percentage: 48,
-      icon: 'diagram-3',
-      color: '#4CC9F0'
-    },
-    {
-      id: 4,
-      name: 'Infraestructura',
-      count: 15,
-      percentage: 36,
-      icon: 'building',
-      color: '#3F37C9'
-    }
-  ];
-
-  // Comentarios recientes
-  recentComments: Comment[] = [
-    {
-      id: 1,
-      author: 'Laura Torres',
-      text: 'Esta idea mejoraría significativamente nuestro flujo de trabajo. Recomiendo implementarla lo antes posible.',
-      date: new Date('2023-06-09T14:30:00'),
-      suggestionTitle: 'Mejorar el sistema de gestión de archivos'
-    },
-    {
-      id: 2,
-      author: 'Miguel Ángel Sánchez',
-      text: 'Creo que podemos ampliar esta propuesta incluyendo también un análisis de costo-beneficio para cada iniciativa.',
-      date: new Date('2023-06-08T09:15:00'),
-      suggestionTitle: 'Optimizar proceso de facturación'
-    },
-    {
-      id: 3,
-      author: 'Patricia Guzmán',
-      text: 'Ya hemos intentado algo similar en el pasado sin éxito. Deberíamos revisar qué falló anteriormente antes de volver a intentarlo.',
-      date: new Date('2023-06-07T16:45:00'),
-      suggestionTitle: 'Programa de bienestar para empleados'
-    }
-  ];
+  // Contadores por tipo de denuncia
+  tiposDenuncia: {[key: string]: number} = {
+    'acoso': 0,
+    'discriminacion': 0,
+    'corrupcion': 0,
+    'abuso': 0,
+    'fraude': 0,
+    'violencia': 0,
+    'negligencia': 0,
+    'fallo-sistema': 0,
+    'otros': 0
+  };
   
-  constructor(private servicio: DenunciasService, private router: Router) {}
+  constructor(private servicio: DenunciasService, private router: Router,private UsuarioService: UsuarioService) {}
   
   logout() { 
     localStorage.setItem("login", "false");
@@ -178,24 +91,20 @@ export class SuggestionBoxComponent implements OnInit {
   ngOnInit(): void {
     // Cargar denuncias desde el servicio
     this.loadDenuncias();
-    
-    // Inicializar gráficos después de que Angular haya renderizado la vista
-    setTimeout(() => {
-      this.initDepartmentChart();
-      this.initStatusChart();
-    }, 100);
+    this.cargarUsuarios();
+
   }
 
   // Método para cargar denuncias
   loadDenuncias(): void {
-    // Inicialmente usar datos de sugerencias como respaldo
-    this.recentSuggestions = [...this.originalSuggestions];
-    
     // Intentar cargar denuncias del servicio
     this.servicio.getDenuncias().subscribe({
       next: (denuncias) => {
         console.log('Denuncias cargadas:', denuncias);
         if (denuncias && denuncias.length > 0) {
+          // Guardar las denuncias originales
+          this.denuncias = denuncias;
+          
           // Mapear denuncias a formato de sugerencias para compatibilidad
           this.recentSuggestions = denuncias.map(denuncia => {
             return {
@@ -214,15 +123,66 @@ export class SuggestionBoxComponent implements OnInit {
           
           // Actualizar estadísticas basadas en las denuncias
           this.updateStats(denuncias);
+          
+          // Inicializar gráficos después de cargar datos
+          setTimeout(() => {
+            this.initTiposDenunciaChart();
+            this.initStatusChart();
+          }, 100);
         }
       },
       error: (error) => {
         console.error('Error al cargar denuncias:', error);
         // En caso de error, mantener las sugerencias originales
         this.recentSuggestions = [...this.originalSuggestions];
+        this.denuncias = [];
         this.mostrandoDenuncias = false;
       }
     });
+  }
+  verUsuario(id: number | undefined): void {
+    if (!id) {
+      console.error('ID de usuario no válido');
+      return;
+    }
+    
+    console.log(`Ver detalles del usuario ${id}`);
+    // Aquí podrías implementar la lógica para ver detalles, como abrir un modal
+  }
+  
+  // Editar usuario
+  editarUsuario(id: number | undefined): void {
+    if (!id) {
+      console.error('ID de usuario no válido');
+      return;
+    }
+    
+    console.log(`Editar usuario ${id}`);
+    // Aquí podrías implementar la lógica para editar un usuario
+  }
+  
+  // Eliminar usuario
+  eliminarUsuario(id: number | undefined): void {
+    if (!id) {
+      console.error('ID de usuario no válido');
+      return;
+    }
+    
+    if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
+      console.log(`Eliminando usuario ${id}`);
+      
+      this.UsuarioService.deleteUsuario(id).subscribe({
+        next: () => {
+          console.log('Usuario eliminado con éxito');
+          // Actualizar la lista de usuarios después de eliminar
+          this.cargarUsuarios();
+        },
+        error: (error) => {
+          console.error('Error al eliminar usuario:', error);
+          alert('Error al eliminar el usuario. Por favor, intente nuevamente.');
+        }
+      });
+    }
   }
   
   // Método adicional para mapear tipo de denuncia a prioridad
@@ -237,6 +197,20 @@ export class SuggestionBoxComponent implements OnInit {
       return 'low';
     }
   }
+  usuarios: any[] = [];
+
+// Añade este método para cargar los usuarios
+cargarUsuarios(): void {
+  this.UsuarioService.getUsuarios().subscribe({
+    next: (data) => {
+      console.log('Usuarios cargados:', data);
+      this.usuarios = data;
+    },
+    error: (error) => {
+      console.error('Error al cargar usuarios:', error);
+    }
+  });
+}
   
   // Actualizar estadísticas basadas en denuncias recibidas
   updateStats(denuncias: Denuncia[]): void {
@@ -247,13 +221,208 @@ export class SuggestionBoxComponent implements OnInit {
     this.inReviewSuggestions = denuncias.filter(d => d.estado === EstadoDenuncia.EN_PROCESO).length;
     this.rejectedSuggestions = denuncias.filter(d => d.estado === EstadoDenuncia.RECHAZADA).length;
     
-    // Calcular porcentajes
+    // Calcular porcentajes con dos decimales
     if (this.totalSuggestions > 0) {
-      this.implementationRate = (this.implementedSuggestions / this.totalSuggestions) * 100;
-      this.rejectionRate = (this.rejectedSuggestions / this.totalSuggestions) * 100;
+      this.implementationRate = +(this.implementedSuggestions / this.totalSuggestions * 100).toFixed(2);
+      this.rejectionRate = +(this.rejectedSuggestions / this.totalSuggestions * 100).toFixed(2);
+    }
+    
+    // Contar denuncias por tipo
+    this.resetTiposDenuncia();
+    denuncias.forEach(denuncia => {
+      const tipo = denuncia.tipo?.toLowerCase() || 'otros';
+      if (tipo in this.tiposDenuncia) {
+        this.tiposDenuncia[tipo]++;
+      } else {
+        this.tiposDenuncia['otros']++;
+      }
+    });
+  }
+  
+  // Reiniciar contadores de tipos de denuncia
+  resetTiposDenuncia() {
+    for (const key in this.tiposDenuncia) {
+      this.tiposDenuncia[key] = 0;
     }
   }
-
+  
+  // Ver detalles de una denuncia
+  verDenuncia(id: number | undefined): void {
+    if (!id) {
+      console.error('ID no válido');
+      return;
+    }
+    
+    console.log(`Ver detalles de la denuncia ${id}`);
+    // Aquí podrías navegar a una vista de detalle o abrir un modal
+    // Por ejemplo:
+    // this.router.navigate(['/denuncias', id]);
+  }
+  
+  // Aprobar denuncia (cambiar a estado RESUELTA)
+  aprobarDenuncia(id: number | undefined): void {
+    if (!id) {
+      console.error('ID no válido');
+      return;
+    }
+    
+    // Intentar cambiar el estado, pero recargamos la página de todos modos
+    this.cambiarEstado(id, EstadoDenuncia.RESUELTA)
+      .finally(() => {
+        window.location.reload();
+      });
+  }
+  
+  rechazarDenuncia(id: number | undefined): void {
+    if (!id) {
+      console.error('ID no válido');
+      return;
+    }
+    
+    // Intentar cambiar el estado, pero recargamos la página de todos modos
+    this.cambiarEstado(id, EstadoDenuncia.RECHAZADA)
+      .finally(() => {
+        window.location.reload();
+      });
+  }
+  
+  // Poner denuncia en proceso (cambia a estado EN_PROCESO)
+  pponerEnProceso(id: number | undefined): void {
+    if (!id) {
+      console.error('ID no válido');
+      return;
+    }
+    
+    console.log(`Cambiando denuncia ${id} a EN_PROCESO`);
+    console.log('Valor actual de EstadoDenuncia.EN_PROCESO:', EstadoDenuncia.EN_PROCESO);
+    
+    // Mostrar información de depuración
+    console.log('Todos los estados disponibles:', EstadoDenuncia);
+    
+    this.servicio.cambiarEstadoDenuncia(id, EstadoDenuncia.EN_PROCESO)
+      .subscribe({
+        next: (denunciaActualizada) => {
+          console.log('¡Denuncia actualizada correctamente!', denunciaActualizada);
+          
+          // Actualizar los datos locales
+          const index = this.denuncias.findIndex(d => d.id === id);
+          if (index !== -1) {
+            this.denuncias[index].estado = EstadoDenuncia.EN_PROCESO;
+            console.log('Denuncia actualizada localmente');
+          }
+          
+          // Mostrar confirmación al usuario
+          alert('La denuncia ha sido puesta en proceso correctamente.');
+          
+          // Recargar la página para reflejar los cambios
+          window.location.reload();
+        },
+        error: (error) => {
+          console.error('Error al cambiar estado:', error);
+          
+          // Mensaje de error detallado
+          if (error.status === 0) {
+            alert('Error de conexión con el servidor. Verifique que el servidor esté funcionando y accesible.');
+          } else if (error.status === 401 || error.status === 403) {
+            alert('No tiene permisos para realizar esta acción. Por favor, inicie sesión nuevamente.');
+          } else {
+            alert(`Error al cambiar el estado: ${error.message || 'Error desconocido'}`);
+          }
+        }
+      });
+  }
+  
+  // Método para eliminar denuncia
+  eliminarDenuncia(id: number | undefined): void {
+    if (!id) {
+      console.error('ID no válido');
+      return;
+    }
+    
+    if (confirm('¿Estás seguro de que deseas eliminar esta denuncia?')) {
+      console.log(`Eliminando denuncia ${id}`);
+      this.servicio.deleteDenuncia(id).subscribe({
+        next: () => {
+          console.log('Denuncia eliminada con éxito');
+          window.location.reload();
+        },
+        error: (error) => {
+          console.error('Error al eliminar denuncia:', error);
+          alert('Error al eliminar la denuncia. Por favor, intente nuevamente.');
+        }
+      });
+    }
+  }
+  
+  // Método cambiarEstado modificado para usar promesas
+  cambiarEstado(id: number, nuevoEstado: EstadoDenuncia): Promise<void> {
+    return new Promise((resolve, reject) => {
+      console.log(`Intentando cambiar estado a ${nuevoEstado} para denuncia ID: ${id}`);
+      
+      // Verificar que el estado es válido
+      const estadosValidos = Object.values(EstadoDenuncia);
+      if (!estadosValidos.includes(nuevoEstado)) {
+        console.error(`Estado "${nuevoEstado}" no es válido. Estados válidos:`, estadosValidos);
+        reject(new Error(`Estado "${nuevoEstado}" no válido`));
+        return;
+      }
+      
+      this.servicio.cambiarEstadoDenuncia(id, nuevoEstado).subscribe({
+        next: (denunciaActualizada) => {
+          console.log(`Estado de denuncia actualizado a ${nuevoEstado}:`, denunciaActualizada);
+          
+          // Actualizar el estado localmente
+          const index = this.denuncias.findIndex(d => d.id === id);
+          if (index !== -1) {
+            this.denuncias[index].estado = nuevoEstado;
+            
+            // Actualizar también en recentSuggestions
+            const suggestionIndex = this.recentSuggestions.findIndex(s => s.id === id);
+            if (suggestionIndex !== -1) {
+              this.recentSuggestions[suggestionIndex].status = nuevoEstado;
+            }
+            
+            // Actualizar estadísticas
+            this.updateStats(this.denuncias);
+          }
+          
+          resolve();
+        },
+        error: (error) => {
+          console.error(`Error al cambiar estado a ${nuevoEstado}:`, error);
+          reject(error);
+        }
+      });
+    });
+  }
+  // Método para generar PDF de todas las denuncias
+  generarPDF(): void {
+    console.log('Generando PDF de denuncias');
+    
+    this.servicio.generarPDF().subscribe({
+      next: (blob) => {
+        console.log('PDF generado correctamente');
+        // Usar el método del servicio para descargar el PDF
+        this.servicio.downloadPDF(blob, 'listado-denuncias.pdf');
+      },
+      error: (error) => {
+        console.error('Error al generar PDF:', error);
+        alert('Error al generar PDF. Por favor, intente nuevamente.');
+      }
+    });
+  }
+     
+  // Mostrar opciones adicionales (menú desplegable)
+  mostrarOpciones(id: number | undefined): void {
+    if (!id) {
+      console.error('ID no válido');
+      return;
+    }
+    
+    console.log(`Mostrando opciones para denuncia ${id}`);
+    // Aquí podrías implementar un menú contextual o dropdown
+  }
+  
   getPriorityClass(priority: string | undefined): string {
     // Si la prioridad es undefined, retornar valor por defecto
     if (!priority) {
@@ -278,6 +447,7 @@ export class SuggestionBoxComponent implements OnInit {
       }
     }
   }
+  
   getStatusClass(status: string): string {
     // Si estamos mostrando denuncias, adaptamos los estados
     if (this.mostrandoDenuncias) {
@@ -300,7 +470,24 @@ export class SuggestionBoxComponent implements OnInit {
       }
     }
   }
-
+  getDenunciasImplementadas(): Denuncia[] {
+    return this.denuncias.filter(denuncia => denuncia.estado === EstadoDenuncia.RESUELTA);
+  }
+  
+  // Método para obtener denuncias en revisión (estado EN_PROCESO)
+  getDenunciasEnRevision(): Denuncia[] {
+    return this.denuncias.filter(denuncia => denuncia.estado === EstadoDenuncia.EN_PROCESO);
+  }
+  
+  // Método para obtener denuncias rechazadas (estado RECHAZADA)
+  getDenunciasRechazadas(): Denuncia[] {
+    return this.denuncias.filter(denuncia => denuncia.estado === EstadoDenuncia.RECHAZADA);
+  }
+  
+  // Método para obtener denuncias pendientes (estado PENDIENTE)
+  getDenunciasPendientes(): Denuncia[] {
+    return this.denuncias.filter(denuncia => denuncia.estado === EstadoDenuncia.PENDIENTE);
+  }
   filterSuggestions(item: any): boolean {
     if (!this.filterStatus) return true;
 
@@ -327,45 +514,26 @@ export class SuggestionBoxComponent implements OnInit {
     }
   }
   
-  // Método para cambiar el estado de una denuncia
-  cambiarEstado(id: number | undefined, nuevoEstado: EstadoDenuncia): void {
-    if (!id || !this.mostrandoDenuncias) {
-      console.error('ID de denuncia no válido o no estamos mostrando denuncias');
-      return;
-    }
-    
-    console.log(`Cambiando estado de denuncia ${id} a ${nuevoEstado}`);
-    
-    this.servicio.cambiarEstadoDenuncia(id, nuevoEstado).subscribe({
-      next: (denunciaActualizada) => {
-        console.log('Estado de denuncia actualizado:', denunciaActualizada);
-        
-        // Actualizar la denuncia en la lista local
-        const index = this.recentSuggestions.findIndex(d => d.id === id);
-        if (index !== -1) {
-          this.recentSuggestions[index] = denunciaActualizada;
-        }
-        
-        // Actualizar estadísticas
-        this.updateStats(this.recentSuggestions as Denuncia[]);
-      },
-      error: (error) => {
-        console.error('Error al cambiar estado de denuncia:', error);
-      }
-    });
-  }
-
-  private initDepartmentChart(): void {
+  // Método para graficar tipos de denuncia
+  private initTiposDenunciaChart(): void {
     const deptCtx = document.getElementById('departmentChart') as HTMLCanvasElement;
     if (!deptCtx) return;
+
+    // Preparar datos para el gráfico
+    const labels = Object.keys(this.tiposDenuncia).map(key => {
+      // Formatear la etiqueta para mostrarla más amigable
+      return key.charAt(0).toUpperCase() + key.slice(1).replace('-', ' ');
+    });
+    
+    const data = Object.values(this.tiposDenuncia);
 
     const deptChart = new Chart(deptCtx.getContext('2d')!, {
       type: 'bar',
       data: {
-        labels: ['IT', 'RRHH', 'Ventas', 'Marketing', 'Finanzas', 'Producción', 'Administración'],
+        labels: labels,
         datasets: [{
-          label: 'Número de sugerencias',
-          data: [42, 28, 15, 19, 12, 8, 18],
+          label: 'Cantidad de denuncias por tipo',
+          data: data,
           backgroundColor: 'rgba(67, 97, 238, 0.7)',
           borderColor: 'rgba(67, 97, 238, 1)',
           borderWidth: 1
@@ -381,7 +549,10 @@ export class SuggestionBoxComponent implements OnInit {
         },
         scales: {
           y: {
-            beginAtZero: true
+            beginAtZero: true,
+            ticks: {
+              precision: 0
+            }
           }
         }
       }
@@ -395,14 +566,19 @@ export class SuggestionBoxComponent implements OnInit {
     const statusChart = new Chart(statusCtx.getContext('2d')!, {
       type: 'doughnut',
       data: {
-        labels: ['Pendientes', 'En revisión', 'Implementadas', 'Rechazadas'],
+        labels: ['Pendientes', 'En Proceso', 'Resueltas', 'Rechazadas'],
         datasets: [{
-          data: [24, 35, 48, 41],
+          data: [
+            this.denuncias.filter(d => d.estado === EstadoDenuncia.PENDIENTE).length,
+            this.denuncias.filter(d => d.estado === EstadoDenuncia.EN_PROCESO).length,
+            this.denuncias.filter(d => d.estado === EstadoDenuncia.RESUELTA).length,
+            this.denuncias.filter(d => d.estado === EstadoDenuncia.RECHAZADA).length
+          ],
           backgroundColor: [
-            'rgba(108, 117, 125, 0.8)',
-            'rgba(255, 193, 7, 0.8)',
-            'rgba(40, 167, 69, 0.8)',
-            'rgba(220, 53, 69, 0.8)'
+            'rgba(108, 117, 125, 0.8)',  // Pendientes
+            'rgba(255, 193, 7, 0.8)',    // En Proceso
+            'rgba(40, 167, 69, 0.8)',    // Resueltas
+            'rgba(220, 53, 69, 0.8)'     // Rechazadas
           ],
           borderColor: [
             'rgba(108, 117, 125, 1)',
@@ -431,10 +607,9 @@ export class SuggestionBoxComponent implements OnInit {
     // Si necesitas inicializar algo específico cuando cambias a una pestaña
     if (tab === 'statistics') {
       setTimeout(() => {
-        this.initDepartmentChart();
+        this.initTiposDenunciaChart();
         this.initStatusChart();
       }, 100);
     }
   }
-  
 }
