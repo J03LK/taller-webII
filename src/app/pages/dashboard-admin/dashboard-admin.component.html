@@ -20,42 +20,50 @@
                 <!-- Menú principal -->
                 <ul class="nav flex-column mb-auto mt-3">
                     <li class="nav-item">
-                        <a href="#" class="nav-link" [class.active]="activeTab === 'dashboard'" (click)="changeTab('dashboard')">
+                        <a href="#" class="nav-link" [class.active]="activeTab === 'dashboard'"
+                            (click)="changeTab('dashboard')">
                             <i class="bi bi-speedometer2 me-2"></i> Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" [class.active]="activeTab === 'sugerencias'" (click)="changeTab('sugerencias')">
+                        <a href="#" class="nav-link" [class.active]="activeTab === 'sugerencias'"
+                            (click)="changeTab('sugerencias')">
                             <i class="bi bi-lightbulb me-2"></i> Sugerencias
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" [class.active]="activeTab === 'implementadas'" (click)="changeTab('implementadas')">
+                        <a href="#" class="nav-link" [class.active]="activeTab === 'implementadas'"
+                            (click)="changeTab('implementadas')">
                             <i class="bi bi-check2-circle me-2"></i> Implementadas
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" [class.active]="activeTab === 'en-revision'" (click)="changeTab('en-revision')">
+                        <a href="#" class="nav-link" [class.active]="activeTab === 'en-revision'"
+                            (click)="changeTab('en-revision')">
                             <i class="bi bi-hourglass-split me-2"></i> En revisión
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" [class.active]="activeTab === 'rechazadas'" (click)="changeTab('rechazadas')">
+                        <a href="#" class="nav-link" [class.active]="activeTab === 'rechazadas'"
+                            (click)="changeTab('rechazadas')">
                             <i class="bi bi-x-circle me-2"></i> Rechazadas
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" [class.active]="activeTab === 'reportes'" (click)="changeTab('reportes')">
+                        <a href="#" class="nav-link" [class.active]="activeTab === 'reportes'"
+                            (click)="changeTab('reportes')">
                             <i class="bi bi-graph-up me-2"></i> Reportes
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" [class.active]="activeTab === 'usuarios'" (click)="changeTab('usuarios')">
+                        <a href="#" class="nav-link" [class.active]="activeTab === 'usuarios'"
+                            (click)="changeTab('usuarios')">
                             <i class="bi bi-people me-2"></i> Usuarios
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" [class.active]="activeTab === 'configuracion'" (click)="changeTab('configuracion')">
+                        <a href="#" class="nav-link" [class.active]="activeTab === 'configuracion'"
+                            (click)="changeTab('configuracion')">
                             <i class="bi bi-gear me-2"></i> Configuración
                         </a>
                     </li>
@@ -68,7 +76,8 @@
         <div class="col-md-10 p-4 bg-light">
             <!-- Contenido Dashboard (por defecto) -->
             <div *ngIf="activeTab === 'dashboard'">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-4 border-bottom">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-4 border-bottom">
                     <h1 class="h2">Buzón de Sugerencias</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group me-2">
@@ -207,7 +216,8 @@
                         <div class="card border-0 shadow-sm">
                             <div class="card-header bg-white d-flex justify-content-between align-items-center">
                                 <h5 class="mb-0">Sugerencias recientes</h5>
-                                <select class="form-select form-select-sm" style="width: auto;" [(ngModel)]="filterStatus">
+                                <select class="form-select form-select-sm" style="width: auto;"
+                                    [(ngModel)]="filterStatus">
                                     <option value="">Todos los estados</option>
                                     <option value="pending">Pendientes</option>
                                     <option value="in-review">En revisión</option>
@@ -234,8 +244,9 @@
                                             </div>
                                             <p class="mb-2">
                                                 {{ suggestion.description?.slice(0, 150) || 'Sin descripción' }}
-                                                {{ suggestion.description && suggestion.description.length > 150 ? '...' : '' }}
-                                              </p>
+                                                {{ suggestion.description && suggestion.description.length > 150 ? '...'
+                                                : '' }}
+                                            </p>
                                             <div class="d-flex align-items-center text-muted small">
                                                 <span class="me-3">
                                                     <i class="bi bi-person me-1"></i> {{ suggestion.author }}
@@ -245,21 +256,29 @@
                                                     date:'dd/MM/yyyy' }}
                                                 </span>
                                                 <span>
-                                                    <i class="bi bi-clock me-1"></i> {{ suggestion.date | date:'HH:mm' }}
+                                                    <i class="bi bi-clock me-1"></i> {{ suggestion.date | date:'HH:mm'
+                                                    }}
                                                 </span>
                                             </div>
                                         </div>
                                         <div class="col-md-4 d-flex align-items-center justify-content-end">
                                             <div class="btn-group">
-                                                <button class="btn btn-sm btn-outline-primary" (click)="verDenuncia(suggestion.id)">
+                                                <button class="btn btn-sm btn-outline-primary"
+                                                    (click)="verDenuncia(suggestion.id)">
                                                     <i class="bi bi-eye me-1"></i> Ver
                                                 </button>
-                                              
-                                                <button class="btn btn-sm btn-outline-success" (click)="aprobarDenuncia(suggestion.id)">
+
+                                                <button class="btn btn-sm btn-outline-success"
+                                                    (click)="aprobarDenuncia(suggestion.id)">
                                                     <i class="bi bi-check2 me-1"></i> Aprobar
                                                 </button>
-                                                <button class="btn btn-sm btn-outline-danger" (click)="rechazarDenuncia(suggestion.id)">
+                                                <button class="btn btn-sm btn-outline-danger"
+                                                    (click)="rechazarDenuncia(suggestion.id)">
                                                     <i class="bi bi-x me-1"></i> Rechazar
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-warning"
+                                                    (click)="ponerEnProceso(suggestion.id)">
+                                                    <i class="bi bi-hourglass-split me-1"></i> En revisión
                                                 </button>
                                             </div>
                                         </div>
@@ -280,7 +299,8 @@
                                 <nav aria-label="Page navigation">
                                     <ul class="pagination pagination-sm justify-content-center mb-0">
                                         <li class="page-item disabled">
-                                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                                            <a class="page-link" href="#" tabindex="-1"
+                                                aria-disabled="true">Anterior</a>
                                         </li>
                                         <li class="page-item active"><a class="page-link" href="#">1</a></li>
                                         <li class="page-item"><a class="page-link" href="#">2</a></li>
@@ -294,7 +314,7 @@
                         </div>
                     </div>
                 </div>
-    
+
             </div>
 
             <!-- Contenido de SUGERENCIAS -->
@@ -326,32 +346,31 @@
                                 </thead>
                                 <tbody>
                                     @for (denuncia of denuncias; track denuncia.id) {
-                                        <tr>
-                                            <td>{{ denuncia.id }}</td>
-                                            <td>{{ denuncia.tipo }}</td>
-                                            <td>{{ denuncia.ubicacion }}</td>
-                                            <td>
-                                                <span class="status-badge"
-                                                    [ngClass]="{
+                                    <tr>
+                                        <td>{{ denuncia.id }}</td>
+                                        <td>{{ denuncia.tipo }}</td>
+                                        <td>{{ denuncia.ubicacion }}</td>
+                                        <td>
+                                            <span class="status-badge" [ngClass]="{
                                                       'resuelta': denuncia.estado === 'Resuelta',
                                                       'pendiente': denuncia.estado === 'Pendiente',
                                                       'rechazada': denuncia.estado === 'Rechazada',
                                                       'en-proceso': denuncia.estado === 'En Proceso'
                                                     }">
-                                                    {{ denuncia.estado }}
-                                                </span>
-                                            </td>
-                                            <td class="actions-column">
-                                                <button class="action-btn delete-btn" 
-                                                        (click)="eliminarDenuncia(denuncia.id)">
-                                                    <i class="fas fa-trash-alt"></i> Eliminar
-                                                </button>
-                                            </td>
-                                        </tr>
+                                                {{ denuncia.estado }}
+                                            </span>
+                                        </td>
+                                        <td class="actions-column">
+                                            <button class="action-btn delete-btn"
+                                                (click)="eliminarDenuncia(denuncia.id)">
+                                                <i class="fas fa-trash-alt"></i> Eliminar
+                                            </button>
+                                        </td>
+                                    </tr>
                                     } @empty {
-                                        <tr>
-                                            <td colspan="5" class="text-center py-4">No hay denuncias registradas</td>
-                                        </tr>
+                                    <tr>
+                                        <td colspan="5" class="text-center py-4">No hay denuncias registradas</td>
+                                    </tr>
                                     }
                                 </tbody>
                             </table>
@@ -385,14 +404,14 @@
                         </button>
                     </div>
                 </div>
-            
+
                 <div class="alert alert-success d-flex align-items-center mb-4">
                     <i class="bi bi-check-circle-fill me-2"></i>
                     <div>
                         Mostrando todas las sugerencias que han sido implementadas con éxito.
                     </div>
                 </div>
-            
+
                 <div class="card border-0 shadow-sm">
                     <div class="card-body">
                         <div class="table-responsive">
@@ -409,31 +428,32 @@
                                 </thead>
                                 <tbody>
                                     @for (denuncia of getDenunciasImplementadas(); track denuncia.id) {
-                                        <tr>
-                                            <td>{{denuncia.id}}</td>
-                                            <td>{{denuncia.tipo}}</td>
-                                            <td>{{denuncia.ubicacion}}</td>
-                                            <td>
-                                                <span class="status-badge resuelta">
-                                                    {{denuncia.estado}}
-                                                </span>
-                                            </td>
-                                            <td>{{denuncia.fechaCreacion | date:'dd/MM/yyyy'}}</td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <button class="btn btn-sm btn-outline-primary" (click)="verDenuncia(denuncia.id)">
-                                                        <i class="bi bi-eye"></i>
-                                                    </button>
-                                                    <button class="btn btn-sm btn-outline-info">
-                                                        <i class="bi bi-file-earmark-text"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td>{{denuncia.id}}</td>
+                                        <td>{{denuncia.tipo}}</td>
+                                        <td>{{denuncia.ubicacion}}</td>
+                                        <td>
+                                            <span class="status-badge resuelta">
+                                                {{denuncia.estado}}
+                                            </span>
+                                        </td>
+                                        <td>{{denuncia.fechaCreacion | date:'dd/MM/yyyy'}}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-primary"
+                                                    (click)="verDenuncia(denuncia.id)">
+                                                    <i class="bi bi-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-info">
+                                                    <i class="bi bi-file-earmark-text"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
                                     } @empty {
-                                        <tr>
-                                            <td colspan="6" class="text-center py-4">No hay sugerencias implementadas</td>
-                                        </tr>
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4">No hay sugerencias implementadas</td>
+                                    </tr>
                                     }
                                 </tbody>
                             </table>
@@ -452,14 +472,14 @@
                         </button>
                     </div>
                 </div>
-            
+
                 <div class="alert alert-warning d-flex align-items-center mb-4">
                     <i class="bi bi-exclamation-triangle-fill me-2"></i>
                     <div>
                         Hay <strong>{{inReviewSuggestions}}</strong> sugerencias en proceso de revisión.
                     </div>
                 </div>
-            
+
                 <div class="card border-0 shadow-sm">
                     <div class="card-body">
                         <div class="table-responsive">
@@ -476,34 +496,37 @@
                                 </thead>
                                 <tbody>
                                     @for (denuncia of getDenunciasEnRevision(); track denuncia.id) {
-                                        <tr>
-                                            <td>{{denuncia.id}}</td>
-                                            <td>{{denuncia.tipo}}</td>
-                                            <td>{{denuncia.ubicacion}}</td>
-                                            <td>
-                                                <span class="status-badge en-proceso">
-                                                    {{denuncia.estado}}
-                                                </span>
-                                            </td>
-                                            <td>{{denuncia.fechaCreacion | date:'dd/MM/yyyy'}}</td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <button class="btn btn-sm btn-outline-primary" (click)="verDenuncia(denuncia.id)">
-                                                        <i class="bi bi-eye"></i>
-                                                    </button>
-                                                    <button class="btn btn-sm btn-outline-success" (click)="aprobarDenuncia(denuncia.id)">
-                                                        <i class="bi bi-check-circle"></i>
-                                                    </button>
-                                                    <button class="btn btn-sm btn-outline-danger" (click)="rechazarDenuncia(denuncia.id)">
-                                                        <i class="bi bi-x-circle"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td>{{denuncia.id}}</td>
+                                        <td>{{denuncia.tipo}}</td>
+                                        <td>{{denuncia.ubicacion}}</td>
+                                        <td>
+                                            <span class="status-badge en-proceso">
+                                                {{denuncia.estado}}
+                                            </span>
+                                        </td>
+                                        <td>{{denuncia.fechaCreacion | date:'dd/MM/yyyy'}}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-primary"
+                                                    (click)="verDenuncia(denuncia.id)">
+                                                    <i class="bi bi-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-success"
+                                                    (click)="aprobarDenuncia(denuncia.id)">
+                                                    <i class="bi bi-check-circle"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger"
+                                                    (click)="rechazarDenuncia(denuncia.id)">
+                                                    <i class="bi bi-x-circle"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
                                     } @empty {
-                                        <tr>
-                                            <td colspan="6" class="text-center py-4">No hay sugerencias en revisión</td>
-                                        </tr>
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4">No hay sugerencias en revisión</td>
+                                    </tr>
                                     }
                                 </tbody>
                             </table>
@@ -522,14 +545,15 @@
                         </button>
                     </div>
                 </div>
-            
+
                 <div class="alert alert-danger d-flex align-items-center mb-4">
                     <i class="bi bi-x-circle-fill me-2"></i>
                     <div>
-                        Mostrando las sugerencias que han sido rechazadas. Tasa de rechazo: <strong>{{rejectionRate}}%</strong>.
+                        Mostrando las sugerencias que han sido rechazadas. Tasa de rechazo:
+                        <strong>{{rejectionRate}}%</strong>.
                     </div>
                 </div>
-            
+
                 <div class="card border-0 shadow-sm">
                     <div class="card-body">
                         <div class="table-responsive">
@@ -546,29 +570,29 @@
                                 </thead>
                                 <tbody>
                                     @for (denuncia of getDenunciasRechazadas(); track denuncia.id) {
-                                        <tr>
-                                            <td>{{denuncia.id}}</td>
-                                            <td>{{denuncia.tipo}}</td>
-                                            <td>{{denuncia.ubicacion}}</td>
-                                            <td>
-                                                <span class="status-badge rechazada">
-                                                    {{denuncia.estado}}
-                                                </span>
-                                            </td>
-                                            <td>{{denuncia.fechaCreacion | date:'dd/MM/yyyy'}}</td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <button class="btn btn-sm btn-outline-primary" (click)="verDenuncia(denuncia.id)">
-                                                        <i class="bi bi-eye"></i>
-                                                    </button>
-                                                  
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td>{{denuncia.id}}</td>
+                                        <td>{{denuncia.tipo}}</td>
+                                        <td>{{denuncia.ubicacion}}</td>
+                                        <td>
+                                            <span class="status-badge rechazada">
+                                                {{denuncia.estado}}
+                                            </span>
+                                        </td>
+                                        <td>{{denuncia.fechaCreacion | date:'dd/MM/yyyy'}}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-primary"
+                                                    (click)="verDenuncia(denuncia.id)">
+                                                    <i class="bi bi-eye"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
                                     } @empty {
-                                        <tr>
-                                            <td colspan="6" class="text-center py-4">No hay sugerencias rechazadas</td>
-                                        </tr>
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4">No hay sugerencias rechazadas</td>
+                                    </tr>
                                     }
                                 </tbody>
                             </table>
@@ -599,7 +623,9 @@
                                 <li><a class="dropdown-item" href="#">Mes actual</a></li>
                                 <li><a class="dropdown-item" href="#">Trimestre actual</a></li>
                                 <li><a class="dropdown-item" href="#">Año actual</a></li>
-                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
                                 <li><a class="dropdown-item" href="#">Personalizado</a></li>
                             </ul>
                         </div>
@@ -620,7 +646,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card border-0 shadow-sm">
@@ -654,7 +680,7 @@
                 <div class="d-flex justify-content-between align-items-center pb-2 mb-4 border-bottom">
                     <h1 class="h2">Gestión de Usuarios</h1>
                 </div>
-            
+
                 <div class="card border-0 shadow-sm">
                     <div class="card-body">
                         <div class="table-responsive">
@@ -670,33 +696,37 @@
                                 </thead>
                                 <tbody>
                                     @for (usuario of usuarios; track usuario.id) {
-                                        <tr>
-                                            <td>{{ usuario.id }}</td>
-                                            <td>{{ usuario.nombre || 'Sin nombre' }}</td>
-                                            <td>{{ usuario.email || 'Sin email' }}</td>
-                                            <td>
-                                                <span class="badge" [ngClass]="usuario.rol === 'ADMIN' ? 'bg-primary' : 'bg-info'">
-                                                    {{ usuario.rol || 'Usuario' }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <button class="btn btn-sm btn-outline-primary" (click)="verUsuario(usuario.id)">
-                                                        <i class="bi bi-eye"></i>
-                                                    </button>
-                                                    <button class="btn btn-sm btn-outline-secondary" (click)="editarUsuario(usuario.id)">
-                                                        <i class="bi bi-pencil"></i>
-                                                    </button>
-                                                    <button class="btn btn-sm btn-outline-danger" (click)="eliminarUsuario(usuario.id)">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td>{{ usuario.id }}</td>
+                                        <td>{{ usuario.nombre || 'Sin nombre' }}</td>
+                                        <td>{{ usuario.email || 'Sin email' }}</td>
+                                        <td>
+                                            <span class="badge"
+                                                [ngClass]="usuario.rol === 'ADMIN' ? 'bg-primary' : 'bg-info'">
+                                                {{ usuario.rol || 'Usuario' }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-primary"
+                                                    (click)="verUsuario(usuario.id)">
+                                                    <i class="bi bi-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary"
+                                                    (click)="editarUsuario(usuario.id)">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger"
+                                                    (click)="eliminarUsuario(usuario.id)">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
                                     } @empty {
-                                        <tr>
-                                            <td colspan="5" class="text-center py-4">No hay usuarios registrados</td>
-                                        </tr>
+                                    <tr>
+                                        <td colspan="5" class="text-center py-4">No hay usuarios registrados</td>
+                                    </tr>
                                     }
                                 </tbody>
                             </table>
@@ -745,16 +775,20 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="siteDesc" class="form-label">Descripción del Sitio</label>
-                                    <textarea class="form-control" id="siteDesc" rows="3">Sistema de gestión de sugerencias y mejoras para la empresa.</textarea>
+                                    <textarea class="form-control" id="siteDesc"
+                                        rows="3">Sistema de gestión de sugerencias y mejoras para la empresa.</textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="emailContact" class="form-label">Email de Contacto</label>
-                                    <input type="email" class="form-control" id="emailContact" value="sugerencias@empresa.com">
+                                    <input type="email" class="form-control" id="emailContact"
+                                        value="sugerencias@empresa.com">
                                 </div>
                                 <div class="mb-3">
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="enableNotifications" checked>
-                                        <label class="form-check-label" for="enableNotifications">Habilitar notificaciones por email</label>
+                                        <input class="form-check-input" type="checkbox" id="enableNotifications"
+                                            checked>
+                                        <label class="form-check-label" for="enableNotifications">Habilitar
+                                            notificaciones por email</label>
                                     </div>
                                 </div>
                             </div>
@@ -779,16 +813,19 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="primaryColor" class="form-label">Color Primario</label>
-                                    <input type="color" class="form-control form-control-color" id="primaryColor" value="#0d6efd">
+                                    <input type="color" class="form-control form-control-color" id="primaryColor"
+                                        value="#0d6efd">
                                 </div>
                                 <div class="mb-3">
                                     <label for="accentColor" class="form-label">Color de Acento</label>
-                                    <input type="color" class="form-control form-control-color" id="accentColor" value="#6f42c1">
+                                    <input type="color" class="form-control form-control-color" id="accentColor"
+                                        value="#6f42c1">
                                 </div>
                                 <div class="mb-3">
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" id="enableAnimations" checked>
-                                        <label class="form-check-label" for="enableAnimations">Habilitar animaciones</label>
+                                        <label class="form-check-label" for="enableAnimations">Habilitar
+                                            animaciones</label>
                                     </div>
                                 </div>
                             </div>
@@ -804,7 +841,8 @@
                             </div>
                             <div class="card-body">
                                 <div class="mb-3">
-                                    <label for="sessionTimeout" class="form-label">Tiempo de Expiración de Sesión (minutos)</label>
+                                    <label for="sessionTimeout" class="form-label">Tiempo de Expiración de Sesión
+                                        (minutos)</label>
                                     <input type="number" class="form-control" id="sessionTimeout" value="30">
                                 </div>
                                 <div class="mb-3">
@@ -814,13 +852,16 @@
                                 <div class="mb-3">
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" id="enable2FA">
-                                        <label class="form-check-label" for="enable2FA">Habilitar autenticación de dos factores</label>
+                                        <label class="form-check-label" for="enable2FA">Habilitar autenticación de dos
+                                            factores</label>
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="enforcePasswordPolicy" checked>
-                                        <label class="form-check-label" for="enforcePasswordPolicy">Aplicar política de contraseñas seguras</label>
+                                        <input class="form-check-input" type="checkbox" id="enforcePasswordPolicy"
+                                            checked>
+                                        <label class="form-check-label" for="enforcePasswordPolicy">Aplicar política de
+                                            contraseñas seguras</label>
                                     </div>
                                 </div>
                             </div>
@@ -861,7 +902,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="emailUsername" class="form-label">Usuario</label>
-                                    <input type="text" class="form-control" id="emailUsername" value="notificaciones@empresa.com">
+                                    <input type="text" class="form-control" id="emailUsername"
+                                        value="notificaciones@empresa.com">
                                 </div>
                                 <div class="mb-3">
                                     <label for="emailPassword" class="form-label">Contraseña</label>
@@ -903,7 +945,8 @@
                                 <div class="mb-3">
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" id="enableArchiving" checked>
-                                        <label class="form-check-label" for="enableArchiving">Habilitar archivado automático</label>
+                                        <label class="form-check-label" for="enableArchiving">Habilitar archivado
+                                            automático</label>
                                     </div>
                                 </div>
                                 <div class="mb-3">

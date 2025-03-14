@@ -11,19 +11,20 @@ import { RouterLink } from '@angular/router';
 })
 export class TabladenunciasComponent {
 
- constructor(private servicio: DenunciasService) {
+  constructor(private servicio: DenunciasService) {
   }
-  
+
   denuncias: any[] = [];
-  
+
   ngOnInit() {
     this.servicio.getDenuncias().subscribe(denuncia => {
       this.denuncias = denuncia;
     })
   }
-  
+
   eliminar(id: any) {
     this.servicio.deleteDenuncia(id).subscribe(() => {
       window.location.reload();
     })
-  }}
+  }
+}

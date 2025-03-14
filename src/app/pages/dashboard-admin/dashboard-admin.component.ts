@@ -287,7 +287,7 @@ cargarUsuarios(): void {
   }
   
   // Poner denuncia en proceso (cambia a estado EN_PROCESO)
-  pponerEnProceso(id: number | undefined): void {
+  ponerEnProceso(id: number | undefined): void {
     if (!id) {
       console.error('ID no válido');
       return;

@@ -430,6 +430,7 @@ body {
         border-radius: var(--border-radius) !important;
     }
 }
+
 /* Estilos básicos para la tabla */
 .denuncias-table {
     width: 100%;
@@ -437,73 +438,115 @@ body {
     border-spacing: 0;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  
-  /* Encabezados */
-  .denuncias-table th {
+    table-layout: fixed;
+    /* Mantiene consistentes los anchos de columna */
+}
+
+/* Encabezados */
+.denuncias-table th {
     background-color: #343a40;
     color: white;
     padding: 12px 15px;
     text-align: left;
     font-weight: 600;
-  }
-  
-  /* Celdas */
-  .denuncias-table td {
+    vertical-align: middle;
+}
+
+/* Celdas */
+.denuncias-table td {
     padding: 12px 15px;
     border-bottom: 1px solid #dee2e6;
-  }
-  
-  /* Estilos específicos para la columna de estado */
-  .status-badge {
+    vertical-align: middle;
+}
+
+/* Columnas con anchos específicos */
+.denuncias-table th:nth-child(1),
+.denuncias-table td:nth-child(1) {
+    width: 10%;
+    /* ID */
+    text-align: center;
+}
+
+.denuncias-table th:nth-child(2),
+.denuncias-table td:nth-child(2) {
+    width: 20%;
+    /* Tipo */
+}
+
+.denuncias-table th:nth-child(3),
+.denuncias-table td:nth-child(3) {
+    width: 30%;
+    /* Ubicación */
+}
+
+.denuncias-table th:nth-child(4),
+.denuncias-table td:nth-child(4) {
+    width: 20%;
+    /* Estado */
+    text-align: center;
+    /* Centrar el Estado y su título */
+}
+
+.denuncias-table th:nth-child(5),
+.denuncias-table td:nth-child(5) {
+    width: 20%;
+    /* Acciones */
+    text-align: center;
+    /* Centrar Acciones */
+}
+
+/* Estilos específicos para la columna de estado */
+.status-badge {
     display: inline-block;
     padding: 6px 12px;
     border-radius: 4px;
     font-weight: 500;
     text-align: center;
-    width: 100%;
-  }
-  
-  /* Estilo para estado "Pendiente" */
-  .status-badge.pendiente {
+    width: auto;
+    /* Cambiado de 100% a auto */
+    box-sizing: border-box;
+}
+
+/* Estilo para estado "Pendiente" */
+.status-badge.pendiente {
     color: #856404;
     background-color: #fff3cd;
     border-bottom: 2px solid #ffc107;
     text-decoration: none;
-  }
-  
-  /* Estilo para estado "En Proceso" */
-  .status-badge.en-proceso {
+}
+
+/* Estilo para estado "En Proceso" */
+.status-badge.en-proceso {
     color: #0c5460;
     background-color: #d1ecf1;
     border-bottom: 2px solid #17a2b8;
     text-decoration: none;
-  }
-  
-  /* Estilo para estado "Resuelta" - con subrayado verde */
-  .status-badge.resuelta {
+}
+
+/* Estilo para estado "Resuelta" - con subrayado verde */
+.status-badge.resuelta {
     color: #155724;
     background-color: #d4edda;
     border-bottom: 2px solid #28a745;
     text-decoration: underline;
     text-decoration-color: #28a745;
     text-decoration-thickness: 2px;
-  }
-  
-  /* Estilo para estado "Rechazada" - con subrayado rojo */
-  .status-badge.rechazada {
+}
+
+/* Estilo para estado "Rechazada" - con subrayado rojo */
+.status-badge.rechazada {
     color: #721c24;
     background-color: #f8d7da;
     border-bottom: 2px solid #dc3545;
     text-decoration: underline;
     text-decoration-color: #dc3545;
     text-decoration-thickness: 2px;
-  }
-  
-  /* Botón eliminar */
-  .action-btn.delete-btn {
+}
+
+/* Botón eliminar */
+.action-btn.delete-btn {
     background-color: #dc3545;
     color: white;
     border: none;
@@ -511,18 +554,57 @@ body {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
-  }
-  
-  .action-btn.delete-btn:hover {
+}
+
+.action-btn.delete-btn:hover {
     background-color: #c82333;
-  }
-  
-  /* Filas alternas para mejor visibilidad */
-  .denuncias-table tr:nth-child(even) {
+}
+
+/* Filas alternas para mejor visibilidad */
+.denuncias-table tr:nth-child(even) {
     background-color: #f8f9fa;
-  }
-  
-  /* Hover sobre las filas */
-  .denuncias-table tr:hover {
-    background-color: rgba(0,0,0,0.03);
-  }
+}
+
+/* Hover sobre las filas */
+.denuncias-table tr:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+/* Para etiquetas de estado específicas */
+.denuncias-table td:nth-child(4) .PENDIENTE,
+.denuncias-table td:nth-child(4) .EN-PROCESO,
+.denuncias-table td:nth-child(4) .RESUELTA,
+.denuncias-table td:nth-child(4) .RECHAZADA {
+    text-align: center;
+    display: block;
+    /* Para que ocupe todo el ancho disponible */
+    margin: 0 auto;
+    /* Centrado */
+}
+
+/* Clase para contenedor de tabla con scroll horizontal en móviles */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 5px;
+    /* Evita que el scroll corte la sombra */
+}
+
+/* Estilo para el botón de cerrar sesión */
+.logout-btn {
+    margin: 15px;
+    padding: 8px 15px;
+    background-color: var(--light-danger);
+    color: var(--danger);
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.logout-btn:hover {
+    background-color: var(--danger);
+    color: white;
+    transform: translateY(-2px);
+}
