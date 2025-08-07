@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
 
 @Component({
   selector: 'app-nav',
@@ -10,8 +11,13 @@ import { CommonModule } from '@angular/common';
   styleUrl: './navbar.component.css'
 })
 export class NavComponent {
-  // Solo este método para verificar si está logueado
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
   isLoggedIn(): boolean {
-    return localStorage.getItem("login") === 'true';
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem("login") === 'true';
+    }
+    return false; // Si es SSR o no hay localStorage
   }
 }
